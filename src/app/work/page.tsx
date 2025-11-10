@@ -1,5 +1,6 @@
 import { personalInfo } from "@/lib/data";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function WorkPage() {
   return (
@@ -28,11 +29,17 @@ export default function WorkPage() {
               <span className="text-xs font-bold uppercase tracking-tight">{project.year}</span>
             </div>
 
-            {/* Hover Reveal Image Mockup */}
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-80 bg-gray-100 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-2xl overflow-hidden z-50">
-               <div className="w-full h-full flex items-center justify-center text-[10px] font-black uppercase text-black/10">
-                 {project.title}
-               </div>
+            {/* Hover Reveal Image */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-80 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-2xl overflow-hidden z-50">
+              <Image
+                src={project.image}
+                alt={project.title}
+                fill
+                sizes="256px"
+                className="object-cover"
+                loading="lazy"
+                decoding="async"
+              />
             </div>
           </Link>
         ))}

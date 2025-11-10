@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { personalInfo } from "@/lib/data";
 
 export default function Slider3D() {
@@ -15,7 +16,6 @@ export default function Slider3D() {
   const springX = useSpring(x, { stiffness: 100, damping: 30, mass: 0.5 });
   const rotationY = useTransform(springX, (value) => value);
 
-  // Auto-rotation logic like the reference site might have
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight") handleNext();
@@ -65,13 +65,19 @@ export default function Slider3D() {
               }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-              {/* Project Image Container */}
-              <div className="relative flex-1 bg-[#f0f0f0] group">
-                <div className="absolute inset-0 flex items-center justify-center text-[10px] font-black uppercase tracking-[0.2em] text-black/20">
-                  {project.title}
-                </div>
-                {/* Visual Glow/Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-[#0008ff]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              {/* Project Image */}
+              <div className="relative flex-1 bg-[#f0f0f0] group overflow-hidden">
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 450px"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading={isActive ? "eager" : "lazy"}
+                  decoding="async"
+                />
+                {/* Hover Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-[#0008ff]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
 
               {/* Card Footer */}
@@ -124,7 +130,7 @@ export default function Slider3D() {
         </AnimatePresence>
       </div>
 
-      {/* Floating View Text on Hover */}
+      {/* Floating View Text */}
       <motion.div
         animate={{ opacity: isHovered ? 1 : 0 }}
         className="fixed pointer-events-none z-[60] text-[10px] font-black uppercase tracking-widest text-[#0008ff] mix-blend-difference"
