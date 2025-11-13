@@ -1,6 +1,6 @@
 export const personalInfo = {
   name: "Yash Dogra",
-  role: "Creative Developer & ML Engineer",
+  role: "AI/ML Engineer & Full-Stack Developer",
   location: "Hamirpur, Himachal Pradesh",
   email: "yxshdogra@gmail.com",
   phone: "+91 7876205914",
@@ -8,25 +8,39 @@ export const personalInfo = {
     instagram: "https://instagram.com/yxshdogra",
     linkedin: "https://linkedin.com/in/yashdogra",
     github: "https://github.com/yashdogra",
-    behance: "https://behance.net/yashdogra"
   },
-  summary: "Computer Science undergraduate skilled in Python and C++, with hands-on experience in Machine Learning frameworks for NLP and computer vision. Specialist in campus navigation optimization and text summarization.",
+  summary: "Computer Science undergraduate proficient in Python and C++ with hands-on experience in ML frameworks for NLP and computer vision. Specializing in advanced AI techniques and full-stack web development to solve real-world problems.",
   education: [
     {
       institution: "Thapar Institute of Engineering and Technology",
       degree: "Bachelor of Engineering in Computer Science",
       period: "2021 – 2025",
-      score: "CGPA: 8.11"
+      score: "CGPA: 8.11",
+      location: "Patiala, Punjab"
+    },
+    {
+      institution: "DAV Public School",
+      degree: "CBSE, Class XII",
+      period: "2020",
+      score: "95.2%",
+      location: "Hamirpur, Himachal Pradesh"
     }
   ],
+  skills: {
+    languages: ["Python", "C++", "SQL", "R"],
+    frameworks: ["TensorFlow", "Keras", "PyTorch", "Scikit-learn", "Hugging Face Transformers"],
+    dataTools: ["NumPy", "Pandas", "Power BI", "Matplotlib", "OpenCV", "NLTK"],
+    devTools: ["Git", "GitHub", "VS Code", "PyCharm", "Google Colab", "MySQL", "Redis", "Leaflet", "OAuth 2.0", "JWT"]
+  },
   projects: [
     {
       id: 1,
       title: "MapMitra",
       category: "React • Node.js • MongoDB",
-      year: "2023",
+      year: "2024",
       image: "/images/core/image1.webp",
-      description: "Real-time campus navigation and e-rickshaw tracking system."
+      description: "Real-time campus navigation and e-rickshaw tracking with landmark-based routing. Achieved 90% ETA prediction accuracy and reduced route computation latency by 40% via BFS optimization and Redis caching.",
+      technologies: ["React", "Node.js", "MongoDB", "Leaflet", "Redis", "OAuth 2.0", "JWT"]
     },
     {
       id: 2,
@@ -34,7 +48,8 @@ export const personalInfo = {
       category: "T5 Transformer • HuggingFace",
       year: "2024",
       image: "/images/core/image2.webp",
-      description: "T5-based tool for Punjabi text summarization."
+      description: "Developed a text summarization tool using the T5 Transformer model and XLSum dataset with focus on Punjabi. Achieved ROUGE-1 of 54.38 and ROUGE-L of 53.57 post fine-tuning.",
+      technologies: ["Python", "Transformers", "ROUGE", "HuggingFace"]
     },
     {
       id: 3,
@@ -42,21 +57,40 @@ export const personalInfo = {
       category: "NLP • Streamlit",
       year: "2023",
       image: "/images/core/image3.webp",
-      description: "Toxicity detection model with 95% accuracy."
+      description: "Built a real-world toxicity detection model using Kaggle dataset. Employed TF-IDF and Naive Bayes classifier, achieving 95% test accuracy and 0.95 F1-score with real-time Streamlit interface.",
+      technologies: ["Python", "Streamlit", "TF-IDF", "Naive Bayes"]
     },
     {
       id: 4,
-      title: "Logistics Leader",
-      category: "Leadership • Operations",
-      year: "2024",
+      title: "Campus Navigation Research",
+      category: "Research • Publication",
+      year: "2025",
       image: "/images/core/image4.webp",
-      description: "Led 85+ members at Girl Up Patiala for gender sensitivity events."
+      description: "Published paper: 'From Confusion to Clarity: Optimizing Navigation and Transport Systems in Educational Campuses' in Lecture Notes in Networks and Systems, presented at ICICC 2025, Singapore.",
+      technologies: ["Research", "Academic Writing", "Data Analysis"]
     }
   ],
+  certifications: [
+    { id: 1, title: "NVIDIA Fundamentals of Accelerated Computing with CUDA Python", year: "2025", issuer: "NVIDIA", image: "/images/core/page3-image1.webp" },
+    { id: 2, title: "NVIDIA Generative AI with Diffusion Models", year: "2025", issuer: "NVIDIA", image: "/images/core/page3-image2.webp" },
+    { id: 3, title: "IBM Data Science Professional Certificate", year: "2023", issuer: "IBM", image: "/images/core/page3-image3.webp" },
+    { id: 4, title: "IBM Artificial Intelligence Fundamentals", year: "2025", issuer: "IBM", image: "/images/core/page3-image4.webp" },
+    { id: 5, title: "IBM Building AI Solutions with Advanced Algorithms", year: "2025", issuer: "IBM", image: "/images/core/page3-image5.webp" },
+    { id: 6, title: "IBM Building Trustworthy AI Enterprise Solutions", year: "2025", issuer: "IBM", image: "/images/core/page3-image6.webp" },
+    { id: 7, title: "IBM Generative AI in Action", year: "2025", issuer: "IBM", image: "/images/core/page3-image7.webp" },
+    { id: 8, title: "Google UX Design Professional Certificate", year: "2023", issuer: "Google", image: "/images/core/page2-image1.webp" },
+    { id: 9, title: "Computer Vision Specialization", year: "2024", issuer: "Coursera", image: "/images/core/page2-image2.webp" },
+    { id: 10, title: "Cyber Security Fundamentals", year: "2024", issuer: "Coursera", image: "/images/core/page2-image3.webp" },
+    { id: 11, title: "Mobile App Development", year: "2024", issuer: "Coursera", image: "/images/core/page2-image4.webp" },
+    { id: 12, title: "Intro to Machine Learning", year: "2024", issuer: "Kaggle", image: "/images/core/page2-image5.webp" },
+    { id: 13, title: "Python Programming", year: "2024", issuer: "Kaggle", image: "/images/core/page2-image6.webp" },
+    { id: 14, title: "Pandas for Data Analysis", year: "2024", issuer: "Kaggle", image: "/images/core/page2-image7.webp" }
+  ],
   archive: [
-    { id: 101, title: "IBM Data Science Certification", year: "2023", image: "/images/core/page3-image1.webp" },
-    { id: 102, title: "Google UX Design Professional", year: "2023", image: "/images/core/page3-image2.webp" },
-    { id: 103, title: "Campus Navigation Optimization Paper", year: "2023", image: "/images/core/page3-image3.webp" }
+    { id: 101, title: "ICICC 2025 Research Paper Presentation", year: "2025", type: "Publication", image: "/images/core/page3-image1.webp" },
+    { id: 102, title: "Gold Medal - Inter-departmental Football", year: "2024", type: "Sports", image: "/images/core/page3-image2.webp" },
+    { id: 103, title: "Silver Medal - Inter-departmental Chess", year: "2024", type: "Sports", image: "/images/core/page3-image3.webp" },
+    { id: 104, title: "Head of Logistics - Girl Up Patiala", year: "2023-2024", type: "Leadership", image: "/images/core/page3-image4.webp" }
   ],
   heroImage: "/images/core/thegreats.webp"
 };

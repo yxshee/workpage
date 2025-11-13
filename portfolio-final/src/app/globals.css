@@ -17,6 +17,25 @@
     overflow-x: hidden;
     font-family: var(--font-haas);
   }
+
+  /* Premium uppercase styling */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .uppercase-content {
+    text-transform: uppercase;
+  }
+
+  /* Preserve normal case for inputs and code */
+  input,
+  textarea,
+  code,
+  pre {
+    text-transform: none;
+  }
 }
 
 @layer components {
@@ -42,14 +61,30 @@
 
 /* 3D Slider Styles */
 .slider-container {
-  perspective: 1200px;
+  perspective: 1400px;
   transform-style: preserve-3d;
 }
 
 .slider-item {
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.5s ease,
+    scale 0.5s ease;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .preserve-3d {
   transform-style: preserve-3d;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .slider-item {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .preserve-3d {
+    transform: none !important;
+  }
 }

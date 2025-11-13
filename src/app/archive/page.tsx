@@ -18,15 +18,16 @@ export default function ArchivePage() {
                 alt={item.title}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                className="object-cover transition-transform duration-700 ease-[0.23,1,0.32,1] group-hover:scale-110"
                 loading="lazy"
                 decoding="async"
+                quality={85}
               />
             )}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-            <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform">
-              <span className="text-[10px] text-white/60 font-black uppercase">{item.year}</span>
-              <h3 className="text-sm text-white font-black uppercase tracking-tight">{item.title}</h3>
+            <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-500" />
+            <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-full group-hover:translate-y-0 transition-all duration-500 ease-[0.23,1,0.32,1]">
+              <span className="text-[10px] text-white/50 font-black uppercase tracking-widest">{item.year}</span>
+              <h3 className="text-base text-white font-black uppercase tracking-tight mt-1">{item.title}</h3>
             </div>
           </div>
         ))}
