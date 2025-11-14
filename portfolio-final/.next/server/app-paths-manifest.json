@@ -1,9 +1,0 @@
-{
-  "/_global-error/page": "app/_global-error/page.js",
-  "/_not-found/page": "app/_not-found/page.js",
-  "/archive/page": "app/archive/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/info/page": "app/info/page.js",
-  "/page": "app/page.js",
-  "/work/page": "app/work/page.js"
-}
