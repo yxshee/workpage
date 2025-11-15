@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "Yash Dogra | Portfolio",
@@ -27,18 +28,38 @@ export const metadata: Metadata = {
   },
 };
 
+// Script to prevent flash of wrong theme
+const themeScript = `
+(function(){
+  try {
+    const stored = localStorage.getItem('theme');
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    if(stored === 'dark' || (!stored && media.matches)) {
+      document.documentElement.setAttribute('data-theme','dark');
+    }
+  } catch(e) {}
+})()
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fcfcfc" />
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0B0F13" />
+      </head>
       <body className="antialiased">
-        <div className="vignette" />
-        <Header />
-        <main>{children}</main>
-        <Footer />
+        <ThemeProvider>
+          <div className="vignette" />
+          <Header />
+          <main>{children}</main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );
