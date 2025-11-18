@@ -42,3 +42,11 @@ next-env.d.ts
 
 .npm_local_cache/
 .npm-global
+
+# backups and archives
+/backups/
+/_archive/
+/core/
+/node_modules_new/
+/reports/
+/.agent/
