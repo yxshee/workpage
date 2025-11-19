@@ -3,14 +3,15 @@ import Image from "next/image";
 
 export default function ArchivePage() {
   return (
-    <div className="min-h-screen pt-32 px-5 pb-20">
-      <h1 className="text-7xl font-black uppercase tracking-tighter mb-16">Archive</h1>
+    <div className="min-h-screen pt-32 px-5 pb-20" style={{ backgroundColor: 'var(--bg-900)' }}>
+      <h1 className="text-7xl font-black uppercase tracking-tighter mb-16" style={{ color: 'var(--text-high)' }}>Archive</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {personalInfo.archive.map((item) => (
           <div 
             key={item.id} 
-            className="group relative aspect-[4/3] bg-black/5 overflow-hidden"
+            className="group relative aspect-[4/3] overflow-hidden"
+            style={{ backgroundColor: 'var(--surface-600)' }}
           >
             {item.image && (
               <Image
@@ -36,7 +37,7 @@ export default function ArchivePage() {
       {/* Table view for non-image items */}
       <table className="w-full border-collapse mt-16">
         <thead>
-          <tr className="border-b border-black text-[#999]">
+          <tr style={{ borderBottom: '1px solid var(--border)', color: 'var(--muted-500)' }}>
             <th className="text-left py-4 text-[10px] font-black uppercase tracking-widest">Year</th>
             <th className="text-left py-4 text-[10px] font-black uppercase tracking-widest">Project</th>
             <th className="text-right py-4 text-[10px] font-black uppercase tracking-widest">Type</th>
@@ -44,12 +45,12 @@ export default function ArchivePage() {
         </thead>
         <tbody>
           {personalInfo.archive.map((item) => (
-            <tr key={item.id} className="border-b border-black/5 hover:bg-black/5 transition-colors group">
-              <td className="py-6 text-sm font-bold uppercase">{item.year}</td>
+            <tr key={item.id} className="transition-colors group" style={{ borderBottom: '1px solid var(--border)' }}>
+              <td className="py-6 text-sm font-bold uppercase" style={{ color: 'var(--text-high)' }}>{item.year}</td>
               <td className="py-6">
-                <span className="text-sm font-bold uppercase group-hover:text-[#0008ff] transition-colors">{item.title}</span>
+                <span className="text-sm font-bold uppercase transition-colors" style={{ color: 'var(--text-high)' }}>{item.title}</span>
               </td>
-              <td className="py-6 text-right text-xs font-bold uppercase text-[#999]">External</td>
+              <td className="py-6 text-right text-xs font-bold uppercase" style={{ color: 'var(--muted-500)' }}>External</td>
             </tr>
           ))}
         </tbody>

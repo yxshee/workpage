@@ -4,44 +4,45 @@ import Image from "next/image";
 
 export default function WorkPage() {
   return (
-    <div className="min-h-screen pt-32 px-5 pb-20">
+    <div className="min-h-screen pt-32 px-5 pb-20" style={{ backgroundColor: 'var(--bg-900)' }}>
       <div className="flex justify-between items-end mb-20">
-        <h1 className="text-8xl font-black uppercase tracking-tighter leading-[0.8]">Selected<br/>Works</h1>
+        <h1 className="text-8xl font-black uppercase tracking-tighter leading-[0.8]" style={{ color: 'var(--text-high)' }}>Selected<br/>Works</h1>
         <div className="text-right">
-          <span className="text-[10px] font-black uppercase tracking-widest text-[#999]">2021 — 2025</span>
+          <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: 'var(--muted-500)' }}>2021 — 2025</span>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-px bg-black/5 border-t border-b border-black/5">
+      <div className="grid grid-cols-1 gap-px border-t border-b" style={{ backgroundColor: 'var(--border)', borderColor: 'var(--border)' }}>
         {personalInfo.projects.map((project) => (
           <Link 
             key={project.id} 
             href={`/work/${project.id}`}
-            className="group relative flex justify-between items-center py-12 px-4 bg-white transition-colors hover:bg-[#0008ff] hover:text-white"
+            className="group relative flex justify-between items-center py-12 px-4 transition-colors"
+            style={{ backgroundColor: 'var(--surface-700)', color: 'var(--text-high)' }}
           >
             <div className="flex items-center gap-10">
-              <span className="text-[10px] font-black uppercase tracking-tighter opacity-40 group-hover:opacity-100">0{project.id}</span>
-              <h3 className="text-4xl font-black uppercase tracking-tighter">{project.title}</h3>
+              <span className="text-[10px] font-black uppercase tracking-tighter opacity-40 group-hover:opacity-100" style={{ color: 'var(--text-high)' }}>0{project.id}</span>
+              <h3 className="text-4xl font-black uppercase tracking-tighter" style={{ color: 'var(--text-high)' }}>{project.title}</h3>
             </div>
             
             <div className="flex items-center gap-20">
-              <span className="text-xs font-bold uppercase tracking-tight opacity-40 group-hover:opacity-100">{project.category}</span>
-              <span className="text-xs font-bold uppercase tracking-tight">{project.year}</span>
+              <span className="text-xs font-bold uppercase tracking-tight opacity-40 group-hover:opacity-100" style={{ color: 'var(--text-high)' }}>{project.category}</span>
+              <span className="text-xs font-bold uppercase tracking-tight" style={{ color: 'var(--text-high)' }}>{project.year}</span>
             </div>
 
-            {/* Hover Reveal Image */}
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-80 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-[0.23,1,0.32,1] pointer-events-none shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden z-50 group-hover:scale-105 group-hover:rotate-2">
+            {/* Hover Reveal Image - NO TILT, NO BLUR, STRAIGHT AND CLEAR */}
+            <div className="project-image absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-80 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-[0.23,1,0.32,1] pointer-events-none shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden z-50">
               <Image
                 src={project.image}
                 alt={project.title}
                 fill
                 sizes="256px"
-                className="object-cover scale-110 group-hover:scale-100 transition-transform duration-700"
+                className="object-cover work-image"
                 loading="lazy"
                 decoding="async"
                 quality={90}
+                style={{ transform: 'none', filter: 'none' }}
               />
-              <div className="absolute inset-0 bg-white/5 backdrop-blur-[1px]" />
             </div>
           </Link>
         ))}
