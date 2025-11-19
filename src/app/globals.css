@@ -271,18 +271,17 @@ html[data-theme="dark"] {
 }
 
 /* ========================
-   WORK PAGE: FIX IMAGE TILT/BLUR
+   WORK PAGE: FIX IMAGE BLUR ONLY
    ======================== */
-.work-image,
-.project-image {
-  transform: none !important;
+.work-image {
   filter: none !important;
   image-rendering: auto;
-  width: 100%;
-  height: auto;
-  max-width: 100%;
-  display: block;
-  object-fit: contain;
+}
+
+/* Project image container - allow transforms for hover animation, only block blur */
+.project-image img {
+  filter: none !important;
+  image-rendering: auto;
 }
 
 /* Reduced motion support */

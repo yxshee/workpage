@@ -1,0 +1,22 @@
+{
+  "diagnosis_timestamp": "2026-01-28T23:45:00Z",
+  "issue_summary": "transform: none !important on .project-image blocks all CSS transforms",
+  "affected_element": {
+    "selector": ".project-image",
+    "location": "src/app/globals.css:276-287",
+    "problem": "CSS rule 'transform: none !important' overrides Tailwind hover animation classes"
+  },
+  "blocked_tailwind_classes": [
+    "-translate-x-1/2",
+    "-translate-y-1/2",
+    "scale-90",
+    "group-hover:scale-100"
+  ],
+  "console_errors": "none",
+  "missing_js_handlers": false,
+  "root_cause": "Overly aggressive CSS fix for tilt/blur removal also disabled positioning and animation transforms",
+  "fix_strategy": "Remove transform:none!important from .project-image; keep filter:none for blur fix",
+  "files_to_modify": [
+    "src/app/globals.css"
+  ]
+}

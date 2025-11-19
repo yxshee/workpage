@@ -18,12 +18,12 @@ export default function Slider3D() {
   const items = personalInfo.projects;
   const itemCount = items.length;
   const angleStep = 360 / itemCount;
-  const maxSpeed = 0.4;
+  const maxSpeed = 3.5;
 
   // Continuous animation loop (never stops)
   const animate = useCallback(() => {
     // Apply friction
-    speedRef.current *= 0.98;
+    speedRef.current *= 0.95;
     
     // Update rotation
     rotationRef.current = (rotationRef.current + speedRef.current) % 360;
@@ -53,7 +53,7 @@ export default function Slider3D() {
       if (!containerRef.current?.closest('.home-root')) return;
       
       const delta = e.deltaY || e.deltaX;
-      speedRef.current += (delta > 0 ? 1 : -1) * 0.025;
+      speedRef.current += (delta > 0 ? 1 : -1) * 0.15;
       speedRef.current = Math.max(-maxSpeed, Math.min(maxSpeed, speedRef.current));
       
       // IMPORTANT: Prevent vertical page scroll on Home
@@ -72,7 +72,7 @@ export default function Slider3D() {
       if (!containerRef.current?.closest('.home-root') || startY === null) return;
       
       const dy = e.touches[0].clientY - startY;
-      speedRef.current += -dy * 0.0015;
+      speedRef.current += -dy * 0.012;
       speedRef.current = Math.max(-maxSpeed, Math.min(maxSpeed, speedRef.current));
       startY = e.touches[0].clientY;
       
