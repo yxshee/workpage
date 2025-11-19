@@ -124,9 +124,9 @@ export default function Slider3D() {
       onMouseLeave={() => setIsHovering(false)}
       style={{ backgroundColor: 'var(--bg-900)' }}
     >
-      {/* 3D Carousel Container */}
+      {/* 3D Carousel Container with rotor-wrapper for spacing */}
       <div 
-        className="relative w-full h-full flex items-center justify-center"
+        className="rotor-wrapper relative w-full h-full flex items-center justify-center"
         style={{ perspective: "1400px" }}
       >
         <div
@@ -193,8 +193,8 @@ export default function Slider3D() {
         </div>
       </div>
 
-      {/* Project Info Overlay - Bottom Left */}
-      <div className="absolute bottom-24 left-10 z-40 pointer-events-none">
+      {/* Project Info Overlay - Bottom Left - with responsive gap from rotor */}
+      <div className="absolute bottom-36 left-10 z-40 pointer-events-none" style={{ marginTop: 'clamp(48px, 8vh, 120px)' }}>
         <div className="flex items-center gap-4 mb-3">
           <span className="text-[10px] font-bold uppercase tracking-tighter" style={{ color: 'var(--muted-500)' }}>
             {activeIndex + 1} / {itemCount}

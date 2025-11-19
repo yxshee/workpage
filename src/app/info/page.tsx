@@ -38,10 +38,10 @@ export default function InfoPage() {
           <section>
             <h3 className="text-[10px] font-black uppercase tracking-widest mb-4" style={{ color: 'var(--muted-500)' }}>Certifications</h3>
             <div className="space-y-2">
-              {personalInfo.archive.map((item) => (
-                <div key={item.id} className="flex justify-between pb-2" style={{ borderBottom: '1px solid var(--border)' }}>
-                  <span className="text-[10px] font-bold uppercase" style={{ color: 'var(--text-high)' }}>{item.title}</span>
-                  <span className="text-[10px] font-bold uppercase" style={{ color: 'var(--muted-500)' }}>{item.year}</span>
+              {personalInfo.certifications.map((cert) => (
+                <div key={cert.id} className="flex justify-between pb-2" style={{ borderBottom: '1px solid var(--border)' }}>
+                  <span className="text-[10px] font-bold uppercase" style={{ color: 'var(--text-high)' }}>{cert.title}</span>
+                  <span className="text-[10px] font-bold uppercase" style={{ color: 'var(--muted-500)' }}>{cert.year}</span>
                 </div>
               ))}
             </div>
