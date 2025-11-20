@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function WorkPage() {
   return (
-    <div className="min-h-screen pt-32 px-5 pb-20" style={{ backgroundColor: 'var(--bg-900)' }}>
+    <div className="min-h-screen px-5 pb-20" style={{ backgroundColor: 'var(--bg-900)', paddingTop: 'calc(var(--site-header-height) + 48px)' }}>
       <div className="flex justify-between items-end mb-20">
         <h1 className="text-8xl font-black uppercase tracking-tighter leading-[0.8]" style={{ color: 'var(--text-high)' }}>Selected<br/>Works</h1>
         <div className="text-right">

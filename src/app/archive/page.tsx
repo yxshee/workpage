@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function ArchivePage() {
   return (
-    <div className="min-h-screen pt-32 px-5 pb-20" style={{ backgroundColor: 'var(--bg-900)' }}>
+    <div className="min-h-screen px-5 pb-20" style={{ backgroundColor: 'var(--bg-900)', paddingTop: 'calc(var(--site-header-height) + 48px)' }}>
       <h1 className="text-7xl font-black uppercase tracking-tighter mb-16" style={{ color: 'var(--text-high)' }}>Archive</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
