@@ -272,7 +272,7 @@ personalInfo = {
   socials: {
     instagram: "https://instagram.com/yxshdogra"
     linkedin: "https://linkedin.com/in/yashdogra"
-    github: "https://github.com/yashdogra"
+    github: "https://github.com/yxshee"
   }
   
   // Professional Summary
