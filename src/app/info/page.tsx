@@ -22,7 +22,7 @@ export default function InfoPage() {
                   href={personalInfo.resumeUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-block text-sm font-bold uppercase"
+                  className="inline-block text-sm font-bold uppercase link-hover underline-reveal arrow-nudge"
                   style={{ color: 'var(--text-high)' }}
                 >
                   Resume

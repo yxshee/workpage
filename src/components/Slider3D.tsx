@@ -240,7 +240,7 @@ export default function Slider3D() {
                   style={{ backgroundColor: 'var(--surface-700)' }}
                 >
                   {/* Project Image */}
-                  <div className="relative w-full h-[200px] overflow-hidden group" style={{ backgroundColor: 'var(--surface-600)' }}>
+                  <div className="relative w-full h-[170px] overflow-hidden group" style={{ backgroundColor: 'var(--surface-600)' }}>
                     <Image
                       src={project.image}
                       alt={project.title}
@@ -255,7 +255,7 @@ export default function Slider3D() {
                   </div>
                   
                   {/* Card Footer */}
-                  <div className="p-4 flex justify-between items-center" style={{ backgroundColor: 'var(--surface-700)', borderTop: '1px solid var(--border)' }}>
+                  <div className="p-3 flex justify-between items-center" style={{ backgroundColor: 'var(--surface-700)', borderTop: '1px solid var(--border)' }}>
                     <div>
                       <span className="block text-[10px] font-bold tracking-tight" style={{ color: 'var(--text-high)' }}>PROJ—0{index + 1}</span>
                       <span className="text-[9px] uppercase tracking-tight" style={{ color: 'var(--muted-500)' }}>{project.category}</span>

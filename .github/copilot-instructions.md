@@ -95,6 +95,17 @@ npm run lint   # ESLint with Next.js rules
 - Keep title/description inside the reserved `project-info-panel` area to prevent overlap with rotating cards
 
 ## UX Invariants
-- Work page hover preview image swap is intentional and **non-animated** (no transition classes on reveal container)
-- Default system cursor is intentionally hidden site-wide via `globals.css`; custom cursor appears on home carousel
+- Work page hover preview: image appears on hover with subtle shrink effect (`scale-[0.97]`)
+- Custom cursor is site-wide via `CustomCursor.tsx` component in layout; respects touch devices and reduced-motion
+- Default system cursor hidden via `globals.css` only for `(hover: hover) and (pointer: fine)` devices
+- Link micro-interactions use `.underline-reveal` and `.link-hover` classes for consistent hover effects
 - External project links should use `project.repoUrl` with fallback to `personalInfo.socials.github`
+
+## Micro-interaction Classes
+| Class | Effect |
+|-------|--------|
+| `.underline-reveal` | Animated underline on hover |
+| `.link-hover` | Subtle translateY + opacity shift |
+| `.arrow-nudge` | Arrow slides right on hover |
+| `.heading-hover` | Letter-spacing shift on hover |
+
