@@ -42,6 +42,7 @@ export default function Slider3D() {
   }, []);
 
   // Continuous animation loop (never stops)
+  // eslint-disable-next-line react-hooks/immutability -- Recursive RAF pattern: animate is captured by closure at call time, not definition
   const animate = useCallback(() => {
     // Apply friction
     speedRef.current *= 0.95;
