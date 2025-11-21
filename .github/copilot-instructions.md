@@ -52,9 +52,14 @@ src/
 
 ### Page Layout Pattern
 ```tsx
-// All pages use header offset for fixed header
-<div style={{ paddingTop: 'calc(var(--site-header-height) + 48px)' }}>
+// Non-home pages use shared shell spacing under fixed header
+<div className="page-shell min-h-screen ...">
 ```
+
+### Header + Spacing Rules
+- Fixed header must use `site-header` class (see `src/components/Header.tsx`)
+- Header-height sync targets `.site-header` in `src/app/layout.tsx` and `src/lib/header-sync.ts`
+- Avoid inline page padding top on route pages; use `.page-shell` from `globals.css`
 
 ### Adding New Content
 1. Add data to `personalInfo` object in `src/lib/data.ts`
@@ -87,3 +92,9 @@ npm run lint   # ESLint with Next.js rules
 - Controlled by scroll/touch events on home page
 - Uses CSS 3D transforms with `transform-style: preserve-3d`
 - Continuous RAF loop for smooth animation
+- Keep title/description inside the reserved `project-info-panel` area to prevent overlap with rotating cards
+
+## UX Invariants
+- Work page hover preview image swap is intentional and **non-animated** (no transition classes on reveal container)
+- Default system cursor is intentionally hidden site-wide via `globals.css`; custom cursor appears on home carousel
+- External project links should use `project.repoUrl` with fallback to `personalInfo.socials.github`
