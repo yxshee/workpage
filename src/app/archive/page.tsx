@@ -4,7 +4,7 @@ import Image from "next/image";
 export default function ArchivePage() {
   return (
     <div className="page-shell min-h-screen px-5 pb-20" style={{ backgroundColor: 'var(--bg-900)' }}>
-      <h1 className="text-6xl md:text-7xl font-black uppercase tracking-tighter mb-16" style={{ color: 'var(--text-high)' }}>Archive</h1>
+      <h1 className="text-6xl md:text-7xl uppercase tracking-tighter mb-16" style={{ color: 'var(--text-high)' }}>Archive</h1>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {personalInfo.archive.map((archiveItem) => (
@@ -27,8 +27,8 @@ export default function ArchivePage() {
             )}
             <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-500" />
             <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-full group-hover:translate-y-0 transition-all duration-500 ease-[0.23,1,0.32,1]">
-              <span className="text-[10px] text-white/50 font-black uppercase tracking-widest">{archiveItem.year}</span>
-              <h3 className="text-base text-white font-black uppercase tracking-tight mt-1">{archiveItem.title}</h3>
+              <span className="text-[10px] text-white/50 uppercase tracking-widest">{archiveItem.year}</span>
+              <h3 className="text-base text-white uppercase tracking-tight mt-1">{archiveItem.title}</h3>
             </div>
           </div>
         ))}
