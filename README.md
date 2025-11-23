@@ -45,8 +45,8 @@ src/
 ├── components/    # React components
 │   ├── Header.tsx
 │   ├── Footer.tsx
-│   ├── Hero.tsx
-│   ├── Slider3D.tsx
+│   ├── HomeHero.tsx
+│   ├── OrbitCarousel.tsx
 │   └── ThemeProvider.tsx
 ├── lib/           # Utilities and data
 │   └── data.ts
@@ -62,3 +62,6 @@ public/
 - 📱 Fully responsive design
 - ♿ Reduced motion support for accessibility
 
+## Naming Standard
+
+Use the repo naming conventions documented in `docs/naming-standard.md`.

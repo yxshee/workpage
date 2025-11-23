@@ -18,7 +18,7 @@ function debounce<T extends (...args: unknown[]) => void>(fn: T, ms: number): T 
 export function syncHeaderHeight(): void {
   if (typeof window === 'undefined') return;
   
-  const header = document.querySelector('.site-header');
+  const header = document.querySelector('.header-bar');
   if (!header) return;
   
   const height = header.getBoundingClientRect().height;

@@ -7,16 +7,16 @@ export default function ArchivePage() {
       <h1 className="text-6xl md:text-7xl font-black uppercase tracking-tighter mb-16" style={{ color: 'var(--text-high)' }}>Archive</h1>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {personalInfo.archive.map((item) => (
+        {personalInfo.archive.map((archiveItem) => (
           <div 
-            key={item.id} 
+            key={archiveItem.id} 
             className="group relative aspect-[3/4] overflow-hidden"
             style={{ backgroundColor: 'var(--surface-600)' }}
           >
-            {item.image && (
+            {archiveItem.image && (
               <Image
-                src={item.image}
-                alt={item.title}
+                src={archiveItem.image}
+                alt={archiveItem.title}
                 fill
                 sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                 className="object-cover transition-transform duration-700 ease-[0.23,1,0.32,1] group-hover:scale-105"
@@ -27,8 +27,8 @@ export default function ArchivePage() {
             )}
             <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-500" />
             <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-full group-hover:translate-y-0 transition-all duration-500 ease-[0.23,1,0.32,1]">
-              <span className="text-[10px] text-white/50 font-black uppercase tracking-widest">{item.year}</span>
-              <h3 className="text-base text-white font-black uppercase tracking-tight mt-1">{item.title}</h3>
+              <span className="text-[10px] text-white/50 font-black uppercase tracking-widest">{archiveItem.year}</span>
+              <h3 className="text-base text-white font-black uppercase tracking-tight mt-1">{archiveItem.title}</h3>
             </div>
           </div>
         ))}
@@ -44,11 +44,11 @@ export default function ArchivePage() {
           </tr>
         </thead>
         <tbody>
-          {personalInfo.archive.map((item) => (
-            <tr key={item.id} className="transition-colors group" style={{ borderBottom: '1px solid var(--border)' }}>
-              <td className="py-6 text-sm font-semibold" style={{ color: 'var(--text-high)' }}>{item.year}</td>
+          {personalInfo.archive.map((archiveItem) => (
+            <tr key={archiveItem.id} className="transition-colors group" style={{ borderBottom: '1px solid var(--border)' }}>
+              <td className="py-6 text-sm font-semibold" style={{ color: 'var(--text-high)' }}>{archiveItem.year}</td>
               <td className="py-6">
-                <span className="text-sm font-semibold transition-colors" style={{ color: 'var(--text-high)' }}>{item.title}</span>
+                <span className="text-sm font-semibold transition-colors" style={{ color: 'var(--text-high)' }}>{archiveItem.title}</span>
               </td>
               <td className="py-6 text-right text-xs font-medium" style={{ color: 'var(--muted-500)' }}>External</td>
             </tr>

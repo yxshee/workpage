@@ -5,7 +5,7 @@ This repository is a personal portfolio built on Next.js App Router. Optimize fo
 ## 1) Repo Snapshot
 - Framework: Next.js `16.1.5` + React `19` + TypeScript `5`
 - Styling: Tailwind CSS 4 + CSS variables in `src/app/globals.css`
-- Animation: Framer Motion in `src/components/Slider3D.tsx`
+- Animation: Framer Motion in `src/components/OrbitCarousel.tsx`
 - Primary content source: `src/lib/data.ts` (`personalInfo` object)
 
 ## 2) Source of Truth Rules (Do Not Violate)
@@ -15,7 +15,7 @@ This repository is a personal portfolio built on Next.js App Router. Optimize fo
 
 ## 3) Key Entry Points
 - Root layout: `src/app/layout.tsx`
-- Home: `src/app/page.tsx` → `src/components/Hero.tsx` → `src/components/Slider3D.tsx`
+- Home: `src/app/page.tsx` → `src/components/HomeHero.tsx` → `src/components/OrbitCarousel.tsx`
 - Work page: `src/app/work/page.tsx`
 - Archive page: `src/app/archive/page.tsx`
 - Info page: `src/app/info/page.tsx`
@@ -23,7 +23,7 @@ This repository is a personal portfolio built on Next.js App Router. Optimize fo
 
 ## 4) UI Invariants
 - Header is fixed and must remain visually separated from page content.
-  - Use `.site-header` styles in `globals.css`.
+  - Use `.header-bar` styles in `globals.css`.
   - Use `.page-shell` for top spacing on non-home pages.
 - Never allow section headings to visually collapse into the fixed header while scrolling.
 - Home carousel title/description panel must stay in a reserved area and not collide with rotating cards.

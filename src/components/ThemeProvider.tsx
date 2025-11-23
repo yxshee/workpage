@@ -5,17 +5,17 @@ import { useEffect, useState } from "react";
 type Theme = "light" | "dark" | "system";
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [mounted, setMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional: required for SSR hydration to prevent theme flash
-    setMounted(true);
+    setIsMounted(true);
 
     // Initialize theme from localStorage or system preference
-    const stored = localStorage.getItem("theme") as Theme | null;
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const storedTheme = localStorage.getItem("theme") as Theme | null;
+    const systemDarkModeQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
-    function apply(theme: Theme | null) {
+    function applyThemePreference(theme: Theme | null) {
       const root = document.documentElement;
       if (theme === "dark") {
         root.setAttribute("data-theme", "dark");
@@ -25,7 +25,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         root.style.backgroundColor = "#fcfcfc";
       } else {
         // System preference
-        if (media.matches) {
+        if (systemDarkModeQuery.matches) {
           root.setAttribute("data-theme", "dark");
           root.style.backgroundColor = "#000000"; // TRUE BLACK
         } else {
@@ -35,38 +35,38 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       }
     }
 
-    apply(stored);
+    applyThemePreference(storedTheme);
 
     // Listen to system preference changes
-    const handleChange = () => {
-      const current = localStorage.getItem("theme") as Theme | null;
-      if (!current || current === "system") {
-        apply("system");
+    const onSystemThemeChange = () => {
+      const savedThemePreference = localStorage.getItem("theme") as Theme | null;
+      if (!savedThemePreference || savedThemePreference === "system") {
+        applyThemePreference("system");
       }
     };
 
-    media.addEventListener("change", handleChange);
+    systemDarkModeQuery.addEventListener("change", onSystemThemeChange);
 
     // Expose global controller for external use
-    (window as unknown as { ThemeController: { set: (t: Theme) => void; get: () => Theme } }).ThemeController = {
-      set(t: Theme) {
-        if (t === "system") {
+    (window as unknown as { ThemeController: { set: (nextTheme: Theme) => void; get: () => Theme } }).ThemeController = {
+      set(nextTheme: Theme) {
+        if (nextTheme === "system") {
           localStorage.removeItem("theme");
         } else {
-          localStorage.setItem("theme", t);
+          localStorage.setItem("theme", nextTheme);
         }
-        apply(t);
+        applyThemePreference(nextTheme);
       },
       get() {
         return (localStorage.getItem("theme") as Theme) || "system";
       },
     };
 
-    return () => media.removeEventListener("change", handleChange);
+    return () => systemDarkModeQuery.removeEventListener("change", onSystemThemeChange);
   }, []);
 
   // Prevent flash of incorrect theme
-  if (!mounted) {
+  if (!isMounted) {
     return null;
   }
 
@@ -74,21 +74,21 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function ThemeToggle() {
-  const [mounted, setMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional: required for SSR hydration
-    setMounted(true);
+    setIsMounted(true);
   }, []);
 
   const cycleTheme = () => {
     const root = document.documentElement;
-    const isDark = root.getAttribute("data-theme") === "dark";
-    const newTheme: Theme = isDark ? "light" : "dark";
+    const isDarkTheme = root.getAttribute("data-theme") === "dark";
+    const nextTheme: Theme = isDarkTheme ? "light" : "dark";
     
-    localStorage.setItem("theme", newTheme);
+    localStorage.setItem("theme", nextTheme);
     
-    if (newTheme === "dark") {
+    if (nextTheme === "dark") {
       root.setAttribute("data-theme", "dark");
       root.style.backgroundColor = "#000000"; // TRUE BLACK
     } else {
@@ -97,7 +97,7 @@ export function ThemeToggle() {
     }
   };
 
-  if (!mounted) {
+  if (!isMounted) {
     return (
       <button
         className="theme-toggle"
@@ -109,16 +109,16 @@ export function ThemeToggle() {
     );
   }
 
-  const isDark = typeof window !== "undefined" && document.documentElement.getAttribute("data-theme") === "dark";
+  const isDarkTheme = typeof window !== "undefined" && document.documentElement.getAttribute("data-theme") === "dark";
 
   return (
     <button
       onClick={cycleTheme}
       className="theme-toggle"
-      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-      title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      aria-label={isDarkTheme ? "Switch to light mode" : "Switch to dark mode"}
+      title={isDarkTheme ? "Switch to light mode" : "Switch to dark mode"}
     >
-      {isDark ? (
+      {isDarkTheme ? (
         // Sun icon for dark mode (click to go light)
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="5"/>

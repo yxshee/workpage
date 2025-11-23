@@ -34,28 +34,28 @@ export const metadata: Metadata = {
 const themeScript = `
 (function(){
   try {
-    const stored = localStorage.getItem('theme');
-    const media = window.matchMedia('(prefers-color-scheme: dark)');
-    if(stored === 'dark' || (!stored && media.matches)) {
+    const storedTheme = localStorage.getItem('theme');
+    const systemDarkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    if(storedTheme === 'dark' || (!storedTheme && systemDarkModeQuery.matches)) {
       document.documentElement.setAttribute('data-theme','dark');
       document.documentElement.style.backgroundColor = '#000000';
     }
-  } catch(e) {}
+  } catch(themeInitError) {}
   
   // Header height sync utility
   function debounce(fn, ms) {
-    let t;
+    let timeoutId;
     return function() {
-      clearTimeout(t);
-      t = setTimeout(fn, ms);
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(fn, ms);
     };
   }
   
   function syncHeaderHeight() {
-    const header = document.querySelector('.site-header');
+    const header = document.querySelector('.header-bar');
     if (!header) return;
-    const h = header.getBoundingClientRect().height;
-    document.documentElement.style.setProperty('--site-header-height', Math.ceil(h) + 'px');
+    const headerHeight = header.getBoundingClientRect().height;
+    document.documentElement.style.setProperty('--site-header-height', Math.ceil(headerHeight) + 'px');
   }
   
   // Sync on load
@@ -88,7 +88,7 @@ export default function RootLayout({
           <CustomCursor />
           <div className="vignette" />
           <Header />
-          <main className="site-content">{children}</main>
+          <main className="layout-main">{children}</main>
           <Footer />
         </ThemeProvider>
       </body>

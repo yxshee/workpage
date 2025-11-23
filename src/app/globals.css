@@ -63,12 +63,14 @@ html[data-theme="dark"] {
   --cursor-color: #f5d000;
 }
 
-@theme {
-  --color-primary-blue: var(--accent);
-  --color-bg-white: var(--bg-900);
-  --color-text-secondary: var(--muted-500);
-  --color-border-subtle: var(--border);
-  --font-haas: 'Neue Haas Grotesk Display Pro', 'Inter', sans-serif;
+@layer base {
+  :root {
+    --color-primary-blue: var(--accent);
+    --color-bg-white: var(--bg-900);
+    --color-text-secondary: var(--muted-500);
+    --color-border-subtle: var(--border);
+    --font-haas: 'Neue Haas Grotesk Display Pro', 'Inter', sans-serif;
+  }
 }
 
 @layer base {
@@ -102,10 +104,28 @@ html[data-theme="dark"] {
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden !important;
     font-family: var(--font-haas);
+    font-weight: 300;
     line-height: 1.45;
     letter-spacing: 0.005em;
     text-transform: uppercase;
     transition: background-color var(--transition-fast), color var(--transition-fast);
+  }
+
+  /* Enforce normal weight everywhere */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  strong,
+  b,
+  .font-black,
+  .font-extrabold,
+  .font-bold,
+  .font-semibold,
+  .font-medium {
+    font-weight: 300 !important;
   }
 
   /* Hide default cursor for mouse devices only; touch/reduced-motion get normal cursor */
@@ -163,19 +183,19 @@ html[data-theme="dark"] {
   }
 
   /* Nav link styling */
-  .nav-link {
-     font-size: 1.125rem;
-    font-weight: 600;
+  .header-nav__link {
+    font-size: 1.125rem;
+    font-weight: 300;
     color: var(--text-medium);
     text-transform: uppercase;
     transition: color var(--transition-fast);
   }
 
-  .nav-link:hover {
+  .header-nav__link:hover {
     color: var(--accent);
   }
 
-  .nav-link-muted {
+  .header-nav__link--muted {
     color: var(--muted-500);
   }
 
@@ -244,7 +264,7 @@ html[data-theme="dark"] {
   /* ========================
      LAYOUT: HEADER + PAGE SHELL
      ======================== */
-  .site-header {
+  .header-bar {
     background: var(--bg-900);
     background: color-mix(in srgb, var(--bg-900) 96%, transparent);
     backdrop-filter: blur(10px);
@@ -259,12 +279,12 @@ html[data-theme="dark"] {
   /* ========================
      LAYOUT: FOOTER GAP
      ======================== */
-  .site-content {
+  .layout-main {
     display: block;
     padding-bottom: 7vh;
   }
 
-  .site-footer {
+  .footer-bar {
     margin-top: 3vh;
     padding-top: 2.5vh;
   }
@@ -272,7 +292,7 @@ html[data-theme="dark"] {
   /* ========================
      LAYOUT: ROTOR-INFO GAP
      ======================== */
-  .rotor-wrapper {
+  .orbit-carousel {
     margin-bottom: clamp(96px, 13vh, 180px);
     transform: translateY(-80px);
   }
@@ -281,11 +301,11 @@ html[data-theme="dark"] {
     padding-top: clamp(48px, 6vh, 96px);
   }
 
-  .home-inner .rotor-wrapper {
+  .orbit-page__inner .orbit-carousel {
     margin-bottom: clamp(72px, 11vh, 150px);
   }
 
-  .project-info-panel {
+  .orbit-carousel__info-panel {
     background: linear-gradient(90deg, var(--bg-900) 0%, transparent 100%);
     background: linear-gradient(90deg, color-mix(in srgb, var(--bg-900) 95%, transparent) 0%, transparent 100%);
     border: 5px solid var(--border);
@@ -295,7 +315,7 @@ html[data-theme="dark"] {
 
 /* Utility for hiding on mobile/desktop (Standalone media queries for compatibility) */
 @media screen and (max-width: 767px) {
-  .hide-mobile {
+  .u-hide-mobile {
     display: none !important;
   }
 
@@ -316,7 +336,7 @@ html[data-theme="dark"] {
   transform-style: preserve-3d;
 }
 
-.slider-item {
+.orbit-carousel__card {
   background-color: var(--surface-700);
   transition: transform 0.6s var(--easing-slow),
     opacity 0.5s var(--easing-medium),
@@ -327,16 +347,16 @@ html[data-theme="dark"] {
   backface-visibility: hidden;
 }
 
-.slider-item:hover {
+.orbit-carousel__card:hover {
   box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.4);
 }
 
-.preserve-3d {
+.u-preserve-3d {
   transform-style: preserve-3d;
 }
 
 /* Rotor base dimensions (desktop) */
-.rotor {
+.orbit-carousel__track {
   width: 270px;
   height: 220px;
 }
@@ -344,7 +364,7 @@ html[data-theme="dark"] {
 /* ========================
    HOME PAGE: VIEWPORT LOCK
    ======================== */
-.home-root {
+.orbit-page {
   position: fixed;
   inset: 0;
   width: 100vw;
@@ -352,7 +372,7 @@ html[data-theme="dark"] {
   overflow: hidden;
 }
 
-.home-inner {
+.orbit-page__inner {
   width: 100% !important;
   height: 100%;
   overflow: hidden;
@@ -393,7 +413,7 @@ html[data-theme="dark"] {
     padding-top: calc(var(--site-header-height) + 16px) !important;
   }
 
-  .rotor {
+  .orbit-carousel__track {
     width: 240px !important;
     height: 168px !important;
   }
@@ -466,11 +486,11 @@ html[data-theme="dark"] {
 }
 
 /* Underline reveal on hover */
-.underline-reveal {
+.link-underline {
   position: relative;
 }
 
-.underline-reveal::after {
+.link-underline::after {
   content: '';
   position: absolute;
   left: 0;
@@ -483,8 +503,8 @@ html[data-theme="dark"] {
   transition: transform var(--dur-medium) var(--easing-slow);
 }
 
-.underline-reveal:hover::after,
-.underline-reveal:focus-visible::after {
+.link-underline:hover::after,
+.link-underline:focus-visible::after {
   transform: scaleX(1);
   transform-origin: left;
 }
@@ -492,14 +512,14 @@ html[data-theme="dark"] {
 /* ========================
    LINK MICRO-INTERACTIONS
    ======================== */
-.link-hover {
+.link-hoverable {
   display: inline-block;
   transition: transform var(--dur-short) var(--easing-fast),
     opacity var(--dur-short) var(--easing-fast);
 }
 
-.link-hover:hover,
-.link-hover:focus-visible {
+.link-hoverable:hover,
+.link-hoverable:focus-visible {
   transform: translateY(-1px);
   opacity: 0.85;
 }
@@ -554,7 +574,7 @@ html[data-theme="dark"] {
 }
 
 /* Parallax item base */
-.parallax-item {
+.orbit-carousel__card--parallax {
   transition: transform var(--dur-short) var(--easing-fast);
   will-change: transform;
 }
@@ -572,17 +592,17 @@ html[data-theme="dark"] {
     animation-iteration-count: 1 !important;
   }
 
-  .slider-item {
+  .orbit-carousel__card {
     transition: none !important;
     animation: none !important;
   }
 
-  .preserve-3d,
-  .rotor {
+  .u-preserve-3d,
+  .orbit-carousel__track {
     animation: none !important;
   }
 
-  .parallax-item {
+  .orbit-carousel__card--parallax {
     transform: none !important;
     transition: none !important;
   }
@@ -592,7 +612,7 @@ html[data-theme="dark"] {
     transform: none !important;
   }
 
-  .underline-reveal::after {
+  .link-underline::after {
     transform: scaleX(1) !important;
     transition: none !important;
   }
