@@ -352,11 +352,6 @@ export default function OrbitCarousel() {
         </AnimatePresence>
       </div>
 
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--muted-500)' }}>
-        ↓ Scroll to explore
-      </div>
-
     </div>
   );
 }

@@ -1,12 +1,16 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { personalInfo } from "@/lib/data";
 import { ThemeToggle } from "./ThemeProvider";
 
 export default function Header() {
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+
   return (
-    <header className="header-bar fixed top-0 left-0 w-full grid grid-cols-3 items-center px-6 py-4 z-[120] pointer-events-none">
+    <header className={`header-bar ${isHomePage ? "header-bar--home" : ""} fixed top-0 left-0 w-full grid grid-cols-3 items-center px-6 py-4 z-[120] pointer-events-none`}>
       <div className="pointer-events-auto justify-self-start">
         <Link href="/" className="text-lg tracking-tight uppercase leading-none link-hoverable" style={{ color: 'var(--text-high)' }}>
           {personalInfo.name}

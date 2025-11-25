@@ -1,8 +1,14 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import { personalInfo } from "@/lib/data";
 
 export default function Footer() {
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+
   return (
-    <footer className="footer-bar fixed bottom-0 left-0 w-full grid grid-cols-3 items-center px-6 py-4 z-[100] pointer-events-none" style={{ backgroundColor: 'var(--bg-900)' }}>
+    <footer className={`footer-bar ${isHomePage ? "footer-bar--home" : ""} fixed bottom-0 left-0 w-full grid grid-cols-3 items-center px-6 py-4 z-[100] pointer-events-none`}>
       <div className="flex flex-col gap-1 pointer-events-auto justify-self-start">
         <span className="text-sm font-bold uppercase tracking-tighter" style={{ color: 'var(--muted-500)' }}>© 2025 {personalInfo.name}</span>
       </div>
