@@ -26,18 +26,6 @@ As a **Recursive Developer & ML Engineer**, I build interfaces that aren't just 
 | **Motion** | Framer Motion | Smooth state transitions and micro-interactions |
 | **Generative** | p5.js | Dynamic, math-based background animations |
 
-### System Flow
-```mermaid
-graph TD
-    A[User Visit] --> B{Theme Detection}
-    B -->|System Preference| C[ThemeProvider]
-    C --> D[layout.tsx]
-    D --> E[CustomCursor]
-    D --> F[RecursiveSketchBackground]
-    D --> G[Page Content]
-    G --> H[OrbitCarousel]
-    H --> I[Project Detail]
-```
 
 ---
 
