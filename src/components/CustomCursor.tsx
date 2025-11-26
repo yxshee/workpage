@@ -41,7 +41,7 @@ export default function CustomCursor() {
   const imageRef = useRef<HTMLImageElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [cursorState, setCursorState] = useState<CursorState>({ mode: "default", imageSrc: null });
-  const [imageLoaded, setImageLoaded] = useState(false);
+  const cursorModeRef = useRef<CursorMode>("default");
   
   const [isCursorEnabled] = useState(() => {
     if (typeof window === "undefined") return false;
@@ -61,15 +61,13 @@ export default function CustomCursor() {
 
   // Expose global controller
   const setMode = useCallback((mode: CursorMode, imageSrc?: string | null) => {
+    cursorModeRef.current = mode;
     setCursorState({ mode, imageSrc: imageSrc ?? null });
-    if (mode === "image" && imageSrc) {
-      setImageLoaded(false);
-    }
   }, []);
 
   const reset = useCallback(() => {
+    cursorModeRef.current = "default";
     setCursorState({ mode: "default", imageSrc: null });
-    setImageLoaded(false);
   }, []);
 
   useEffect(() => {
@@ -100,7 +98,8 @@ export default function CustomCursor() {
       cursorPositionRef.current.y = lerp(cursorPositionRef.current.y, cursorTargetRef.current.y, lerpFactor);
 
       if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate3d(${cursorPositionRef.current.x}px, ${cursorPositionRef.current.y}px, 0)`;
+        // Keep cursor centered on the pointer.
+        cursorRef.current.style.transform = `translate3d(${cursorPositionRef.current.x}px, ${cursorPositionRef.current.y}px, 0) translate(-50%, -50%)`;
       }
 
       cursorRafRef.current = requestAnimationFrame(animateCursor);
@@ -118,8 +117,9 @@ export default function CustomCursor() {
     };
 
     const onMouseOver = (event: MouseEvent) => {
-      // Don't override image mode from global controller
-      if (cursorState.mode === "image") return;
+      // Don't override image mode from the Work page.
+      // Use a ref so we avoid races between setMode() and mouseover events.
+      if (cursorModeRef.current === "image") return;
       
       const eventTarget = event.target as HTMLElement;
       const isInteractive = 
@@ -154,7 +154,7 @@ export default function CustomCursor() {
       document.documentElement.removeEventListener('mouseleave', onMouseLeaveWindow);
       document.documentElement.removeEventListener('mouseenter', onMouseEnterWindow);
     };
-  }, [isCursorEnabled, isVisible, prefersReducedMotion, cursorState.mode]);
+  }, [isCursorEnabled, isVisible, prefersReducedMotion]);
 
   if (!isCursorEnabled) return null;
 
@@ -206,8 +206,7 @@ export default function CustomCursor() {
             overflow: 'hidden',
             borderRadius: '4px',
             boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
-            opacity: imageLoaded ? 1 : 0,
-            transition: 'opacity 200ms ease',
+            opacity: 1,
           }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -215,11 +214,12 @@ export default function CustomCursor() {
             ref={imageRef}
             src={cursorState.imageSrc!}
             alt=""
-            onLoad={() => setImageLoaded(true)}
             onError={() => {
               // Fallback to normal cursor on image error
               reset();
             }}
+            decoding="async"
+            draggable={false}
             style={{
               width: '100%',
               height: '100%',
