@@ -1,5 +1,5 @@
 import { personalInfo } from "@/lib/data";
-import WorkList from "./WorkList";
+import WorkList from "@/app/work/WorkList";
 
 export default function WorkPage() {
   return (

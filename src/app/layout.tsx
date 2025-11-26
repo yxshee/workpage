@@ -7,7 +7,7 @@ import CustomCursor from "@/components/CustomCursor";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://yashdogra.dev"),
-  title: "Yash Dogra | Portfolio",
+  title: "Yash Dogra | Work Portfolio",
   description: "Creative Developer & ML Engineer specializing in NLP and computer vision.",
   openGraph: {
     title: "Yash Dogra | Portfolio",
@@ -27,6 +27,20 @@ export const metadata: Metadata = {
     title: "Yash Dogra | Portfolio",
     description: "Creative Developer & ML Engineer",
     images: ["/images/core/image1.webp"],
+  },
+  icons: {
+    icon: [
+      {
+        url: "/favicon-light.ico",
+        type: "image/x-icon",
+        media: "(prefers-color-scheme: light)",
+      },
+      {
+        url: "/favicon-dark.ico",
+        type: "image/x-icon",
+        media: "(prefers-color-scheme: dark)",
+      },
+    ],
   },
 };
 
