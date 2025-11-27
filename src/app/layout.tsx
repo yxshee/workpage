@@ -10,11 +10,11 @@ export const metadata: Metadata = {
   title: "Yash Dogra | Work Portfolio",
   description: "Creative Developer & ML Engineer specializing in NLP and computer vision.",
   openGraph: {
-    title: "Yash Dogra | Portfolio",
-    description: "Creative Developer & ML Engineer",
+    title: "Yash Dogra | Work Portfolio",
+    description: "Creative Developer",
     images: [
       {
-        url: "/images/core/image1.webp",
+        url: "/images/og/works.jpeg",
         width: 1200,
         height: 630,
         alt: "Yash Dogra Portfolio",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Yash Dogra | Portfolio",
     description: "Creative Developer & ML Engineer",
-    images: ["/images/core/image1.webp"],
+    images: ["/images/og/works.jpeg"],
   },
   icons: {
     icon: [
