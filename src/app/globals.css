@@ -246,6 +246,12 @@ pre,
   gap: var(--section-gap);
 }
 
+.page-shell--info {
+  height: 100vh;
+  min-height: auto;
+  overflow: hidden;
+}
+
 .page-heading {
   margin-bottom: var(--section-gap);
 }
@@ -581,7 +587,7 @@ pre,
 .orbit-carousel--compact+.orbit-carousel__overlay {
   justify-content: center;
 }
-s
+
 .orbit-carousel__info-panel {
   width: var(--orbit-info-w);
   height: var(--orbit-info-h);
