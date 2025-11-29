@@ -144,6 +144,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background-color var(--transition-fast), color var(--transition-fast);
+
+  /* Flex sandwich to support sticky footer and prevent scroll overlap */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 /* Hide scrollbars globally while preserving scroll */
@@ -244,14 +249,15 @@ pre,
 }
 
 .layout-main {
-  display: block;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   min-width: 0;
-  padding-bottom: var(--space-6);
 }
 
 .page-shell {
   width: min(100%, var(--container-max));
-  margin: 0 auto;
+  /* margin: 0 auto; */
   min-height: 100vh;
   padding-top: calc(var(--site-header-height) + var(--space-6));
   padding-right: var(--container-pad);
@@ -266,9 +272,7 @@ pre,
 }
 
 .page-shell--info {
-  height: calc(100dvh - var(--site-header-height));
-  min-height: auto;
-  margin-top: var(--site-header-height);
+  flex: 1;
   padding-top: 0;
   padding-bottom: var(--space-4);
   overflow: hidden;
@@ -623,18 +627,43 @@ pre,
   width: var(--orbit-info-w);
   height: var(--orbit-info-h);
   padding: clamp(1rem, 3vw, 1.5rem);
-  background: color-mix(in srgb, var(--surface-700) 4%, transparent);
-  border: 1px solid color-mix(in srgb, var(--text-high) 12%, transparent);
-  backdrop-filter: blur(16px) saturate(200%) brightness(1.05);
-  -webkit-backdrop-filter: blur(16px) saturate(200%) brightness(1.05);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 0;
+  background:
+    radial-gradient(130% 90% at 10% -20%, color-mix(in srgb, var(--text-high) 20%, transparent) 0%, transparent 55%),
+    radial-gradient(120% 120% at 100% 100%, color-mix(in srgb, var(--accent) 22%, transparent) 0%, transparent 60%),
+    color-mix(in srgb, var(--surface-700) 26%, transparent);
+  border: 1px solid color-mix(in srgb, var(--text-high) 18%, transparent);
+  backdrop-filter: blur(24px) saturate(180%) brightness(1.05) contrast(1.05);
+  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.05) contrast(1.05);
   box-shadow:
-    var(--shadow-1),
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
+    0 18px 44px -24px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08);
   pointer-events: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   gap: 2rem;
+}
+
+.orbit-carousel__info-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      118deg,
+      transparent 18%,
+      color-mix(in srgb, var(--text-high) 20%, transparent) 38%,
+      transparent 58%
+    );
+  mix-blend-mode: screen;
+  opacity: 0.55;
 }
 
 .orbit-carousel__progress-row {
@@ -885,7 +914,7 @@ pre,
 }
 
 .info-section__title {
-  margin: 0 0 var(--space-3);
+  margin: 0 0 0.4rem;
   font-size: var(--text-xs);
   letter-spacing: 0.14em;
 }
