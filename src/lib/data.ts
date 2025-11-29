@@ -183,6 +183,16 @@ export const personalInfo = {
       description: "Python based system to detect counterfeit INR 500 and 2000 notes using image processing techniques like ORB feature matching and SSIM similarity.",
       technologies: ["Python", "OpenCV", "ORB", "SSIM", "Image Processing"],
       repoUrl: "https://github.com/yxshee/fake-currency-detector"
+    },
+    {
+      id: 16,
+      title: "ThermoSight",
+      category: "PyTorch • ViT • Streamlit",
+      year: "2025",
+      image: "/images/core/page3-image2.webp",
+      description: "Vision Transformer based thermal image classifier for post fire concrete assessment, with an interactive Streamlit app and TensorBoard tracked training pipeline.",
+      technologies: ["Python", "PyTorch", "Vision Transformer", "Streamlit", "TensorBoard"],
+      repoUrl: "https://github.com/yxshee/thermosight"
     }
   ],
 

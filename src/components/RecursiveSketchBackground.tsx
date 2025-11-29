@@ -40,9 +40,9 @@ type P5Module = typeof import("p5");
 type P5Instance = InstanceType<P5Module["default"]>;
 
 const QUALITY_PRESETS: Record<SketchQuality, QualityPreset> = {
-  low: { dprCap: 1, maxRecursionDepth: 8, sphereDetail: 8 },
-  medium: { dprCap: 1.25, maxRecursionDepth: 12, sphereDetail: 12 },
-  high: { dprCap: 1.5, maxRecursionDepth: 16, sphereDetail: 16 },
+  low: { dprCap: 1.5, maxRecursionDepth: 8, sphereDetail: 8 },
+  medium: { dprCap: 2, maxRecursionDepth: 12, sphereDetail: 12 },
+  high: { dprCap: 2.5, maxRecursionDepth: 16, sphereDetail: 16 },
 };
 
 const DEFAULT_CONFIG: RecursiveSketchConfig = {
@@ -53,7 +53,7 @@ const DEFAULT_CONFIG: RecursiveSketchConfig = {
   sphereSizeFactor: 30,
   strokeAlpha: 60,
   enabled: true,
-  quality: "medium",
+  quality: "high",
 };
 
 declare global {

@@ -37,6 +37,7 @@ export default function OrbitCarousel() {
   const mouseTargetRef = useRef({ x: 0, y: 0 });
   const mouseCurrentRef = useRef({ x: 0, y: 0 });
   const parallaxCardRefs = useRef<HTMLDivElement[]>([]);
+  const titleRef = useRef<HTMLHeadingElement | null>(null);
 
   const projects = personalInfo.projects;
   const projectCount = projects.length;
@@ -200,6 +201,52 @@ export default function OrbitCarousel() {
     };
   }, [prefersReducedMotion, hasFinePointer, projectCount]);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    let rafId: number | null = null;
+    let settleTimeoutId: number | null = null;
+
+    const fitTitleToPanel = () => {
+      const titleElement = titleRef.current;
+      if (!titleElement) return;
+
+      const minScale = 0.68;
+      const step = 0.04;
+      let scale = 1;
+
+      titleElement.style.setProperty("--orbit-title-scale", scale.toFixed(2));
+
+      while (
+        (titleElement.scrollHeight > titleElement.clientHeight + 1 ||
+          titleElement.scrollWidth > titleElement.clientWidth + 1) &&
+        scale > minScale
+      ) {
+        scale = Math.max(minScale, scale - step);
+        titleElement.style.setProperty("--orbit-title-scale", scale.toFixed(2));
+      }
+    };
+
+    const scheduleTitleFit = () => {
+      if (rafId !== null) cancelAnimationFrame(rafId);
+
+      rafId = requestAnimationFrame(() => {
+        fitTitleToPanel();
+        rafId = requestAnimationFrame(fitTitleToPanel);
+      });
+    };
+
+    scheduleTitleFit();
+    window.addEventListener("resize", scheduleTitleFit);
+    settleTimeoutId = window.setTimeout(fitTitleToPanel, 220);
+
+    return () => {
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      if (settleTimeoutId !== null) window.clearTimeout(settleTimeoutId);
+      window.removeEventListener("resize", scheduleTitleFit);
+    };
+  }, [activeProjectIndex]);
+
   const onMouseLeave = () => {
     mouseTargetRef.current = { x: 0, y: 0 };
   };
@@ -300,13 +347,14 @@ export default function OrbitCarousel() {
           </div>
 
           <motion.h2
+            ref={titleRef}
             key={activeProjectIndex}
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -20, opacity: 0 }}
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className="orbit-carousel__title"
-            style={{ color: "var(--text-high)" }}
+            style={{ color: "var(--text-high)", ["--orbit-title-scale" as string]: "1" }}
           >
             {projects[activeProjectIndex]?.title}
           </motion.h2>
