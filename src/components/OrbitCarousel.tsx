@@ -105,7 +105,8 @@ export default function OrbitCarousel() {
       if (!carouselContainerRef.current?.closest(".orbit-page")) return;
 
       const delta = event.deltaY || event.deltaX;
-      rotationVelocityRef.current += (delta > 0 ? 1 : -1) * 0.15;
+      // Scroll down should advance to the next project.
+      rotationVelocityRef.current += (delta > 0 ? -1 : 1) * 0.15;
       rotationVelocityRef.current = Math.max(-maxRotationVelocity, Math.min(maxRotationVelocity, rotationVelocityRef.current));
       event.preventDefault();
     };
@@ -134,10 +135,32 @@ export default function OrbitCarousel() {
       touchStartY = null;
     };
 
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (!carouselContainerRef.current?.closest(".orbit-page")) return;
+
+      const activeElement = document.activeElement as HTMLElement | null;
+      const isTypingTarget =
+        activeElement?.isContentEditable ||
+        activeElement?.tagName === "INPUT" ||
+        activeElement?.tagName === "TEXTAREA" ||
+        activeElement?.tagName === "SELECT";
+      if (isTypingTarget) return;
+
+      let direction = 0;
+      if (event.key === "ArrowLeft" || event.key === "ArrowUp") direction = 1;
+      if (event.key === "ArrowRight" || event.key === "ArrowDown") direction = -1;
+      if (!direction) return;
+
+      rotationVelocityRef.current += direction * 0.2;
+      rotationVelocityRef.current = Math.max(-maxRotationVelocity, Math.min(maxRotationVelocity, rotationVelocityRef.current));
+      event.preventDefault();
+    };
+
     window.addEventListener("wheel", onWheel, { passive: false });
     window.addEventListener("touchstart", onTouchStart, { passive: true });
     window.addEventListener("touchmove", onTouchMove, { passive: false });
     window.addEventListener("touchend", onTouchEnd, { passive: true });
+    window.addEventListener("keydown", onKeyDown);
 
     const onVisibilityChange = () => {
       if (document.visibilityState === "hidden") {
@@ -154,6 +177,7 @@ export default function OrbitCarousel() {
       window.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, [degreesPerProject, projectCount, maxRotationVelocity, hasFinePointer]);
