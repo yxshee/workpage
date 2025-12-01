@@ -213,7 +213,7 @@ export const personalInfo = {
     { id: 16, title: "Robotic Arm Development", year: "2024", issuer: "Technical Certification", image: "/images/core/image6.webp" },
     { id: 17, title: "Handwritten Text Recognition", year: "2024", issuer: "Research Certificate", image: "/images/core/image7.webp" },
     { id: 18, title: "ICICC 2025 Conference Presentation", year: "2025", issuer: "ICICC Singapore", image: "/images/core/page3-image1.webp" },
-    { id: 19, title: "Girl Up Leadership Certificate", year: "2024", issuer: "Girl Up Patiala", image: "/images/core/page3-image4.webp" }
+    
   ],
   archive: [
     { id: 101, title: "ICICC 2025 Research Paper Presentation", year: "2025", type: "Publication", image: "/images/core/page3-image1.webp" },

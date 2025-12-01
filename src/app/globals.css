@@ -905,7 +905,7 @@ pre,
 
 .info-summary {
   margin: 0 0 var(--space-6);
-  font-size: clamp(1rem, 4.1vw, 1.25rem);
+  font-size: clamp(1.1rem, 4.5vw, 1.4rem);
   line-height: 1.5;
 }
 
@@ -916,7 +916,7 @@ pre,
 
 .info-section__title {
   margin: 0 0 1rem;
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
   letter-spacing: 0.14em;
 }
 
@@ -927,13 +927,13 @@ pre,
 
 .info-line {
   margin: 0;
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   line-height: 1.35;
 }
 
 .info-subline {
   margin: 0;
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
   line-height: 1.35;
 }
 
@@ -944,7 +944,7 @@ pre,
 .info-link {
   display: inline-flex;
   margin-top: var(--space-1);
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
 }
 
 .info-education {
@@ -965,7 +965,7 @@ pre,
 
 .info-cert-item__title,
 .info-cert-item__year {
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
 }
 
 .info-cert-item__title {
