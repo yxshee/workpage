@@ -42,14 +42,22 @@
   --container-pad: clamp(0.75rem, 4vw, 1rem);
   --section-gap: clamp(2rem, 6vw, 3rem);
   --content-gap: clamp(1rem, 3vw, 1.5rem);
-  --space-1: 0.25rem;  /* 4px */
-  --space-2: 0.5rem;   /* 8px */
-  --space-3: 0.75rem;  /* 12px */
-  --space-4: 1rem;     /* 16px */
-  --space-5: 1.5rem;   /* 24px */
-  --space-6: 2rem;     /* 32px */
-  --space-8: 3rem;     /* 48px */
-  --space-10: 4rem;    /* 64px */
+  --space-1: 0.25rem;
+  /* 4px */
+  --space-2: 0.5rem;
+  /* 8px */
+  --space-3: 0.75rem;
+  /* 12px */
+  --space-4: 1rem;
+  /* 16px */
+  --space-5: 1.5rem;
+  /* 24px */
+  --space-6: 2rem;
+  /* 32px */
+  --space-8: 3rem;
+  /* 48px */
+  --space-10: 4rem;
+  /* 64px */
 
   /* Typography tokens */
   --text-xs: clamp(0.56rem, 1.7vw, 0.66rem);
@@ -62,9 +70,12 @@
   --line-copy: 1.45;
 
   /* Radius scale (4px aligned) */
-  --radius-sm: 0.25rem;   /* 4px */
-  --radius-md: 0.5rem;    /* 8px */
-  --radius-lg: 0.75rem;   /* 12px */
+  --radius-sm: 0.25rem;
+  /* 4px */
+  --radius-md: 0.5rem;
+  /* 8px */
+  --radius-lg: 0.75rem;
+  /* 12px */
   --radius-full: 9999px;
 
   /* Accessibility */
@@ -157,8 +168,10 @@ body {
 /* Hide scrollbars on root elements while preserving scroll */
 html,
 body {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE/Edge */
 }
 
 html::-webkit-scrollbar,
@@ -169,12 +182,18 @@ body::-webkit-scrollbar {
 }
 
 /* Typography: preserve uppercase aesthetic but allow weight variation */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 300;
   margin: 0;
 }
 
-strong, b {
+strong,
+b {
   font-weight: 500;
 }
 
@@ -301,15 +320,15 @@ pre,
   flex-direction: column;
 }
 
-.stack > * + * {
+.stack>*+* {
   margin-top: var(--stack-gap, var(--space-4));
 }
 
-.stack--sm > * + * {
+.stack--sm>*+* {
   margin-top: var(--space-2);
 }
 
-.stack--lg > * + * {
+.stack--lg>*+* {
   margin-top: var(--space-6);
 }
 
@@ -345,7 +364,7 @@ pre,
   border: 1px solid transparent;
   border-radius: var(--radius-md);
   cursor: pointer;
-  transition: 
+  transition:
     background var(--transition-fast),
     border-color var(--transition-fast),
     color var(--transition-fast),
@@ -798,12 +817,8 @@ pre,
   overflow: hidden;
   isolation: isolate;
   border-radius: 0;
-  /* background: */
-    /* radial-gradient(130% 90% at 10% -20%, color-mix(in srgb, var(--text-high) 20%, transparent) 0%, transparent 55%),
-    radial-gradient(120% 120% at 100% 100%, color-mix(in srgb, var(--text-high) 12%, transparent) 0%, transparent 60%), */
-    /* color-mix(in srgb, var(--surface-700) 26%, transparent); */
   border: 1px solid color-mix(in srgb, var(--text-high) 18%, transparent);
-  backdrop-filter: blur(80px) saturate(180%) brightness(1.05) contrast(1.05);
+  backdrop-filter: blur(12px) saturate(180%) brightness(1.05) contrast(1.05);
   -webkit-backdrop-filter: blur(12px) saturate(180%) brightness(1.05) contrast(1.05);
   box-shadow:
     0 18px 44px -24px rgba(0, 0, 0, 0.55),
@@ -882,15 +897,15 @@ pre,
   position: relative;
   width: clamp(320px, 38vw, 480px);
   max-width: calc(100% - var(--orbit-info-w) - var(--space-3));
-  height: clamp(420px, 85vh, 760px);
-  max-height: min(90vh, calc(100svh - var(--site-header-height) - 1.25rem));
+  height: clamp(420px, 90vh, 760px);
+  max-height: min(95vh, calc(100svh - var(--site-header-height) - 1.25rem));
   padding: clamp(1.2rem, 2.5vw, 1.5rem);
   background: rgba(255, 255, 255);
   border: 1px solid rgba(255, 255, 255, 0.18);
   backdrop-filter: blur(12px) saturate(180%);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.1),
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.11),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
   overflow-y: auto;
   overflow-x: hidden;
@@ -905,13 +920,13 @@ pre,
   text-transform: uppercase;
   overflow-wrap: anywhere;
   word-break: break-word;
-  transition: all 0.3s ease;
+  /* Framer Motion handles open/close animations - no CSS transition needed */
 }
 
 html[data-theme="dark"] .orbit-carousel__detail-panel {
   background: rgba(0, 0, 0);
   border-color: rgba(255, 255, 255, 0.12);
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
