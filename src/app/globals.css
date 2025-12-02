@@ -882,17 +882,16 @@ pre,
   position: relative;
   width: clamp(320px, 38vw, 480px);
   max-width: calc(100% - var(--orbit-info-w) - var(--space-3));
-  height: clamp(420px, 62vh, 760px);
-  max-height: min(82vh, calc(100svh - var(--site-header-height) - 1.25rem));
+  height: clamp(420px, 85vh, 760px);
+  max-height: min(90vh, calc(100svh - var(--site-header-height) - 1.25rem));
   padding: clamp(1.2rem, 2.5vw, 1.5rem);
-  /* blur : 20 px; */
-  background: color-mix(in srgb, var(--surface-700) 85%, transparent);
-  border: 1px solid color-mix(in srgb, var(--text-high) 12%, transparent);
-  backdrop-filter: blur(24px) saturate(180%) brightness(1.02);
-  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.02);
-  box-shadow:
-    var(--shadow-2),
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior: contain;
@@ -906,6 +905,15 @@ pre,
   text-transform: uppercase;
   overflow-wrap: anywhere;
   word-break: break-word;
+  transition: all 0.3s ease;
+}
+
+html[data-theme="dark"] .orbit-carousel__detail-panel {
+  background: rgba(0, 0, 0);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .orbit-carousel__detail-panel::-webkit-scrollbar {
