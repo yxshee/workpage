@@ -876,11 +876,14 @@ pre,
 .orbit-carousel__title {
   margin: 0;
   width: 100%;
+  max-width: 100%;
   font-size: calc(var(--orbit-title-size) * var(--orbit-title-scale, 1));
   line-height: var(--line-tight);
   /* letter-spacing: -0.04em; */
   min-height: calc(var(--line-tight) * 2em);
   overflow: hidden;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   display: -webkit-box;
   /* -webkit-line-clamp: 2; */
   /* line-clamp: 2; */
@@ -1147,7 +1150,6 @@ html[data-theme="dark"] .orbit-carousel__detail-panel {
 .work-list__preview {
   max-height: 0;
   overflow: hidden;
-  border-radius: var(--radius-md);
   transition: max-height var(--dur-medium) var(--easing-medium), margin-top var(--dur-medium) var(--easing-medium);
 }
 
@@ -1155,7 +1157,6 @@ html[data-theme="dark"] .orbit-carousel__detail-panel {
   width: 100%;
   aspect-ratio: 16 / 10;
   object-fit: cover;
-  border-radius: var(--radius-md);
 }
 
 .work-list__preview.is-visible {

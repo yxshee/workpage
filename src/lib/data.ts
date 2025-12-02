@@ -61,7 +61,7 @@ export const personalInfo = {
       highlights: ["Designed and shipped end-to-end campus mobility workflows", "Improved route performance with BFS and Redis optimization"],
       tech: ["React", "Node.js", "MongoDB", "Leaflet", "Redis", "OAuth 2.0", "JWT"],
       githubUrl: "https://github.com/yxshee/mapmitra",
-      liveUrl: "https://mapmitra.vercel.app"
+      liveUrl: "https://map-mitra.vercel.app"
     },
     {
       id: 2,
@@ -74,7 +74,8 @@ export const personalInfo = {
       features: ["Fine-tuned T5 Transformer on XLSum", "Punjabi-language summarization workflow", "ROUGE score evaluation pipeline"],
       highlights: ["ROUGE-1: 54.38", "ROUGE-L: 53.57 after fine-tuning"],
       tech: ["Python", "Transformers", "ROUGE", "HuggingFace"],
-      githubUrl: "https://github.com/yxshee/summarization-nlp"
+      githubUrl: "https://github.com/yxshee/summarization-nlp",
+      liveUrl: "https://txtsummarizer-nlp.streamlit.app"
     },
     {
       id: 3,
@@ -87,7 +88,8 @@ export const personalInfo = {
       features: ["TF-IDF text vectorization", "Naive Bayes classification", "Real-time Streamlit prediction interface"],
       highlights: ["95% test accuracy", "0.95 F1 score on toxic text classification"],
       tech: ["Python", "Streamlit", "TF IDF", "Naive Bayes"],
-      githubUrl: "https://github.com/yxshee/toxic-terminator"
+      githubUrl: "https://github.com/yxshee/toxic-terminator",
+      liveUrl: "https://toxicterminator.streamlit.app"
     },
     {
       id: 4,
@@ -100,7 +102,8 @@ export const personalInfo = {
       features: ["Audio preprocessing and feature preparation", "CNN-based speech command model", "Dataset-level performance evaluation"],
       highlights: ["Built an end-to-end deep learning audio pipeline", "Focused on practical inference-ready classification"],
       tech: ["Python", "TensorFlow", "CNN", "Librosa", "Deep Learning"],
-      githubUrl: "https://github.com/yxshee/speech-command-recognition"
+      githubUrl: "https://github.com/yxshee/speech-command-recognition",
+      liveUrl: "https://librosaiscool.streamlit.app"
     },
     {
       id: 5,
@@ -152,7 +155,8 @@ export const personalInfo = {
       features: ["Minimal-input recommendation flow", "No-auth usage experience", "Straightforward result presentation"],
       highlights: ["Optimized for quick decision support", "Removed signup friction from core flow"],
       tech: ["JavaScript", "Data Mapping", "Frontend UX"],
-      githubUrl: "https://github.com/yxshee/no-bs-college-predictor"
+      githubUrl: "https://github.com/yxshee/no-bs-college-predictor",
+      liveUrl: "https://no-bs-predictor.netlify.app"
     },
     {
       id: 9,
@@ -191,7 +195,8 @@ export const personalInfo = {
       features: ["Interactive symmetry controls", "Motion-driven visual transformations", "Responsive canvas behavior"],
       highlights: ["Explored creative coding interaction design", "Prioritized smooth visuals across screen sizes"],
       tech: ["TypeScript", "p5.js", "Generative Art"],
-      githubUrl: "https://github.com/yxshee/kaleidoscope"
+      githubUrl: "https://github.com/yxshee/kaleidoscope",
+      liveUrl: "https://yxshee.github.io/kaleidoscope"
     },
     {
       id: 12,
@@ -217,7 +222,8 @@ export const personalInfo = {
       features: ["Client-side metadata removal", "No server upload workflow", "Privacy-first image handling"],
       highlights: ["Protected user privacy with local processing", "Kept the workflow lightweight and fast"],
       tech: ["JavaScript", "Canvas API", "EXIF", "Privacy"],
-      githubUrl: "https://github.com/yxshee/metascrub"
+      githubUrl: "https://github.com/yxshee/metascrub",
+      liveUrl: "https://yxshee.github.io/metascrub"
     },
     {
       id: 14,
@@ -257,7 +263,8 @@ export const personalInfo = {
       features: ["Vision Transformer thermal classification", "Streamlit inference interface", "TensorBoard tracked training pipeline"],
       highlights: ["Applied ViT models to civil assessment context", "Built a reproducible training and evaluation loop"],
       tech: ["Python", "PyTorch", "Vision Transformer", "Streamlit", "TensorBoard"],
-      githubUrl: "https://github.com/yxshee/thermosight"
+      githubUrl: "https://github.com/yxshee/thermosight",
+      liveUrl: "https://thermosight.streamlit.app"
     }
   ] satisfies Project[],
 

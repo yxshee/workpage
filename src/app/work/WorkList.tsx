@@ -8,6 +8,7 @@ interface Project {
   category: string;
   year: string;
   image: string;
+  liveUrl?: string;
   githubUrl: string;
   repoUrl?: string;
 }
@@ -90,7 +91,7 @@ export default function WorkList({ projects, githubUrl }: WorkListProps) {
       {projects.map((project) => (
         <a
           key={project.id} 
-          href={project.githubUrl ?? project.repoUrl ?? githubUrl}
+          href={project.liveUrl ?? project.githubUrl ?? project.repoUrl ?? githubUrl}
           target="_blank"
           rel="noreferrer"
           className={`work-list__row group relative transition-colors ${expandedProjectId === project.id ? "is-expanded" : ""}`}

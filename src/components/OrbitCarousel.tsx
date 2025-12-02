@@ -248,10 +248,16 @@ export default function OrbitCarousel() {
       const normalizedRotation = ((trackRotationRef.current % 360) + 360) % 360;
       const index = Math.round(normalizedRotation / degreesPerProject) % projectCount;
       const newIndex = (projectCount - index) % projectCount;
+      
       // Only update state when index actually changes to prevent 60fps re-renders
       if (newIndex !== prevActiveIndexRef.current) {
         prevActiveIndexRef.current = newIndex;
         setActiveProjectIndex(newIndex);
+      }
+      
+      // Snap velocity to zero when below threshold to prevent micro-oscillations
+      if (Math.abs(rotationVelocityRef.current) < 0.01) {
+        rotationVelocityRef.current = 0;
       }
 
       rotationRafRef.current = requestAnimationFrame(animateRotation);
@@ -429,6 +435,19 @@ export default function OrbitCarousel() {
       window.removeEventListener("resize", scheduleTitleFit);
     };
   }, [activeProjectIndex]);
+
+  // Sync detail panel with carousel position when user is not actively hovering
+  // This ensures carousel, title, and details stay in perfect sync on scroll
+  useEffect(() => {
+    // Only sync if panel is currently open AND user is not hovering
+    if (selectedProjectIndex === null) return;
+    if (isTriggerAreaHoveredRef.current || isPanelHoveredRef.current) return;
+    
+    // Update detail panel to show the active project
+    if (selectedProjectIndex !== activeProjectIndex) {
+      setSelectedProjectIndex(activeProjectIndex);
+    }
+  }, [activeProjectIndex, selectedProjectIndex]);
 
   const onMouseLeave = () => {
     mouseTargetRef.current = { x: 0, y: 0 };
