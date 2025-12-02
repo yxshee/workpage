@@ -3,15 +3,14 @@ import Image from "next/image";
 
 export default function ArchivePage() {
   return (
-    <div className="page-shell page-shell--archive" style={{ backgroundColor: 'var(--bg-900)' }}>
-      <h1 className="page-title" style={{ color: 'var(--text-high)' }}>Archive</h1>
+    <div className="page-shell page-shell--archive bg-primary">
+      <h1 className="page-title text-high">Archive</h1>
 
       <div className="archive-grid">
         {personalInfo.archive.map((archiveItem) => (
           <div 
             key={archiveItem.id} 
-            className="archive-grid__item group relative overflow-hidden"
-            style={{ backgroundColor: 'var(--surface-600)' }}
+            className="archive-grid__item group relative overflow-hidden bg-surface"
           >
             {archiveItem.image && (
               <Image
@@ -37,7 +36,7 @@ export default function ArchivePage() {
       {/* Table view for non-image items */}
       <table className="archive-table">
         <thead>
-          <tr style={{ borderBottom: '1px solid var(--border)', color: 'var(--muted-500)' }}>
+          <tr className="archive-table__header">
             <th>Year</th>
             <th>Project</th>
             <th>Type</th>
@@ -45,12 +44,12 @@ export default function ArchivePage() {
         </thead>
         <tbody>
           {personalInfo.archive.map((archiveItem) => (
-            <tr key={archiveItem.id} className="archive-table__row transition-colors group" style={{ borderBottom: '1px solid var(--border)' }}>
-              <td style={{ color: 'var(--text-high)' }}>{archiveItem.year}</td>
+            <tr key={archiveItem.id} className="archive-table__row transition-colors group">
+              <td className="text-high">{archiveItem.year}</td>
               <td>
-                <span style={{ color: 'var(--text-high)' }}>{archiveItem.title}</span>
+                <span className="text-high">{archiveItem.title}</span>
               </td>
-              <td style={{ color: 'var(--muted-500)' }}>External</td>
+              <td className="text-muted">External</td>
             </tr>
           ))}
         </tbody>

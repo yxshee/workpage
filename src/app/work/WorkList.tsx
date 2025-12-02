@@ -85,8 +85,7 @@ export default function WorkList({ projects, githubUrl }: WorkListProps) {
 
   return (
     <div 
-      className="work-list grid grid-cols-1 gap-px border-t border-b" 
-      style={{ backgroundColor: 'var(--border)', borderColor: 'var(--border)' }}
+      className="work-list" 
       onMouseLeave={handleMouseLeave}
     >
       {projects.map((project) => (
@@ -96,18 +95,17 @@ export default function WorkList({ projects, githubUrl }: WorkListProps) {
           target="_blank"
           rel="noreferrer"
           className={`work-list__row group relative transition-colors ${expandedProjectId === project.id ? "is-expanded" : ""}`}
-          style={{ backgroundColor: 'var(--surface-700)', color: 'var(--text-high)' }}
           onMouseEnter={() => handleMouseEnter(project.image)}
           onClick={(event) => handleTouchRowClick(event, project.id)}
         >
           <div className="work-list__primary">
-            <span className="work-list__index" style={{ color: 'var(--text-high)' }}>0{project.id}</span>
-            <h3 className="work-list__title" style={{ color: 'var(--text-high)' }}>{project.title}</h3>
+            <span className="work-list__index">0{project.id}</span>
+            <h3 className="work-list__title text-high">{project.title}</h3>
           </div>
           
           <div className="work-list__meta">
-            <span className="work-list__category" style={{ color: 'var(--text-high)' }}>{project.category}</span>
-            <span className="work-list__year" style={{ color: 'var(--text-high)' }}>{project.year}</span>
+            <span className="work-list__category">{project.category}</span>
+            <span className="work-list__year text-high">{project.year}</span>
           </div>
 
           {!isFinePointer && (
