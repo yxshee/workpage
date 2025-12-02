@@ -1,3 +1,18 @@
+export type Project = {
+  id: number;
+  title: string;
+  category: string;
+  year: string;
+  image: string;
+  description: string;
+  longDescription?: string;
+  features?: string[];
+  highlights?: string[];
+  tech?: string[];
+  githubUrl: string;
+  liveUrl?: string;
+};
+
 export const personalInfo = {
   name: "Yash Dogra",
   role: "AI/ML Engineer & Full Stack Developer",
@@ -41,8 +56,12 @@ export const personalInfo = {
       year: "2024",
       image: "/images/core/image1.webp",
       description: "Real time campus navigation and e rickshaw tracking with landmark based routing. Achieved 90% ETA prediction accuracy and reduced route computation latency by 40% via BFS optimization and Redis caching.",
-      technologies: ["React", "Node.js", "MongoDB", "Leaflet", "Redis", "OAuth 2.0", "JWT"],
-      repoUrl: "https://github.com/yxshee/mapmitra"
+      longDescription: "MapMitra is a comprehensive campus navigation solution featuring real-time e-rickshaw tracking, landmark-based routing, and intelligent ETA predictions. The system uses BFS optimization for efficient pathfinding and Redis caching to drastically reduce route computation latency.",
+      features: ["90% ETA prediction accuracy", "40% reduced route computation latency", "Real-time e-rickshaw tracking", "Landmark-based navigation"],
+      highlights: ["Designed and shipped end-to-end campus mobility workflows", "Improved route performance with BFS and Redis optimization"],
+      tech: ["React", "Node.js", "MongoDB", "Leaflet", "Redis", "OAuth 2.0", "JWT"],
+      githubUrl: "https://github.com/yxshee/mapmitra",
+      liveUrl: "https://mapmitra.vercel.app"
     },
     {
       id: 2,
@@ -51,8 +70,11 @@ export const personalInfo = {
       year: "2024",
       image: "/images/core/image2.webp",
       description: "Developed a text summarization tool using the T5 Transformer model and XLSum dataset with focus on Punjabi. Achieved ROUGE1 of 54.38 and ROUGE-L of 53.57 post fine tuning.",
-      technologies: ["Python", "Transformers", "ROUGE", "HuggingFace"],
-      repoUrl: "https://github.com/yxshee/summarization-nlp"
+      longDescription: "Built and fine-tuned a T5-based summarization pipeline on XLSum, focusing on Punjabi summarization quality and practical evaluation outputs.",
+      features: ["Fine-tuned T5 Transformer on XLSum", "Punjabi-language summarization workflow", "ROUGE score evaluation pipeline"],
+      highlights: ["ROUGE-1: 54.38", "ROUGE-L: 53.57 after fine-tuning"],
+      tech: ["Python", "Transformers", "ROUGE", "HuggingFace"],
+      githubUrl: "https://github.com/yxshee/summarization-nlp"
     },
     {
       id: 3,
@@ -61,8 +83,11 @@ export const personalInfo = {
       year: "2023",
       image: "/images/core/image3.webp",
       description: "Built a real world toxicity detection model using Kaggle dataset. Employed TF IDF and Naive Bayes classifier, achieving 95% test accuracy and 0.95 F1 score with real time Streamlit interface.",
-      technologies: ["Python", "Streamlit", "TF IDF", "Naive Bayes"],
-      repoUrl: "https://github.com/yxshee/toxic-terminator"
+      longDescription: "Implemented a practical toxicity detection app that combines TF-IDF feature extraction with a Naive Bayes classifier and a real-time Streamlit interface.",
+      features: ["TF-IDF text vectorization", "Naive Bayes classification", "Real-time Streamlit prediction interface"],
+      highlights: ["95% test accuracy", "0.95 F1 score on toxic text classification"],
+      tech: ["Python", "Streamlit", "TF IDF", "Naive Bayes"],
+      githubUrl: "https://github.com/yxshee/toxic-terminator"
     },
     {
       id: 4,
@@ -71,8 +96,11 @@ export const personalInfo = {
       year: "2024",
       image: "/images/core/image4.webp",
       description: "Speech command recognition using CNNs with preprocessing, model training, and performance evaluation on the TensorFlow dataset. Features audio processing and deep learning classification.",
-      technologies: ["Python", "TensorFlow", "CNN", "Librosa", "Deep Learning"],
-      repoUrl: "https://github.com/yxshee/speech-command-recognition"
+      longDescription: "Created a complete speech-command classification workflow, from audio preprocessing to CNN training and evaluation on TensorFlow speech data.",
+      features: ["Audio preprocessing and feature preparation", "CNN-based speech command model", "Dataset-level performance evaluation"],
+      highlights: ["Built an end-to-end deep learning audio pipeline", "Focused on practical inference-ready classification"],
+      tech: ["Python", "TensorFlow", "CNN", "Librosa", "Deep Learning"],
+      githubUrl: "https://github.com/yxshee/speech-command-recognition"
     },
     {
       id: 5,
@@ -81,8 +109,11 @@ export const personalInfo = {
       year: "2026",
       image: "/images/core/page2-image1.webp",
       description: "Immersive travel portfolio built with Next.js, featuring smooth GSAP transitions, custom cursor behavior, and sequential storytelling sections.",
-      technologies: ["Next.js", "TypeScript", "GSAP", "UI Animation"],
-      repoUrl: "https://github.com/yxshee/travelpage"
+      longDescription: "Developed an immersive storytelling portfolio experience with section-by-section flow, animation-driven pacing, and tailored interaction details.",
+      features: ["GSAP-powered scene transitions", "Custom cursor interaction patterns", "Sequential narrative section design"],
+      highlights: ["Balanced performance with motion-heavy UI", "Shaped content for immersive exploration"],
+      tech: ["Next.js", "TypeScript", "GSAP", "UI Animation"],
+      githubUrl: "https://github.com/yxshee/travelpage"
     },
     {
       id: 6,
@@ -91,8 +122,11 @@ export const personalInfo = {
       year: "2026",
       image: "/images/core/page2-image2.webp",
       description: "DJ inspired web app for mixing, managing, and remixing AI prompts with an interactive interface focused on fast prompt experimentation.",
-      technologies: ["TypeScript", "React", "Prompt Engineering", "UI Design"],
-      repoUrl: "https://github.com/yxshee/promptdj"
+      longDescription: "Designed a creative AI interface inspired by DJ workflows so users can rapidly iterate, remix, and organize prompts in one place.",
+      features: ["Prompt mixing and remix controls", "Fast experimentation-oriented interaction flow", "Organized prompt management UI"],
+      highlights: ["Turned prompt experimentation into a playful workflow", "Focused on speed and low-friction interaction"],
+      tech: ["TypeScript", "React", "Prompt Engineering", "UI Design"],
+      githubUrl: "https://github.com/yxshee/promptdj"
     },
     {
       id: 7,
@@ -101,8 +135,11 @@ export const personalInfo = {
       year: "2026",
       image: "/images/core/page2-image3.webp",
       description: "Automated attendance platform that enrolls and recognizes faces in real time, then records attendance with streamlined operator workflows.",
-      technologies: ["Python", "OpenCV", "Face Recognition", "Computer Vision"],
-      repoUrl: "https://github.com/yxshee/realtime-face-attendance"
+      longDescription: "Built a real-time attendance system that handles face enrollment, live recognition, and operator-friendly attendance recording.",
+      features: ["Face enrollment and identity setup", "Live recognition workflow", "Attendance recording pipeline"],
+      highlights: ["Reduced manual attendance effort", "Streamlined day-to-day operator process"],
+      tech: ["Python", "OpenCV", "Face Recognition", "Computer Vision"],
+      githubUrl: "https://github.com/yxshee/realtime-face-attendance"
     },
     {
       id: 8,
@@ -111,8 +148,11 @@ export const personalInfo = {
       year: "2026",
       image: "/images/core/page2-image4.webp",
       description: "Fast JEE college prediction utility built for zero friction results: no signups, minimal inputs, and straightforward recommendation outputs.",
-      technologies: ["JavaScript", "Data Mapping", "Frontend UX"],
-      repoUrl: "https://github.com/yxshee/no-bs-college-predictor"
+      longDescription: "Created a lightweight prediction utility for JEE applicants that prioritizes speed, clarity, and no-login accessibility.",
+      features: ["Minimal-input recommendation flow", "No-auth usage experience", "Straightforward result presentation"],
+      highlights: ["Optimized for quick decision support", "Removed signup friction from core flow"],
+      tech: ["JavaScript", "Data Mapping", "Frontend UX"],
+      githubUrl: "https://github.com/yxshee/no-bs-college-predictor"
     },
     {
       id: 9,
@@ -121,8 +161,11 @@ export const personalInfo = {
       year: "2026",
       image: "/images/core/page2-image5.webp",
       description: "Regulation focused RAG chatbot that answers RBI NBFC queries using vector retrieval over official guideline chunks and LLM responses.",
-      technologies: ["Python", "LangChain", "FAISS", "RAG", "Gemini API"],
-      repoUrl: "https://github.com/yxshee/chatbot-langchain"
+      longDescription: "Implemented a regulation-aware RAG assistant that retrieves relevant RBI guideline chunks and produces context-grounded answers for NBFC queries.",
+      features: ["FAISS vector retrieval", "Regulation-chunk grounding workflow", "LLM response generation for policy Q&A"],
+      highlights: ["Improved response relevance with retrieval grounding", "Focused on domain-specific compliance queries"],
+      tech: ["Python", "LangChain", "FAISS", "RAG", "Gemini API"],
+      githubUrl: "https://github.com/yxshee/chatbot-langchain"
     },
     {
       id: 10,
@@ -131,8 +174,11 @@ export const personalInfo = {
       year: "2025",
       image: "/images/core/page2-image6.webp",
       description: "AI driven PDF layout detector that annotates multi page documents, exports structured JSON, and supports CLI based batch processing.",
-      technologies: ["Python", "YOLOv8", "PDF Processing", "CLI"],
-      repoUrl: "https://github.com/yxshee/pdflayoutai"
+      longDescription: "Built a document-layout analysis tool that detects page elements with YOLOv8 and exports structured outputs for downstream automation.",
+      features: ["Multi-page PDF layout detection", "Structured JSON export", "CLI batch processing support"],
+      highlights: ["Automated document parsing workflows", "Designed for repeatable large-batch runs"],
+      tech: ["Python", "YOLOv8", "PDF Processing", "CLI"],
+      githubUrl: "https://github.com/yxshee/pdflayoutai"
     },
     {
       id: 11,
@@ -141,8 +187,11 @@ export const personalInfo = {
       year: "2026",
       image: "/images/core/page2-image7.webp",
       description: "Interactive generative art experience built with p5.js and TypeScript, designed around responsive symmetry and motion driven visuals.",
-      technologies: ["TypeScript", "p5.js", "Generative Art"],
-      repoUrl: "https://github.com/yxshee/kaleidoscope"
+      longDescription: "Created a responsive generative art playground using p5.js with symmetry-focused visual systems and motion-reactive behavior.",
+      features: ["Interactive symmetry controls", "Motion-driven visual transformations", "Responsive canvas behavior"],
+      highlights: ["Explored creative coding interaction design", "Prioritized smooth visuals across screen sizes"],
+      tech: ["TypeScript", "p5.js", "Generative Art"],
+      githubUrl: "https://github.com/yxshee/kaleidoscope"
     },
     {
       id: 12,
@@ -151,8 +200,11 @@ export const personalInfo = {
       year: "2026",
       image: "/images/core/image5.webp",
       description: "Cross platform shopping list app with streamlined list management, quick item workflows, and clean mobile first information hierarchy.",
-      technologies: ["Flutter", "Dart", "Mobile UI", "State Management"],
-      repoUrl: "https://github.com/yxshee/listify"
+      longDescription: "Built a mobile-first shopping companion with fast list operations, clear structure, and cross-platform delivery using Flutter.",
+      features: ["Cross-platform list management", "Quick add/update item actions", "Mobile-first information hierarchy"],
+      highlights: ["Focused on daily-use simplicity", "Shipped with clean, task-oriented UX"],
+      tech: ["Flutter", "Dart", "Mobile UI", "State Management"],
+      githubUrl: "https://github.com/yxshee/listify"
     },
     {
       id: 13,
@@ -161,8 +213,11 @@ export const personalInfo = {
       year: "2025",
       image: "/images/core/image6.webp",
       description: "Remove all metadata from images in your browser, ensuring privacy and safe sharing. Client side processing with no server uploads.",
-      technologies: ["JavaScript", "Canvas API", "EXIF", "Privacy"],
-      repoUrl: "https://github.com/yxshee/metascrub"
+      longDescription: "Developed a browser-native privacy utility that strips metadata from images locally before sharing.",
+      features: ["Client-side metadata removal", "No server upload workflow", "Privacy-first image handling"],
+      highlights: ["Protected user privacy with local processing", "Kept the workflow lightweight and fast"],
+      tech: ["JavaScript", "Canvas API", "EXIF", "Privacy"],
+      githubUrl: "https://github.com/yxshee/metascrub"
     },
     {
       id: 14,
@@ -172,8 +227,11 @@ export const personalInfo = {
       year: "2025",
       image: "/images/core/image7.webp",
       description: "Deep learning based approach to recognizing handwritten text from images using neural networks and image preprocessing techniques.",
-      technologies: ["Python", "TensorFlow", "CNN", "OCR", "Image Processing"],
-      repoUrl: "https://github.com/yxshee/handwritten-text-recognition"
+      longDescription: "Implemented an OCR pipeline for handwritten inputs using image preprocessing and neural network-based sequence understanding.",
+      features: ["Image preprocessing for handwritten inputs", "Neural OCR model workflow", "Recognition pipeline experimentation"],
+      highlights: ["Improved handwritten text readability for models", "Combined CV preprocessing with DL inference"],
+      tech: ["Python", "TensorFlow", "CNN", "OCR", "Image Processing"],
+      githubUrl: "https://github.com/yxshee/handwritten-text-recognition"
     },
     {
       id: 15,
@@ -182,8 +240,11 @@ export const personalInfo = {
       year: "2024",
       image: "/images/core/page3-image1.webp",
       description: "Python based system to detect counterfeit INR 500 and 2000 notes using image processing techniques like ORB feature matching and SSIM similarity.",
-      technologies: ["Python", "OpenCV", "ORB", "SSIM", "Image Processing"],
-      repoUrl: "https://github.com/yxshee/fake-currency-detector"
+      longDescription: "Built a counterfeit-detection workflow for INR notes using feature matching and structural similarity analysis.",
+      features: ["ORB feature matching pipeline", "SSIM-based authenticity comparison", "Image-processing verification checks"],
+      highlights: ["Focused on practical counterfeit detection heuristics", "Combined complementary visual similarity methods"],
+      tech: ["Python", "OpenCV", "ORB", "SSIM", "Image Processing"],
+      githubUrl: "https://github.com/yxshee/fake-currency-detector"
     },
     {
       id: 16,
@@ -192,10 +253,13 @@ export const personalInfo = {
       year: "2025",
       image: "/images/core/page3-image2.webp",
       description: "Vision Transformer based thermal image classifier for post fire concrete assessment, with an interactive Streamlit app and TensorBoard tracked training pipeline.",
-      technologies: ["Python", "PyTorch", "Vision Transformer", "Streamlit", "TensorBoard"],
-      repoUrl: "https://github.com/yxshee/thermosight"
+      longDescription: "Developed a ViT-based thermal imagery classifier to support post-fire concrete evaluation, wrapped with a Streamlit interface and experiment tracking.",
+      features: ["Vision Transformer thermal classification", "Streamlit inference interface", "TensorBoard tracked training pipeline"],
+      highlights: ["Applied ViT models to civil assessment context", "Built a reproducible training and evaluation loop"],
+      tech: ["Python", "PyTorch", "Vision Transformer", "Streamlit", "TensorBoard"],
+      githubUrl: "https://github.com/yxshee/thermosight"
     }
-  ],
+  ] satisfies Project[],
 
   certifications: [
     { id: 1, title: "NVIDIA Fundamentals of Accelerated Computing with CUDA Python", year: "2025", issuer: "NVIDIA", image: "/images/core/page3-image1.webp" },

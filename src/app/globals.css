@@ -779,8 +779,10 @@ pre,
   z-index: 55;
   display: flex;
   align-items: flex-end;
+  justify-content: space-between;
   gap: var(--space-3);
   pointer-events: none;
+  min-width: 0;
 }
 
 .orbit-carousel--compact+.orbit-carousel__overlay {
@@ -790,6 +792,7 @@ pre,
 .orbit-carousel__info-panel {
   width: var(--orbit-info-w);
   height: var(--orbit-info-h);
+  min-width: 0;
   padding: clamp(1rem, 3vw, 1.5rem);
   position: relative;
   overflow: hidden;
@@ -870,51 +873,193 @@ pre,
   text-wrap: pretty;
 }
 
-.orbit-carousel__detail-panel {
-  min-height: var(--orbit-info-h);
-  padding: clamp(1rem, 2.2vw, 1.3rem);
-  background: color-mix(in srgb, var(--surface-700) 4%, transparent);
-  border: 1px solid color-mix(in srgb, var(--text-high) 12%, transparent);
-  backdrop-filter: blur(16px) saturate(200%) brightness(1.05);
-  -webkit-backdrop-filter: blur(16px) saturate(200%) brightness(1.05);
-  box-shadow:
-    var(--shadow-1),
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
-  overflow: hidden;
-  pointer-events: auto;
-  transform-origin: left center;
+.orbit-carousel__card.is-selected .orbit-carousel__card-shell {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent), 0 22px 48px -20px rgba(0, 0, 0, 0.34);
 }
 
-.orbit-carousel__detail-content {
-  width: 300px;
+.orbit-carousel__detail-panel {
+  position: relative;
+  width: clamp(320px, 38vw, 480px);
+  max-width: calc(100% - var(--orbit-info-w) - var(--space-3));
+  height: clamp(420px, 62vh, 760px);
+  max-height: min(82vh, calc(100svh - var(--site-header-height) - 1.25rem));
+  padding: clamp(1.2rem, 2.5vw, 1.5rem);
+  /* blur : 20 px; */
+  background: color-mix(in srgb, var(--surface-700) 85%, transparent);
+  border: 1px solid color-mix(in srgb, var(--text-high) 12%, transparent);
+  backdrop-filter: blur(24px) saturate(180%) brightness(1.02);
+  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.02);
+  box-shadow:
+    var(--shadow-2),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.12);
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.orbit-carousel__detail-panel::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.orbit-carousel__detail-title {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-lg);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.orbit-carousel__detail-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
 }
 
 .orbit-carousel__detail-label {
   display: block;
   font-size: var(--text-xs);
   letter-spacing: 0.12em;
+}
+
+.orbit-carousel__detail-sublabel {
+  display: block;
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
   margin-bottom: var(--space-2);
 }
 
 .orbit-carousel__detail-text {
   margin: 0;
   font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+.orbit-carousel__detail-summary {
+  margin: 0;
+  font-size: var(--text-xs);
+  letter-spacing: 0.05em;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.orbit-carousel__features {
+  margin-top: var(--space-2);
+}
+
+.orbit-carousel__features-list {
+  margin: 0;
+  padding-left: var(--space-4);
+  list-style: disc;
+}
+
+.orbit-carousel__features-list li {
+  font-size: var(--text-sm);
   line-height: 1.5;
+  margin-bottom: var(--space-1);
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .orbit-carousel__tags {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
-  margin-top: var(--space-4);
+  margin-top: var(--space-2);
 }
 
 .orbit-carousel__tag {
   border: 1px solid var(--border);
   border-radius: 999px;
-  padding: 0.18rem 0.45rem;
-  font-size: clamp(0.5rem, 1.4vw, 0.58rem);
+  padding: 0.18rem 0.5rem;
+  font-size: clamp(0.5rem, 1.4vw, 0.6rem);
   letter-spacing: 0.06em;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.orbit-carousel__tag:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.orbit-carousel__detail-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border);
+}
+
+.orbit-carousel__link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-medium);
+  background: transparent;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.orbit-carousel__link-btn:hover {
+  background: var(--accent);
+  color: var(--bg-900);
+  border-color: var(--accent);
+}
+
+.orbit-carousel__link-btn:focus-visible {
+  outline: var(--focus);
+  outline-offset: 2px;
+}
+
+.orbit-carousel__link-btn--github:hover {
+  background: var(--text-high);
+  border-color: var(--text-high);
+}
+
+.orbit-carousel__link-btn--live:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+/* Mobile bottom sheet variant */
+.orbit-carousel__detail-panel--mobile {
+  position: fixed;
+  inset: auto 0 0 0;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  max-height: 70vh;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  z-index: 200;
+}
+
+.orbit-carousel__overlay.has-panel {
+  z-index: 60;
 }
 
 .work-list {
@@ -1374,6 +1519,11 @@ pre,
 @media (min-width: 1025px) {
   :root {
     --orbit-overlay-bottom: calc(var(--footer-bar-height) + 2.5rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .orbit-carousel__detail-panel {
+    width: clamp(420px, 46vw, 760px);
+    max-width: min(55vw, calc(100% - var(--orbit-info-w) - var(--space-3)));
   }
 
   .footer-bar--home {

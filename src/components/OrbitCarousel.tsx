@@ -1,12 +1,15 @@
 "use client";
 
-import { useRef, useEffect, useState, type MouseEvent as ReactMouseEvent } from "react";
+import { useRef, useEffect, useState, useCallback, type FocusEvent as ReactFocusEvent, type KeyboardEvent as ReactKeyboardEvent, type MouseEvent as ReactMouseEvent, type MutableRefObject } from "react";
+import { ExternalLink, Github } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { personalInfo } from "@/lib/data";
+import { personalInfo, type Project } from "@/lib/data";
 
 const COMPACT_QUERY = "(max-width: 768px)";
 const FINE_POINTER_QUERY = "(hover: hover) and (pointer: fine)";
+const OPEN_DELAY_MS = 110;
+const CLOSE_DELAY_MS = 130;
 
 // Lerp utility for smooth animations
 const lerp = (start: number, end: number, factor: number): number => start + (end - start) * factor;
@@ -19,7 +22,13 @@ export default function OrbitCarousel() {
   const rotationRafRef = useRef<number | null>(null);
   const parallaxLoopRafRef = useRef<number | null>(null);
   const [activeProjectIndex, setActiveProjectIndex] = useState(0);
-  const [showDetails, setShowDetails] = useState(false);
+  const [selectedProjectIndex, setSelectedProjectIndex] = useState<number | null>(null);
+  const detailPanelRef = useRef<HTMLDivElement>(null);
+  const openTimerRef = useRef<number | null>(null);
+  const closeTimerRef = useRef<number | null>(null);
+  const isMountedRef = useRef(true);
+  const isTriggerAreaHoveredRef = useRef(false);
+  const isPanelHoveredRef = useRef(false);
   const [isCompactLayout, setIsCompactLayout] = useState(() => {
     if (typeof window === "undefined") return false;
     return window.matchMedia(COMPACT_QUERY).matches;
@@ -39,10 +48,11 @@ export default function OrbitCarousel() {
   const parallaxCardRefs = useRef<HTMLDivElement[]>([]);
   const titleRef = useRef<HTMLHeadingElement | null>(null);
 
-  const projects = personalInfo.projects;
+  const projects: Project[] = personalInfo.projects;
   const projectCount = projects.length;
   const degreesPerProject = 360 / projectCount;
   const maxRotationVelocity = 3.2;
+  const isDesktopHoverMode = hasFinePointer && !isCompactLayout;
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -70,11 +80,154 @@ export default function OrbitCarousel() {
     };
   }, []);
 
+  const clearTimer = useCallback((timerRef: MutableRefObject<number | null>) => {
+    if (timerRef.current === null) return;
+    window.clearTimeout(timerRef.current);
+    timerRef.current = null;
+  }, []);
+
   useEffect(() => {
-    if (isCompactLayout || !hasFinePointer) {
-      setShowDetails(false);
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+      clearTimer(openTimerRef);
+      clearTimer(closeTimerRef);
+    };
+  }, [clearTimer]);
+
+  const isFocusInsideInteractiveRegion = useCallback(() => {
+    if (typeof document === "undefined") return false;
+    const activeElement = document.activeElement;
+    if (!(activeElement instanceof HTMLElement)) return false;
+    return Boolean(
+      activeElement.closest(".orbit-carousel__card") ||
+      activeElement.closest(".orbit-carousel__detail-panel")
+    );
+  }, []);
+
+  const shouldKeepPanelOpen = useCallback(() => {
+    return isTriggerAreaHoveredRef.current || isPanelHoveredRef.current || isFocusInsideInteractiveRegion();
+  }, [isFocusInsideInteractiveRegion]);
+
+  const closePanel = useCallback(() => {
+    clearTimer(openTimerRef);
+    clearTimer(closeTimerRef);
+    isTriggerAreaHoveredRef.current = false;
+    isPanelHoveredRef.current = false;
+    setSelectedProjectIndex(null);
+  }, [clearTimer]);
+
+  const scheduleClosePanel = useCallback((delay = CLOSE_DELAY_MS) => {
+    clearTimer(closeTimerRef);
+    closeTimerRef.current = window.setTimeout(() => {
+      closeTimerRef.current = null;
+      if (!isMountedRef.current) return;
+      if (shouldKeepPanelOpen()) return;
+      setSelectedProjectIndex(null);
+    }, delay);
+  }, [clearTimer, shouldKeepPanelOpen]);
+
+  const openPanelForProject = useCallback((projectIndex: number) => {
+    clearTimer(closeTimerRef);
+    if (selectedProjectIndex !== null) {
+      clearTimer(openTimerRef);
+      setSelectedProjectIndex(projectIndex);
+      return;
     }
-  }, [isCompactLayout, hasFinePointer]);
+
+    clearTimer(openTimerRef);
+    openTimerRef.current = window.setTimeout(() => {
+      openTimerRef.current = null;
+      if (!isMountedRef.current) return;
+      if (!shouldKeepPanelOpen()) return;
+      setSelectedProjectIndex(projectIndex);
+    }, OPEN_DELAY_MS);
+  }, [clearTimer, selectedProjectIndex, shouldKeepPanelOpen]);
+
+  const handleCardClick = useCallback((projectIndex: number) => {
+    if (isDesktopHoverMode) return;
+    setSelectedProjectIndex((previousIndex) => (previousIndex === projectIndex ? null : projectIndex));
+  }, [isDesktopHoverMode]);
+
+  const handleCardMouseEnter = useCallback((projectIndex: number) => {
+    if (!isDesktopHoverMode) return;
+    isTriggerAreaHoveredRef.current = true;
+    openPanelForProject(projectIndex);
+  }, [isDesktopHoverMode, openPanelForProject]);
+
+  const handleTriggerAreaEnter = useCallback(() => {
+    if (!isDesktopHoverMode) return;
+    isTriggerAreaHoveredRef.current = true;
+    clearTimer(closeTimerRef);
+  }, [clearTimer, isDesktopHoverMode]);
+
+  const handleTriggerAreaLeave = useCallback(() => {
+    if (!isDesktopHoverMode) return;
+    isTriggerAreaHoveredRef.current = false;
+    scheduleClosePanel();
+  }, [isDesktopHoverMode, scheduleClosePanel]);
+
+  const handlePanelMouseEnter = useCallback(() => {
+    if (!isDesktopHoverMode) return;
+    isPanelHoveredRef.current = true;
+    clearTimer(closeTimerRef);
+  }, [clearTimer, isDesktopHoverMode]);
+
+  const handlePanelMouseLeave = useCallback(() => {
+    if (!isDesktopHoverMode) return;
+    isPanelHoveredRef.current = false;
+    scheduleClosePanel();
+  }, [isDesktopHoverMode, scheduleClosePanel]);
+
+  const handleCardFocus = useCallback((projectIndex: number) => {
+    isTriggerAreaHoveredRef.current = true;
+    clearTimer(closeTimerRef);
+    if (isDesktopHoverMode) {
+      openPanelForProject(projectIndex);
+      return;
+    }
+    setSelectedProjectIndex(projectIndex);
+  }, [clearTimer, isDesktopHoverMode, openPanelForProject]);
+
+  const handleCardBlur = useCallback((event: ReactFocusEvent<HTMLDivElement>) => {
+    const nextTarget = event.relatedTarget as HTMLElement | null;
+    if (nextTarget?.closest(".orbit-carousel__card") || nextTarget?.closest(".orbit-carousel__detail-panel")) {
+      return;
+    }
+    isTriggerAreaHoveredRef.current = false;
+    scheduleClosePanel();
+  }, [scheduleClosePanel]);
+
+  const handleCardKeyDown = useCallback((event: ReactKeyboardEvent<HTMLDivElement>, projectIndex: number) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    clearTimer(openTimerRef);
+    clearTimer(closeTimerRef);
+    setSelectedProjectIndex(projectIndex);
+  }, [clearTimer]);
+
+  const handlePanelBlur = useCallback((event: ReactFocusEvent<HTMLDivElement>) => {
+    const nextTarget = event.relatedTarget as HTMLElement | null;
+    if (nextTarget?.closest(".orbit-carousel__card") || nextTarget?.closest(".orbit-carousel__detail-panel")) {
+      return;
+    }
+    scheduleClosePanel();
+  }, [scheduleClosePanel]);
+
+  const handleTitleMouseEnter = useCallback(() => {
+    if (!isDesktopHoverMode) return;
+    isTriggerAreaHoveredRef.current = true;
+    openPanelForProject(activeProjectIndex);
+  }, [activeProjectIndex, isDesktopHoverMode, openPanelForProject]);
+
+  const handleTitleMouseLeave = useCallback(() => {
+    if (!isDesktopHoverMode) return;
+    isTriggerAreaHoveredRef.current = false;
+    scheduleClosePanel();
+  }, [isDesktopHoverMode, scheduleClosePanel]);
+
+  // Get selected project data
+  const selectedProject = selectedProjectIndex !== null ? projects[selectedProjectIndex] : null;
 
   useEffect(() => {
     const animateRotation = () => {
@@ -275,6 +428,23 @@ export default function OrbitCarousel() {
     mouseTargetRef.current = { x: 0, y: 0 };
   };
 
+  // Escape key handler
+  useEffect(() => {
+    if (selectedProjectIndex === null) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closePanel();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectedProjectIndex, closePanel]);
+
   return (
     <div
       ref={carouselContainerRef}
@@ -282,7 +452,12 @@ export default function OrbitCarousel() {
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
     >
-      <div className={`orbit-carousel ${isCompactLayout ? "orbit-carousel--compact" : ""}`} style={{ perspective: "1400px" }}>
+      <div
+        className={`orbit-carousel ${isCompactLayout ? "orbit-carousel--compact" : ""}`}
+        style={{ perspective: "1400px" }}
+        onMouseEnter={handleTriggerAreaEnter}
+        onMouseLeave={handleTriggerAreaLeave}
+      >
         <div
           ref={carouselTrackRef}
           className="orbit-carousel__track u-preserve-3d"
@@ -301,7 +476,17 @@ export default function OrbitCarousel() {
                 ref={(parallaxCardElement) => {
                   if (parallaxCardElement) parallaxCardRefs.current[projectIndex] = parallaxCardElement;
                 }}
-                className={`orbit-carousel__card orbit-carousel__card--parallax ${isActive ? "is-active" : ""} ${isCompactLayout ? "is-compact-mode" : ""}`}
+                onMouseEnter={() => handleCardMouseEnter(projectIndex)}
+                onClick={() => handleCardClick(projectIndex)}
+                onFocus={() => handleCardFocus(projectIndex)}
+                onBlur={handleCardBlur}
+                onKeyDown={(event) => handleCardKeyDown(event, projectIndex)}
+                className={`orbit-carousel__card orbit-carousel__card--parallax ${isActive ? "is-active" : ""} ${selectedProjectIndex === projectIndex ? "is-selected" : ""} ${isCompactLayout ? "is-compact-mode" : ""}`}
+                role="button"
+                tabIndex={0}
+                aria-label={`Open details for ${project.title}`}
+                aria-expanded={selectedProjectIndex === projectIndex}
+                aria-controls="orbit-carousel-detail-panel"
                 style={{
                   transform: `rotateY(${angle}deg) translateZ(var(--orbit-radius)) translate3d(var(--parallax-x, 0), var(--parallax-y, 0), 0) rotateX(var(--parallax-rx, 0)) rotateY(var(--parallax-ry, 0))`,
                   ["--angle" as string]: `${angle}deg`,
@@ -342,14 +527,8 @@ export default function OrbitCarousel() {
         </div>
       </div>
 
-      <div className="orbit-carousel__overlay">
-        <div
-          className="orbit-carousel__info-panel"
-          onMouseEnter={() => {
-            if (!isCompactLayout && hasFinePointer) setShowDetails(true);
-          }}
-          onMouseLeave={() => setShowDetails(false)}
-        >
+      <div className={`orbit-carousel__overlay ${selectedProject ? "has-panel" : ""}`}>
+        <div className="orbit-carousel__info-panel">
           <div className="orbit-carousel__progress-row">
             <span className="orbit-carousel__counter" style={{ color: "var(--muted-500)" }}>
               {activeProjectIndex + 1} / {projectCount}
@@ -374,50 +553,108 @@ export default function OrbitCarousel() {
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className="orbit-carousel__title"
             style={{ color: "var(--text-high)", ["--orbit-title-scale" as string]: "1" }}
+            onMouseEnter={handleTitleMouseEnter}
+            onMouseLeave={handleTitleMouseLeave}
           >
             {projects[activeProjectIndex]?.title}
           </motion.h2>
         </div>
 
         <AnimatePresence>
-          {!isCompactLayout && hasFinePointer && showDetails && (
+          {selectedProject && (
             <motion.div
-              initial={{ opacity: 0, width: 0, x: -20 }}
-              animate={{ opacity: 1, width: 340, x: 0 }}
-              exit={{ opacity: 0, width: 0, x: -20 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              className="orbit-carousel__detail-panel"
-              style={{
-                backgroundColor: "var(--surface-700)",
-                borderColor: "var(--border)",
-                boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
-              }}
+              ref={detailPanelRef}
+              id="orbit-carousel-detail-panel"
+              key="orbit-carousel-detail-panel"
+              initial={{ opacity: 0, x: isCompactLayout ? 0 : -20, y: isCompactLayout ? 20 : 0 }}
+              animate={{ opacity: 1, x: 0, y: 0 }}
+              exit={{ opacity: 0, x: isCompactLayout ? 0 : -20, y: isCompactLayout ? 20 : 0 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className={`orbit-carousel__detail-panel ${isCompactLayout ? "orbit-carousel__detail-panel--mobile" : ""}`}
+              onMouseEnter={handlePanelMouseEnter}
+              onMouseLeave={handlePanelMouseLeave}
+              onFocusCapture={handlePanelMouseEnter}
+              onBlurCapture={handlePanelBlur}
             >
-              <motion.div
-                className="orbit-carousel__detail-content"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.1 }}
-              >
+              <div className="orbit-carousel__detail-header">
                 <span className="orbit-carousel__detail-label" style={{ color: "var(--accent)" }}>
-                  About Project
+                  Project Details
                 </span>
-                <p className="orbit-carousel__detail-text" style={{ color: "var(--text-medium)" }}>
-                  {projects[activeProjectIndex]?.description}
+                <h3 className="orbit-carousel__detail-title" style={{ color: "var(--text-high)" }}>
+                  {selectedProject.title}
+                </h3>
+              </div>
+
+              <div className="orbit-carousel__detail-body">
+                <p className="orbit-carousel__detail-summary" style={{ color: "var(--muted-500)" }}>
+                  {selectedProject.description}
                 </p>
 
-                <div className="orbit-carousel__tags">
-                  {projects[activeProjectIndex]?.technologies?.slice(0, 3).map((tech, i) => (
-                    <span
-                      key={i}
-                      className="orbit-carousel__tag"
-                      style={{ borderColor: "var(--border)", color: "var(--muted-500)" }}
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
+                {selectedProject.longDescription && selectedProject.longDescription !== selectedProject.description && (
+                  <p className="orbit-carousel__detail-text" style={{ color: "var(--text-medium)" }}>
+                    {selectedProject.longDescription}
+                  </p>
+                )}
+
+                {selectedProject.features && selectedProject.features.length > 0 && (
+                  <div className="orbit-carousel__features">
+                    <span className="orbit-carousel__detail-sublabel" style={{ color: "var(--muted-500)" }}>Key Features</span>
+                    <ul className="orbit-carousel__features-list">
+                      {selectedProject.features.map((feature, i) => (
+                        <li key={i} style={{ color: "var(--text-medium)" }}>{feature}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {selectedProject.highlights && selectedProject.highlights.length > 0 && (
+                  <div className="orbit-carousel__features">
+                    <span className="orbit-carousel__detail-sublabel" style={{ color: "var(--muted-500)" }}>Highlights</span>
+                    <ul className="orbit-carousel__features-list">
+                      {selectedProject.highlights.map((highlight, i) => (
+                        <li key={i} style={{ color: "var(--text-medium)" }}>{highlight}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {selectedProject.tech && selectedProject.tech.length > 0 && (
+                  <div className="orbit-carousel__tags">
+                    {selectedProject.tech.map((tech, i) => (
+                      <span
+                        key={i}
+                        className="orbit-carousel__tag"
+                        style={{ borderColor: "var(--border)", color: "var(--muted-500)" }}
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="orbit-carousel__detail-links">
+                <a
+                  href={selectedProject.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="orbit-carousel__link-btn orbit-carousel__link-btn--github"
+                >
+                  <Github size={16} />
+                  <span>View on GitHub</span>
+                </a>
+                {selectedProject.liveUrl && (
+                  <a
+                    href={selectedProject.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="orbit-carousel__link-btn orbit-carousel__link-btn--live"
+                  >
+                    <ExternalLink size={16} />
+                    <span>Live Demo</span>
+                  </a>
+                )}
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
