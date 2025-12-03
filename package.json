@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --webpack",
+    "dev:turbopack": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "verify:route-stability": "node route-stability-check.mjs"
   },
   "dependencies": {
     "framer-motion": "^12.29.2",
@@ -23,6 +25,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.5",
+    "playwright": "^1.58.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
