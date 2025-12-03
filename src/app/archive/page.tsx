@@ -3,7 +3,14 @@ import Image from "next/image";
 
 export default function ArchivePage() {
   return (
-    <div className="page-shell page-shell--archive bg-primary">
+
+
+    // <div className="page-shell page-shell--archive bg-primary">
+    //   <h1 className="page-title text-high">Archive</h1>
+
+
+
+    <div className="page-shell page-shell--info bg-primary">
       <h1 className="page-title text-high">Archive</h1>
 
       <div className="archive-grid">
