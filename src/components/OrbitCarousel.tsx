@@ -585,28 +585,19 @@ export default function OrbitCarousel() {
 
           {/* Title block */}
           <div className="info-display__content">
-            <AnimatePresence mode="popLayout">
-              <motion.div
-                key={activeProjectIndex}
-                initial={{ y: 16, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -16, opacity: 0 }}
-                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                className="info-display__text-block"
+            <div className="info-display__text-block">
+              <span className="info-display__label">Featured Project</span>
+              <h2
+                className="info-display__title"
+                onMouseEnter={handleTitleMouseEnter}
+                onMouseLeave={handleTitleMouseLeave}
               >
-                <span className="info-display__label">Featured Project</span>
-                <h2
-                  className="info-display__title"
-                  onMouseEnter={handleTitleMouseEnter}
-                  onMouseLeave={handleTitleMouseLeave}
-                >
-                  {projects[activeProjectIndex]?.title}
-                </h2>
-                <span className="info-display__meta">
-                  {projects[activeProjectIndex]?.category} — {projects[activeProjectIndex]?.year}
-                </span>
-              </motion.div>
-            </AnimatePresence>
+                {projects[activeProjectIndex]?.title}
+              </h2>
+              <span className="info-display__meta">
+                {projects[activeProjectIndex]?.category} — {projects[activeProjectIndex]?.year}
+              </span>
+            </div>
           </div>
 
           {/* Bottom accent */}
