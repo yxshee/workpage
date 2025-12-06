@@ -36,7 +36,7 @@ export default function InfoPage() {
                 <div key={educationIndex} className="info-education">
                   <p className="info-line text-high">{educationEntry.institution}</p>
                   <p className="info-subline text-muted">{educationEntry.degree}</p>
-                  <p className="info-subline info-subline--spaced text-muted">{educationEntry.period} • {educationEntry.score}</p>
+                  <p className="info-subline info-subline--spaced text-muted">{educationEntry.period}</p>
                 </div>
               ))}
             </section>
