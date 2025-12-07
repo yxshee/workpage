@@ -5,15 +5,20 @@ import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import CustomCursor from "@/components/CustomCursor";
 
+const siteUrl =
+  (process.env.NEXT_PUBLIC_SITE_URL ||
+    process.env.SITE_URL ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://yxsheeworks.vercel.app")).replace(/\/$/, "");
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://yxsheeworks.vercel.app/"),
+  metadataBase: new URL(`${siteUrl}/`),
   title: "Yash Dogra | Work Portfolio",
   description: "Portfolio of Yash Dogra — Creative Developer & ML Engineer specializing in NLP and computer vision.",
   keywords: ["Yash Dogra", "yxshee", "full stack developer", "ML engineer", "portfolio", "web developer", "software engineer", "NLP", "computer vision"],
   authors: [{ name: "Yash Dogra" }],
   openGraph: {
     type: "website",
-    url: "https://yxsheeworks.vercel.app",
+    url: siteUrl,
     title: "Yash Dogra | Work Portfolio",
     description: "Portfolio of Yash Dogra — Creative Developer & ML Engineer specializing in NLP and computer vision.",
     siteName: "Yash Dogra",
@@ -21,7 +26,6 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/images/core/Works.jpeg",
-        secureUrl: "/images/core/Works.jpeg",
         width: 1200,
         height: 630,
         alt: "Yash Dogra - Creative Developer & ML Engineer",
