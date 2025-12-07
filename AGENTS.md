@@ -361,3 +361,12 @@
    1) Use `git branch --merged main` to safely delete merged branches, but force-delete (`-D`) local branches that are ahead of their remote-tracking refs even when their commits are already in `main`.
 5) Next Steps
    1) If remote clutter is a problem, delete `origin/backup/*` and other merged remote branches after confirming they are merged into `origin/main`.
+
+### Session 2026-02-10-7
+1) Date: 2026-02-10.
+2) Goal: Remove an old Codex-created git worktree to avoid confusion when working in the repo.
+3) Outcome: Removed the detached-head worktree at `~/.codex/worktrees/bb2e/workpage` and pruned worktree metadata; verified only the main checkout remains.
+4) Key Learnings
+   1) Use `git worktree list` to identify stray worktrees and `git worktree remove <path>` + `git worktree prune` to clean them up safely once the worktree is clean.
+5) Next Steps
+   1) If you see another detached worktree prompt, check `git worktree list` before doing any merges/commits.
