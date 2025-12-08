@@ -10,6 +10,8 @@ const siteUrl =
     process.env.SITE_URL ||
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://yxsheeworks.vercel.app")).replace(/\/$/, "");
 
+const ogImageUrl = new URL("/images/og/works-card.jpg", `${siteUrl}/`).toString();
+
 export const metadata: Metadata = {
   metadataBase: new URL(`${siteUrl}/`),
   title: "Yash Dogra | Work Portfolio",
@@ -25,7 +27,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: "/images/core/Works.jpeg",
+        url: ogImageUrl,
         width: 1200,
         height: 630,
         alt: "Yash Dogra - Creative Developer & ML Engineer",
@@ -39,7 +41,7 @@ export const metadata: Metadata = {
     creator: "@yxshee",
     title: "Yash Dogra | Work Portfolio",
     description: "Portfolio of Yash Dogra — Creative Developer & ML Engineer specializing in NLP and computer vision.",
-    images: ["/images/core/Works.jpeg"],
+    images: [ogImageUrl],
   },
   icons: {
     icon: [
