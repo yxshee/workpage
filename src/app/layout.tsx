@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import CustomCursor from "@/components/CustomCursor";
+import Preloader from "@/components/Preloader";
 
 const canonicalProdUrl = "https://yxsheeworks.vercel.app";
 
@@ -119,6 +120,7 @@ export default function RootLayout({
         <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000" />
       </head>
       <body className="antialiased">
+        <Preloader />
         <ThemeProvider>
           <CustomCursor />
           <div className="vignette" />
