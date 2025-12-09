@@ -110,7 +110,7 @@ export const personalInfo = {
       title: "TravelPage",
       category: "Next.js • TypeScript • GSAP",
       year: "2026",
-      image: "/images/core/travel.webp",
+      image: "/images/core/travel-anim.webp",
       description: "Immersive travel portfolio built with Next.js, featuring smooth GSAP transitions, custom cursor behavior, and sequential storytelling sections.",
       longDescription: "Developed an immersive storytelling portfolio experience with section-by-section flow, animation-driven pacing, and tailored interaction details.",
       features: ["GSAP-powered scene transitions", "Custom cursor interaction patterns", "Sequential narrative section design"],
@@ -203,7 +203,7 @@ export const personalInfo = {
       title: "Listify",
       category: "Flutter • Dart",
       year: "2022",
-      image: "/images/core/image4.gif",
+      image: "/images/core/image4-anim.webp",
       description: "Cross platform shopping list app with streamlined list management, quick item workflows, and clean mobile first information hierarchy.",
       longDescription: "Built a mobile-first shopping companion with fast list operations, clear structure, and cross-platform delivery using Flutter.",
       features: ["Cross-platform list management", "Quick add/update item actions", "Mobile-first information hierarchy"],
@@ -256,7 +256,7 @@ export const personalInfo = {
       title: "ThermoSight",
       category: "PyTorch • ViT • Streamlit",
       year: "2025",
-      image: "/images/core/thermo.gif",
+      image: "/images/core/thermo-anim.webp",
       description: "Vision Transformer based thermal image classifier for post fire concrete assessment, with an interactive Streamlit app and TensorBoard tracked training pipeline.",
       longDescription: "Developed a ViT-based thermal imagery classifier to support post-fire concrete evaluation, wrapped with a Streamlit interface and experiment tracking.",
       features: ["Vision Transformer thermal classification", "Streamlit inference interface", "TensorBoard tracked training pipeline"],
@@ -270,7 +270,7 @@ export const personalInfo = {
       title: "Personal Portfolio",
       category: "Next.js • React • Framer Motion",
       year: "2026",
-      image: "/images/core/personal-portfolio.webp",
+      image: "/images/core/personal-portfolio-anim.webp",
       description: "Interactive portfolio website featuring motion-heavy UI, 3D orbit carousel, recursive generative backgrounds, and theme-aware glassmorphic design components.",
       longDescription: "Built a modern portfolio experience combining React 19, Next.js 16 App Router, and Framer Motion animations. Features include an orbit-based project carousel, p5.js generative backgrounds, custom cursor interactions, and comprehensive theme system with glassmorphic panels.",
       features: ["3D orbit carousel for project showcase", "Recursive generative art backgrounds", "Custom cursor with preview states", "Theme-aware glassmorphic UI components"],
@@ -302,11 +302,9 @@ export const personalInfo = {
   archive: [
     { id: 101, title: "ICICC 2025 Research Paper Presentation", year: "2025", type: "Publication", image: "/images/core/handwr.jpg" },
     { id: 102, title: "Gold Medal Inter departmental Football", year: "2024", type: "Sports", image: "/images/core/no-bs.jpeg" },
-    { id: 103, title: "Silver Medal Inter departmental Chess", year: "2024", type: "Sports", image: "/images/core/man.gif" },
+    { id: 103, title: "Silver Medal Inter departmental Chess", year: "2024", type: "Sports", image: "/images/core/man-anim.webp" },
     { id: 104, title: "Head of Logistics - Girl Up Patiala", year: "2023", type: "Leadership", image: "/images/core/spaces.jpeg" }
   ],
   heroImage: "/images/core/thegreats.webp"
 };
-
-
 
