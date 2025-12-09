@@ -388,3 +388,15 @@
    1) `process.env.VERCEL_URL` in production points to the immutable deployment hostname, which can leak into `og:url`/image tags unless a canonical base is pinned.
 5) Next Steps
    1) If you add a custom domain later, set `NEXT_PUBLIC_SITE_URL` to keep metadata canonical without code changes.
+
+### Session 2026-02-11
+1) Date: 2026-02-11.
+2) Goal: Add a p5 Lorenz attractor preloader overlay that runs on initial page load and is fully removed after fade-out.
+3) Outcome: Created `src/components/Preloader.tsx` (client component, dynamic p5 import, 2D point-projection Lorenz attractor with sinusoidal mapping), wired in `src/app/layout.tsx`, and added overlay CSS in `src/app/globals.css` at z-index 10000. Added `@types/p5` dev dependency. Merged via PRs #2 and #3.
+4) Key Learnings
+   1) In React 19 StrictMode, persistent `useRef` guards break across the simulated unmount/remount cycle; use a local `cancelled` flag scoped to each effect invocation instead.
+   2) `next/dynamic` with `ssr: false` is not allowed in Server Components (layout.tsx); import the client component directly since p5 is loaded inside `useEffect`.
+   3) Pre-seeding attractor points or using a computation-heavy sketch (15k points/frame) ensures the animation is visually rich from the first frame.
+5) Next Steps
+   1) Monitor preloader performance on lower-end devices; reduce point count from 15000 if frame drops are reported.
+   2) Keep preloader z-index (10000) above cursor (9999) and header (120) for any future stacking changes.
