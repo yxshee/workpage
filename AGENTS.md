@@ -449,3 +449,13 @@
    1) Minimum display timing is controlled by `PRELOADER_MIN_VISIBLE_MS`; increasing this value is the single-point adjustment for preloader duration policy.
 5) Next Steps
    1) If interaction feels delayed on high-latency networks, revisit this value alongside preload asset scope rather than reducing fade timing.
+
+### Session 2026-02-11-7
+1) Date: 2026-02-11.
+2) Goal: Remove oversized source-media artifacts from pushable history and complete the requested PR + main push workflow.
+3) Outcome: Rewrote the latest media/preloader commit to exclude `docs/assets-source/*` and removed stale docs files, pushed branch `codex/preloader-media-assets`, created PR #4, and pushed `main` successfully without GitHub large-file rejection.
+4) Key Learnings
+   1) Deleting an oversized file in a follow-up commit is insufficient for first push; the introducing commit must be rewritten so the blob is unreachable from pushed refs.
+   2) Branch-first PR creation can still be completed before/alongside a direct `main` push when the user asks for both outcomes.
+5) Next Steps
+   1) Keep raw capture/source media out of tracked push paths (or use LFS) and commit only optimized delivery assets.
