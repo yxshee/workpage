@@ -132,7 +132,7 @@
       "alt": "The Greats hero image",
       "path": "/images/core/thegreats.webp",
       "usage": "hero-background",
-      "note": "Large file (33MB) - consider resizing for web"
+      "note": "Optimized version (5.6MB)"
     }
   ]
 }
