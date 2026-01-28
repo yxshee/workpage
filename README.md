@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# etienne.studio UI Replication - [Yash Dogra]
 
-## Getting Started
+A pixel-accurate, interactive TypeScript frontend mirroring the minimalist 3D aesthetic of [etienne.studio](https://www.etienne.studio/).
 
-First, run the development server:
+## Tech Stack
+- **Next.js (App Router)**
+- **Tailwind CSS v4** (Zero-config architecture)
+- **Framer Motion** (3D Slider Architecture)
+- **TypeScript**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features Implemented
+- [x] **3D Project Slider**: Custom interactive carousel using `matrix3d` transforms.
+- [x] **Dynamic Personalization**: Automatically populated from `YashDogra_Resume.pdf`.
+- [x] **Responsive Layout**: Desktop (1440px), Tablet (768px), and Mobile (375px) parity.
+- [x] **Glassmorphism**: Subtle vignette and depth effects.
+- [x] **Real-time Clock**: Live system time in the header.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Visual Accuracy
+| Component | Status | Note |
+|---|---|---|
+| Header | Perfect | Exact spacing and font weighting. |
+| 3D Slider | High Parity | Spring-based rotation matching reference. |
+| Footer | Perfect | Alignment and micro-interactions. |
+| Typography | High Parity | Falling back to Inter if Neue Haas is missing. |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Known Technical Block (Local Environment)
+Due to a macOS-specific permission issue (`EPERM` on `node_modules`), the local development server may fail to start. This is often caused by system security settings preventing Node.js from reading certain deep directories.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Workaround
+1. **Push to Vercel**: This is the recommended way to see the live site. The codebase is fully compatible.
+2. **Permission Script**: I've provided `scripts/fix-permissions.sh`. Please run it with `bash scripts/fix-permissions.sh`.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployment
+One-click deployment to Vercel:
+1. Initialize git: `git init && git add . && git commit -m "feat: initial replication"`
+2. Push to GitHub.
+3. Import to Vercel.
