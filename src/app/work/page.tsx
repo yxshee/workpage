@@ -31,17 +31,16 @@ export default function WorkPage() {
             </div>
 
             {/* Hover Reveal Image - NO TILT, NO BLUR, STRAIGHT AND CLEAR */}
-            <div className="project-image absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-80 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-[0.23,1,0.32,1] pointer-events-none shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden z-50">
+            <div className="project-image absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-80 opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-500 ease-out pointer-events-none shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden z-50">
               <Image
                 src={project.image}
                 alt={project.title}
                 fill
                 sizes="256px"
-                className="object-cover work-image"
+                className="object-cover"
                 loading="lazy"
                 decoding="async"
                 quality={90}
-                style={{ transform: 'none', filter: 'none' }}
               />
             </div>
           </Link>
