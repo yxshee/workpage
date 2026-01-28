@@ -2,8 +2,8 @@ import Slider3D from "./Slider3D";
 
 export default function Hero() {
   return (
-    <section className="relative w-full min-h-screen flex flex-col justify-center bg-[#fcfcfc]">
-      <div className="px-5 pt-24">
+    <section id="home-root" className="home-root relative w-full flex flex-col justify-center" style={{ backgroundColor: 'var(--bg-900)' }}>
+      <div className="home-inner">
         <Slider3D />
       </div>
     </section>

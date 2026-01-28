@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { personalInfo } from "@/lib/data";
+import { ThemeToggle } from "./ThemeProvider";
 
 export default function Header() {
   const [time, setTime] = useState("");
@@ -18,21 +19,24 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 w-full flex justify-between items-start p-5 z-[100] pointer-events-none">
+    <header className="fixed top-0 left-0 w-full flex justify-between items-start p-5 z-[100] pointer-events-none bg-transparent">
       <div className="pointer-events-auto">
-        <Link href="/" className="text-sm font-black tracking-tight uppercase leading-none">
+        <Link href="/" className="text-sm font-black tracking-tight uppercase leading-none" style={{ color: 'var(--text-high)' }}>
           {personalInfo.name}
         </Link>
       </div>
 
-      <nav className="absolute left-1/2 -translate-x-1/2 flex gap-8 pointer-events-auto">
+      <nav className="absolute left-1/2 -translate-x-1/2 flex gap-8 pointer-events-auto items-center">
         <Link href="/work" className="nav-link">Work</Link>
-        <Link href="/archive" className="nav-link text-gray-400">Archive</Link>
-        <Link href="/info" className="nav-link text-gray-400">Info</Link>
+        <Link href="/archive" className="nav-link" style={{ color: 'var(--muted-500)' }}>Archive</Link>
+        <Link href="/info" className="nav-link" style={{ color: 'var(--muted-500)' }}>Info</Link>
       </nav>
 
-      <div className="text-xs font-medium tabular-nums text-right pointer-events-auto">
-        {time}
+      <div className="flex items-center gap-4 pointer-events-auto">
+        <ThemeToggle />
+        <span className="text-xs font-medium tabular-nums text-right" style={{ color: 'var(--text-high)' }}>
+          {time}
+        </span>
       </div>
     </header>
   );
