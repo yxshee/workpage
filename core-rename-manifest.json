@@ -1,0 +1,138 @@
+{
+  "description": "Image rename manifest - maps old file names to new descriptive names",
+  "generated": "2026-01-28",
+  "renames": [
+    {
+      "old": "image1.webp",
+      "new": "project-mapmitra.webp",
+      "usage": "Project 1: MapMitra - Campus navigation app",
+      "used_in": ["src/lib/data.ts", "portfolio-final/src/lib/data.ts"]
+    },
+    {
+      "old": "image2.webp",
+      "new": "project-text-summarization.webp",
+      "usage": "Project 2: Text Summarization - T5 Transformer tool",
+      "used_in": ["src/lib/data.ts", "portfolio-final/src/lib/data.ts"]
+    },
+    {
+      "old": "image3.webp",
+      "new": "project-toxic-terminator.webp",
+      "usage": "Project 3: Toxic Terminator - Toxicity detection model",
+      "used_in": ["src/lib/data.ts", "portfolio-final/src/lib/data.ts"]
+    },
+    {
+      "old": "image4.webp",
+      "new": "project-rbi-nbfc-chatbot.webp",
+      "usage": "Project 4: RBI NBFC Chatbot - RAG-powered regulatory assistant",
+      "used_in": ["src/lib/data.ts", "portfolio-final/src/lib/data.ts"]
+    },
+    {
+      "old": "image5.webp",
+      "new": "project-extra-5.webp",
+      "usage": "Extra project slot 5",
+      "used_in": []
+    },
+    {
+      "old": "image6.webp",
+      "new": "project-extra-6.webp",
+      "usage": "Extra project slot 6",
+      "used_in": []
+    },
+    {
+      "old": "image7.webp",
+      "new": "project-extra-7.webp",
+      "usage": "Extra project slot 7",
+      "used_in": []
+    },
+    {
+      "old": "thegreats.webp",
+      "new": "hero-main.webp",
+      "usage": "Main hero image",
+      "used_in": ["src/lib/data.ts", "portfolio-final/src/lib/data.ts"]
+    },
+    {
+      "old": "page2-image1.webp",
+      "new": "cert-google-ux-design.webp",
+      "usage": "Certificate: Google UX Design Professional Certificate",
+      "used_in": ["src/lib/data.ts"]
+    },
+    {
+      "old": "page2-image2.webp",
+      "new": "cert-computer-vision.webp",
+      "usage": "Certificate: Computer Vision Specialization",
+      "used_in": ["src/lib/data.ts"]
+    },
+    {
+      "old": "page2-image3.webp",
+      "new": "cert-cyber-security.webp",
+      "usage": "Certificate: Cyber Security Fundamentals",
+      "used_in": ["src/lib/data.ts"]
+    },
+    {
+      "old": "page2-image4.webp",
+      "new": "cert-mobile-app-dev.webp",
+      "usage": "Certificate: Mobile App Development",
+      "used_in": ["src/lib/data.ts"]
+    },
+    {
+      "old": "page2-image5.webp",
+      "new": "cert-kaggle-ml-intro.webp",
+      "usage": "Certificate: Kaggle Intro to Machine Learning",
+      "used_in": ["src/lib/data.ts"]
+    },
+    {
+      "old": "page2-image6.webp",
+      "new": "cert-kaggle-python.webp",
+      "usage": "Certificate: Kaggle Python Programming",
+      "used_in": ["src/lib/data.ts"]
+    },
+    {
+      "old": "page2-image7.webp",
+      "new": "cert-kaggle-pandas.webp",
+      "usage": "Certificate: Kaggle Pandas for Data Analysis",
+      "used_in": ["src/lib/data.ts"]
+    },
+    {
+      "old": "page3-image1.webp",
+      "new": "cert-nvidia-cuda-python.webp",
+      "usage": "Certificate: NVIDIA CUDA Python Fundamentals",
+      "used_in": ["src/lib/data.ts"]
+    },
+    {
+      "old": "page3-image2.webp",
+      "new": "cert-nvidia-diffusion.webp",
+      "usage": "Certificate: NVIDIA Generative AI with Diffusion Models",
+      "used_in": ["src/lib/data.ts"]
+    },
+    {
+      "old": "page3-image3.webp",
+      "new": "cert-ibm-data-science.webp",
+      "usage": "Certificate: IBM Data Science Professional",
+      "used_in": ["src/lib/data.ts"]
+    },
+    {
+      "old": "page3-image4.webp",
+      "new": "cert-ibm-ai-fundamentals.webp",
+      "usage": "Certificate: IBM AI Fundamentals",
+      "used_in": ["src/lib/data.ts"]
+    },
+    {
+      "old": "page3-image5.webp",
+      "new": "cert-ibm-building-ai.webp",
+      "usage": "Certificate: IBM Building AI Solutions",
+      "used_in": ["src/lib/data.ts"]
+    },
+    {
+      "old": "page3-image6.webp",
+      "new": "cert-ibm-trustworthy-ai.webp",
+      "usage": "Certificate: IBM Building Trustworthy AI",
+      "used_in": ["src/lib/data.ts"]
+    },
+    {
+      "old": "page3-image7.webp",
+      "new": "cert-ibm-generative-ai.webp",
+      "usage": "Certificate: IBM Generative AI in Action",
+      "used_in": ["src/lib/data.ts"]
+    }
+  ]
+}
