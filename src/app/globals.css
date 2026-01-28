@@ -216,6 +216,21 @@ html[data-theme="dark"] {
     margin-top: 3vh;
     padding-top: 2.5vh;
   }
+
+  /* ========================
+     LAYOUT: ROTOR-INFO GAP
+     ======================== */
+  .rotor-wrapper {
+    margin-bottom: clamp(48px, 8vh, 120px);
+  }
+
+  .info-section {
+    padding-top: clamp(48px, 6vh, 96px);
+  }
+
+  .home-inner .rotor-wrapper {
+    margin-bottom: clamp(48px, 8vh, 120px);
+  }
 }
 
 /* 3D Slider Styles */

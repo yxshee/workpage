@@ -84,7 +84,12 @@ export const personalInfo = {
     { id: 11, title: "Mobile App Development", year: "2024", issuer: "Coursera", image: "/images/core/page2-image4.webp" },
     { id: 12, title: "Intro to Machine Learning", year: "2024", issuer: "Kaggle", image: "/images/core/page2-image5.webp" },
     { id: 13, title: "Python Programming", year: "2024", issuer: "Kaggle", image: "/images/core/page2-image6.webp" },
-    { id: 14, title: "Pandas for Data Analysis", year: "2024", issuer: "Kaggle", image: "/images/core/page2-image7.webp" }
+    { id: 14, title: "Pandas for Data Analysis", year: "2024", issuer: "Kaggle", image: "/images/core/page2-image7.webp" },
+    { id: 15, title: "Intro to Programming", year: "2024", issuer: "Kaggle", image: "/images/core/image5.webp" },
+    { id: 16, title: "Robotic Arm Development", year: "2024", issuer: "Technical Certification", image: "/images/core/image6.webp" },
+    { id: 17, title: "Handwritten Text Recognition", year: "2024", issuer: "Research Certificate", image: "/images/core/image7.webp" },
+    { id: 18, title: "ICICC 2025 Conference Presentation", year: "2025", issuer: "ICICC Singapore", image: "/images/core/page3-image1.webp" },
+    { id: 19, title: "Girl Up Leadership Certificate", year: "2024", issuer: "Girl Up Patiala", image: "/images/core/page3-image4.webp" }
   ],
   archive: [
     { id: 101, title: "ICICC 2025 Research Paper Presentation", year: "2025", type: "Publication", image: "/images/core/page3-image1.webp" },
