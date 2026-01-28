@@ -1,6 +1,6 @@
-# etienne.studio UI Replication - [Yash Dogra]
+#  Site
 
-A pixel-accurate, interactive TypeScript frontend mirroring the minimalist 3D aesthetic of [etienne.studio](https://www.etienne.studio/).
+A pixel-accurate, interactive TypeScript frontend mirroring the minimalist 3D aesthetic site
 
 ## Tech Stack
 - **Next.js (App Router)**
