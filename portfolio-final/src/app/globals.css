@@ -1,21 +1,70 @@
 @import "tailwindcss";
 
+/* ========================
+   PREMIUM DARK MODE TOKENS
+   ======================== */
+
+:root {
+  /* Light mode (default) */
+  --bg-900: #fcfcfc;
+  --bg-800: #f5f5f5;
+  --surface-700: #ffffff;
+  --surface-600: #fafafa;
+  --text-high: #0a0a0a;
+  --text-medium: #333333;
+  --muted-500: #999999;
+  --accent: #0008ff;
+  --accent-strong: #0006cc;
+  --glass: rgba(0, 0, 0, 0.02);
+  --border: rgba(0, 0, 0, 0.08);
+  --shadow-1: 0 6px 20px rgba(0, 0, 0, 0.08);
+  --focus: 2px solid rgba(0, 8, 255, 0.18);
+  --easing: cubic-bezier(.2, .8, .2, 1);
+  --transition-fast: 160ms var(--easing);
+  --vignette-color: rgba(0, 8, 255, 0.03);
+}
+
+/* Dark mode - luxury aesthetic */
+html[data-theme="dark"] {
+  --bg-900: #0B0F13;
+  --bg-800: #0F1418;
+  --surface-700: #101419;
+  --surface-600: #15181C;
+  --text-high: #F7F7F9;
+  --text-medium: #C9CDD1;
+  --muted-500: #5B6470;
+  --accent: #D4AF37;
+  --accent-strong: #F0C96B;
+  --glass: rgba(255, 255, 255, 0.03);
+  --border: rgba(255, 255, 255, 0.06);
+  --shadow-1: 0 6px 20px rgba(3, 8, 15, 0.6);
+  --focus: 2px solid rgba(212, 175, 55, 0.18);
+  --vignette-color: rgba(212, 175, 55, 0.02);
+}
+
 @theme {
-  --color-primary-blue: #0008ff;
-  --color-bg-white: #fcfcfc;
-  --color-text-secondary: #999999;
-  --color-border-subtle: #e5e5e5;
+  --color-primary-blue: var(--accent);
+  --color-bg-white: var(--bg-900);
+  --color-text-secondary: var(--muted-500);
+  --color-border-subtle: var(--border);
   --font-haas: 'Neue Haas Grotesk Display Pro', 'Inter', sans-serif;
 }
 
 @layer base {
+  html {
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+  }
+
   body {
-    background-color: var(--color-bg-white);
-    color: black;
+    background-color: var(--bg-900);
+    color: var(--text-high);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
     font-family: var(--font-haas);
+    line-height: 1.45;
+    letter-spacing: 0.01em;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
   }
 
   /* Premium uppercase styling */
@@ -36,6 +85,22 @@
   pre {
     text-transform: none;
   }
+
+  /* Link styling */
+  a {
+    color: var(--text-high);
+    transition: color var(--transition-fast);
+  }
+
+  a:hover {
+    color: var(--accent);
+  }
+
+  /* Focus states for accessibility */
+  *:focus-visible {
+    outline: var(--focus);
+    outline-offset: 2px;
+  }
 }
 
 @layer components {
@@ -43,19 +108,91 @@
     position: fixed;
     inset: 0;
     pointer-events: none;
-    background: radial-gradient(circle at center, transparent 0%, rgba(0, 8, 255, 0.03) 100%);
+    background: radial-gradient(circle at center, transparent 0%, var(--vignette-color) 100%);
     z-index: 50;
+    transition: background var(--transition-fast);
   }
 
-  /* Pure CSS - no @apply needed. Components use inline Tailwind classes. */
+  /* Glass panel effect */
+  .glass-panel {
+    backdrop-filter: blur(6px);
+    background: var(--glass);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-1);
+  }
+
+  /* Nav link styling */
   .nav-link {
     font-size: 0.875rem;
     font-weight: 500;
-    transition: color 0.15s ease;
+    color: var(--text-medium);
+    transition: color var(--transition-fast);
   }
 
   .nav-link:hover {
-    color: var(--color-primary-blue);
+    color: var(--accent);
+  }
+
+  /* Primary CTA button */
+  .btn-primary {
+    background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+    border-radius: 8px;
+    box-shadow: var(--shadow-1);
+    color: var(--bg-900);
+    font-weight: 700;
+    padding: 0.75rem 1.5rem;
+    transition: transform var(--transition-fast);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px);
+  }
+
+  .btn-primary:active {
+    transform: scale(0.985);
+  }
+
+  /* Card styling */
+  .card {
+    background-color: var(--surface-700);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-1);
+    transition: background-color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Theme toggle button */
+  .theme-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .theme-toggle:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .theme-toggle svg {
+    width: 18px;
+    height: 18px;
+    color: var(--text-high);
+    transition: color var(--transition-fast);
+  }
+
+  .theme-toggle:hover svg {
+    color: var(--bg-900);
   }
 }
 
@@ -66,9 +203,11 @@
 }
 
 .slider-item {
+  background-color: var(--surface-700);
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
     opacity 0.5s ease,
-    scale 0.5s ease;
+    scale 0.5s ease,
+    background-color var(--transition-fast);
   will-change: transform;
   backface-visibility: hidden;
 }
@@ -79,6 +218,11 @@
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+
   .slider-item {
     transition: none !important;
     animation: none !important;
