@@ -26,10 +26,10 @@ export default function Header() {
         </Link>
       </div>
 
-      <nav className="absolute left-1/2 -translate-x-1/2 flex gap-8 pointer-events-auto items-center">
-        <Link href="/work" className="nav-link">Work</Link>
-        <Link href="/archive" className="nav-link" style={{ color: 'var(--muted-500)' }}>Archive</Link>
-        <Link href="/info" className="nav-link" style={{ color: 'var(--muted-500)' }}>Info</Link>
+      <nav className="absolute left-1/2 -translate-x-1/2 flex gap-4 md:gap-8 pointer-events-auto items-center">
+        <Link href="/work" className="nav-link underline-reveal">Work</Link>
+        <Link href="/archive" className="nav-link underline-reveal nav-link-muted hide-mobile">Archive</Link>
+        <Link href="/info" className="nav-link underline-reveal nav-link-muted">Info</Link>
       </nav>
 
       <div className="flex items-center gap-4 pointer-events-auto">

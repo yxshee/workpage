@@ -2,7 +2,7 @@ import { personalInfo } from "@/lib/data";
 
 export default function InfoPage() {
   return (
-    <div className="min-h-screen pt-32 px-5 pb-20 max-w-4xl" style={{ backgroundColor: 'var(--bg-900)' }}>
+    <div className="min-h-screen px-5 pb-20 max-w-4xl" style={{ backgroundColor: 'var(--bg-900)', paddingTop: 'calc(var(--site-header-height) + 48px)' }}>
       <h1 className="text-7xl font-black uppercase tracking-tighter mb-12" style={{ color: 'var(--text-high)' }}>Info</h1>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">

@@ -5,20 +5,41 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { personalInfo } from "@/lib/data";
 
+// Lerp utility for smooth animations
+const lerp = (start: number, end: number, factor: number): number => start + (end - start) * factor;
+
 export default function Slider3D() {
   const containerRef = useRef<HTMLDivElement>(null);
   const rotorRef = useRef<HTMLDivElement>(null);
   const rotationRef = useRef(0);
   const speedRef = useRef(0);
   const rafRef = useRef<number | null>(null);
+  const parallaxRafRef = useRef<number | null>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  
+  // Parallax state with refs for smooth animation
+  const mouseTargetRef = useRef({ x: 0, y: 0 });
+  const mousePosRef = useRef({ x: 0, y: 0 });
+  const parallaxItemsRef = useRef<HTMLDivElement[]>([]);
   
   const items = personalInfo.projects;
   const itemCount = items.length;
   const angleStep = 360 / itemCount;
   const maxSpeed = 3.5;
+  
+  // Detect reduced motion preference
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+    
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
 
   // Continuous animation loop (never stops)
   const animate = useCallback(() => {
@@ -110,9 +131,60 @@ export default function Slider3D() {
     };
   }, [animate, maxSpeed]);
 
-  // Mouse tracking for custom cursor
+  // Mouse tracking for custom cursor AND parallax
   const handleMouseMove = (e: React.MouseEvent) => {
     setMousePosition({ x: e.clientX, y: e.clientY });
+    
+    // Update parallax target position (only if not reduced motion)
+    if (!prefersReducedMotion && containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      const cx = (e.clientX - rect.left) / rect.width;  // 0..1
+      const cy = (e.clientY - rect.top) / rect.height;  // 0..1
+      mouseTargetRef.current.x = (cx - 0.5) * 2;  // -1..1
+      mouseTargetRef.current.y = (cy - 0.5) * 2;  // -1..1
+    }
+  };
+  
+  // Parallax animation loop (separate from rotation for independence)
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+    
+    const animateParallax = () => {
+      // Smooth interpolation towards target
+      mousePosRef.current.x = lerp(mousePosRef.current.x, mouseTargetRef.current.x, 0.08);
+      mousePosRef.current.y = lerp(mousePosRef.current.y, mouseTargetRef.current.y, 0.08);
+      
+      // Apply transforms to each parallax item
+      parallaxItemsRef.current.forEach((el, i) => {
+        if (!el) return;
+        const depth = (i + 1) / itemCount;  // 0..1 depth factor
+        const tx = mousePosRef.current.x * 12 * depth;  // X translation in px
+        const ty = mousePosRef.current.y * 8 * depth;   // Y translation in px
+        const rx = mousePosRef.current.y * 4 * depth;   // rotateX
+        const ry = mousePosRef.current.x * -4 * depth;  // rotateY
+        
+        // Apply GPU-accelerated transform
+        el.style.setProperty('--parallax-x', `${tx}px`);
+        el.style.setProperty('--parallax-y', `${ty}px`);
+        el.style.setProperty('--parallax-rx', `${rx}deg`);
+        el.style.setProperty('--parallax-ry', `${ry}deg`);
+      });
+      
+      parallaxRafRef.current = requestAnimationFrame(animateParallax);
+    };
+    
+    parallaxRafRef.current = requestAnimationFrame(animateParallax);
+    
+    return () => {
+      if (parallaxRafRef.current) cancelAnimationFrame(parallaxRafRef.current);
+    };
+  }, [prefersReducedMotion, itemCount]);
+  
+  // Reset parallax position when mouse leaves
+  const handleMouseLeave = () => {
+    setIsHovering(false);
+    // Smoothly return to center
+    mouseTargetRef.current = { x: 0, y: 0 };
   };
 
   return (
@@ -121,7 +193,7 @@ export default function Slider3D() {
       className="relative w-full h-full flex items-center justify-center"
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
+      onMouseLeave={handleMouseLeave}
       style={{ backgroundColor: 'var(--bg-900)' }}
     >
       {/* 3D Carousel Container with rotor-wrapper for spacing */}
@@ -134,8 +206,6 @@ export default function Slider3D() {
           className="rotor relative preserve-3d"
           style={{ 
             transformStyle: "preserve-3d",
-            width: "400px",
-            height: "280px",
             willChange: "transform",
           }}
         >
@@ -146,12 +216,18 @@ export default function Slider3D() {
             return (
               <div
                 key={project.id}
-                className="absolute inset-0 cursor-pointer slider-item"
+                ref={(el) => { if (el) parallaxItemsRef.current[index] = el; }}
+                className="absolute inset-0 cursor-pointer slider-item parallax-item"
                 style={{
-                  transform: `rotateY(${angle}deg) translateZ(500px)`,
+                  transform: `rotateY(${angle}deg) translateZ(var(--slider-radius, 500px)) translate3d(var(--parallax-x, 0), var(--parallax-y, 0), 0) rotateX(var(--parallax-rx, 0)) rotateY(var(--parallax-ry, 0))`,
+                  ['--angle' as string]: `${angle}deg`,
                   backfaceVisibility: "hidden",
                   transformStyle: "preserve-3d",
                   willChange: "transform",
+                  ['--parallax-x' as string]: '0px',
+                  ['--parallax-y' as string]: '0px',
+                  ['--parallax-rx' as string]: '0deg',
+                  ['--parallax-ry' as string]: '0deg',
                 }}
               >
                 <div 
@@ -194,7 +270,7 @@ export default function Slider3D() {
       </div>
 
       {/* Project Info Overlay - Bottom Left - with responsive gap from rotor */}
-      <div className="absolute bottom-36 left-10 z-40 pointer-events-none" style={{ marginTop: 'clamp(48px, 8vh, 120px)' }}>
+      <div className="absolute bottom-20 md:bottom-36 left-6 md:left-10 z-40 pointer-events-none">
         <div className="flex items-center gap-4 mb-3">
           <span className="text-[10px] font-bold uppercase tracking-tighter" style={{ color: 'var(--muted-500)' }}>
             {activeIndex + 1} / {itemCount}
@@ -215,7 +291,7 @@ export default function Slider3D() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -30, opacity: 0 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="text-5xl font-black uppercase tracking-[-0.04em] leading-[0.9]"
+          className="text-4xl md:text-5xl lg:text-7xl font-black uppercase tracking-[-0.04em] leading-[0.9]"
           style={{ color: 'var(--text-high)' }}
         >
           {items[activeIndex]?.title}
