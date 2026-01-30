@@ -8,6 +8,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional: required for SSR hydration to prevent theme flash
     setMounted(true);
 
     // Initialize theme from localStorage or system preference
@@ -73,13 +74,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>("system");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional: required for SSR hydration
     setMounted(true);
-    const stored = localStorage.getItem("theme") as Theme | null;
-    setTheme(stored || "system");
   }, []);
 
   const cycleTheme = () => {
@@ -87,7 +86,6 @@ export function ThemeToggle() {
     const isDark = root.getAttribute("data-theme") === "dark";
     const newTheme: Theme = isDark ? "light" : "dark";
     
-    setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
     
     if (newTheme === "dark") {
