@@ -46,12 +46,12 @@ const QUALITY_PRESETS: Record<SketchQuality, QualityPreset> = {
 };
 
 const DEFAULT_CONFIG: RecursiveSketchConfig = {
-  speed: 0.02,
-  initialRadius: 500,
-  shrinkFactor: 0.8,
-  recursionCutoff: 9,
-  sphereSizeFactor: 25,
-  strokeAlpha: 80,
+  speed: 0.015,
+  initialRadius: 400,
+  shrinkFactor: 0.75,
+  recursionCutoff: 8,
+  sphereSizeFactor: 30,
+  strokeAlpha: 60,
   enabled: true,
   quality: "medium",
 };
@@ -144,11 +144,17 @@ function drawFallbackSketch(
     fallbackCanvas.style.width = "100%";
     fallbackCanvas.style.height = "100%";
 
-    context.fillStyle = "#000000";
-    context.fillRect(0, 0, width, height);
+    // Clear to transparent
+    context.clearRect(0, 0, width, height);
 
-    context.lineWidth = 1;
-    context.strokeStyle = `rgba(255,255,255,${config.strokeAlpha / 255})`;
+    // Theme-aware stroke color
+    const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
+    context.lineWidth = 0.8;
+    if (isDarkMode) {
+      context.strokeStyle = `rgba(255,255,255,${config.strokeAlpha / 255})`;
+    } else {
+      context.strokeStyle = `rgba(0,0,0,${config.strokeAlpha / 255})`;
+    }
 
     let radius = config.initialRadius;
     let depth = 0;
@@ -330,19 +336,38 @@ export default function RecursiveSketchBackground() {
         const P5Constructor = p5Module.default;
 
         p5Instance = new P5Constructor((p) => {
+          // Theme detection
+          const isDarkMode = () => document.documentElement.getAttribute('data-theme') === 'dark';
+          
           const drawRecursive = (radius: number, depth: number, phase: number, maxDepth: number) => {
-            p.circle(0, 0, radius * 2);
+            // Use ellipse instead of circle for WEBGL compatibility
+            p.ellipse(0, 0, radius * 2, radius * 2);
 
             p.push();
             p.translate(radius * p.cos(phase), radius * p.sin(phase), 0);
+            // Small orbiting sphere
+            p.noStroke();
+            if (isDarkMode()) {
+              p.fill(255, 255, 255, 120);
+            } else {
+              p.fill(0, 0, 0, 120);
+            }
             p.sphere(radius / currentConfig.sphereSizeFactor);
+            p.noFill();
+            // Restore stroke
+            if (isDarkMode()) {
+              p.stroke(255, 255, 255, currentConfig.strokeAlpha);
+            } else {
+              p.stroke(0, 0, 0, currentConfig.strokeAlpha);
+            }
             p.pop();
 
-            p.rotateY(phase / 4);
-            p.rotateX(phase / 4);
-
             if (radius > currentConfig.recursionCutoff && depth < maxDepth) {
+              p.push();
+              p.rotateY(phase / 6);
+              p.rotateX(phase / 8);
               drawRecursive(radius * currentConfig.shrinkFactor, depth + 1, phase, maxDepth);
+              p.pop();
             }
           };
 
@@ -350,13 +375,20 @@ export default function RecursiveSketchBackground() {
             const { width, height } = getCanvasSize();
             p.createCanvas(width, height, p.WEBGL);
             p.noFill();
-            p.strokeWeight(1);
+            p.strokeWeight(0.8);
             applyQualitySettings();
           };
 
           p.draw = () => {
-            p.background(0);
-            p.stroke(255, currentConfig.strokeAlpha);
+            // Transparent background - use clear() instead of background()
+            p.clear();
+            
+            // Theme-aware stroke color
+            if (isDarkMode()) {
+              p.stroke(255, 255, 255, currentConfig.strokeAlpha);
+            } else {
+              p.stroke(0, 0, 0, currentConfig.strokeAlpha);
+            }
 
             const phase = shouldAnimate() ? p.frameCount * currentConfig.speed : 0;
             drawRecursive(currentConfig.initialRadius, 0, phase, getMaxRecursionDepth());
@@ -377,8 +409,9 @@ export default function RecursiveSketchBackground() {
         resizeObserver.observe(hostElement);
 
         syncAnimationState();
-      } catch {
+      } catch (error) {
         // Graceful fallback for environments where WebGL/p5 initialization fails.
+        console.error("[RecursiveSketch] WebGL initialization failed, using 2D fallback:", error);
         fallbackController = drawFallbackSketch(hostElement, () => currentConfig, shouldAnimate);
       }
     };
