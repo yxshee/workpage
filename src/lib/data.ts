@@ -106,7 +106,7 @@ export const personalInfo = {
     },
     {
       id: 8,
-      title: "No-BS College Predictor",
+      title: "No BS College Predictor",
       category: "JavaScript • Decision Tool",
       year: "2026",
       image: "/images/core/page2-image4.webp",
@@ -130,7 +130,7 @@ export const personalInfo = {
       category: "Python • YOLOv8 • PDF",
       year: "2025",
       image: "/images/core/page2-image6.webp",
-      description: "AI-driven PDF layout detector that annotates multipage documents, exports structured JSON, and supports CLI-based batch processing.",
+      description: "AI driven PDF layout detector that annotates multipage documents, exports structured JSON, and supports CLI based batch processing.",
       technologies: ["Python", "YOLOv8", "PDF Processing", "CLI"],
       repoUrl: "https://github.com/yxshee/pdflayoutai"
     },

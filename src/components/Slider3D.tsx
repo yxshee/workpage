@@ -15,8 +15,6 @@ export default function Slider3D() {
   const speedRef = useRef(0);
   const rafRef = useRef<number | null>(null);
   const parallaxRafRef = useRef<number | null>(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => {
     if (typeof window === "undefined") return false;
@@ -133,8 +131,6 @@ export default function Slider3D() {
 
   // Mouse tracking for custom cursor AND parallax
   const handleMouseMove = (e: React.MouseEvent) => {
-    setMousePosition({ x: e.clientX, y: e.clientY });
-    
     // Update parallax target position (only if not reduced motion)
     if (!prefersReducedMotion && containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
@@ -182,7 +178,6 @@ export default function Slider3D() {
   
   // Reset parallax position when mouse leaves
   const handleMouseLeave = () => {
-    setIsHovering(false);
     // Smoothly return to center
     mouseTargetRef.current = { x: 0, y: 0 };
   };
@@ -192,7 +187,6 @@ export default function Slider3D() {
       ref={containerRef}
       className="relative w-full h-full flex items-center justify-center"
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={handleMouseLeave}
       style={{ backgroundColor: 'var(--bg-900)' }}
     >
@@ -270,9 +264,9 @@ export default function Slider3D() {
       </div>
 
       {/* Project Info Overlay - reserved corner space so text never overlaps cards */}
-      <div className="absolute bottom-24 md:bottom-40 left-4 md:left-8 z-50 pointer-events-none">
-        <div className="project-info-panel w-[min(92vw,780px)] md:w-[min(62vw,780px)] px-3 py-3 md:px-4 md:py-4">
-          <div className="flex items-center gap-4 mb-3">
+      <div className="absolute bottom-8 md:bottom-28 left-4 md:left-8 z-50 pointer-events-none">
+        <div className="project-info-panel w-[min(92vw,780px)] md:w-[min(62vw,780px)] h-[180px] md:h-[200px] lg:h-[220px] px-3 py-3 md:px-4 md:py-4 overflow-hidden flex flex-col items-center justify-center text-center gap-3">
+          <div className="flex items-center justify-center gap-4">
             <span className="text-[10px] font-bold uppercase tracking-tighter" style={{ color: 'var(--muted-500)' }}>
               {activeIndex + 1} / {itemCount}
             </span>
@@ -293,7 +287,7 @@ export default function Slider3D() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -30, opacity: 0 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-[-0.04em] leading-[0.9] max-w-[15ch]"
+            className="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-[-0.04em] leading-[0.9] w-full text-center"
             style={{ color: 'var(--text-high)' }}
           >
             {items[activeIndex]?.title}
@@ -303,7 +297,7 @@ export default function Slider3D() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="text-sm mt-2 max-w-[48ch]"
+            className="text-sm w-full text-center"
             style={{ color: 'var(--text-medium)' }}
           >
             {items[activeIndex]?.description}
@@ -316,24 +310,6 @@ export default function Slider3D() {
         ↓ Scroll to explore
       </div>
 
-      {/* Custom Cursor - "View" button */}
-      {isHovering && (
-        <motion.div
-          className="fixed pointer-events-none z-[100] w-24 h-24 backdrop-blur-md bg-opacity-90 rounded-full flex items-center justify-center border shadow-2xl"
-          style={{
-            left: mousePosition.x - 48,
-            top: mousePosition.y - 48,
-            backgroundColor: 'var(--accent)',
-            borderColor: 'var(--border)',
-          }}
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0, opacity: 0 }}
-          transition={{ type: "spring", stiffness: 400, damping: 25 }}
-        >
-          <span className="text-[11px] font-bold uppercase tracking-[0.2em] ml-1" style={{ color: 'var(--bg-900)' }}>View</span>
-        </motion.div>
-      )}
     </div>
   );
 }

@@ -13,25 +13,24 @@ export default function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [isEnabled, setIsEnabled] = useState(false);
+  const [isEnabled] = useState(() => {
+    if (typeof window === "undefined") return false;
+    const isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const hasFineMouse = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    return !isTouchDevice && !prefersReducedMotion && hasFineMouse;
+  });
   const posRef = useRef({ x: 0, y: 0 });
   const targetRef = useRef({ x: 0, y: 0 });
   const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
-    // Check for touch device and reduced motion
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const hasFineMouse = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    
-    if (isTouchDevice || prefersReducedMotion || !hasFineMouse) {
-      // Enable default cursor for these cases
-      document.documentElement.style.cursor = 'auto';
+    if (!isEnabled) {
+      document.documentElement.style.cursor = "auto";
       return;
     }
 
-    setIsEnabled(true);
-
+    // Check for touch device and reduced motion
     // Lerp utility
     const lerp = (start: number, end: number, factor: number) => 
       start + (end - start) * factor;
@@ -96,7 +95,7 @@ export default function CustomCursor() {
       document.documentElement.removeEventListener('mouseleave', handleMouseLeave);
       document.documentElement.removeEventListener('mouseenter', handleMouseEnter);
     };
-  }, [isVisible]);
+  }, [isEnabled, isVisible]);
 
   if (!isEnabled) return null;
 

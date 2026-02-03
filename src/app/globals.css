@@ -101,12 +101,14 @@ html[data-theme="dark"] {
     overflow-x: hidden !important;
     font-family: var(--font-haas);
     line-height: 1.45;
-    letter-spacing: 0.01em;
+    letter-spacing: 0.005em;
+    text-transform: uppercase;
     transition: background-color var(--transition-fast), color var(--transition-fast);
   }
 
   /* Hide default cursor for mouse devices only; touch/reduced-motion get normal cursor */
   @media (hover: hover) and (pointer: fine) {
+
     html,
     body,
     body * {
@@ -114,12 +116,7 @@ html[data-theme="dark"] {
     }
   }
 
-  /* VISUAL UPPERCASE (presentation only) - excludes code, inputs, .no-uppercase */
-  body:not(.no-uppercase) *:not(pre):not(code):not(input):not(textarea):not(.no-uppercase):not(script):not(style) {
-    text-transform: uppercase;
-  }
-
-  /* Preserve normal case for inputs, code, and exclusions */
+  /* Preserve normal case for inputs/code and explicit exclusions */
   input,
   textarea,
   code,
@@ -165,9 +162,10 @@ html[data-theme="dark"] {
 
   /* Nav link styling */
   .nav-link {
-    font-size: 0.875rem;
-    font-weight: 500;
+    font-size: 1rem;
+    font-weight: 600;
     color: var(--text-medium);
+    text-transform: uppercase;
     transition: color var(--transition-fast);
   }
 
@@ -274,6 +272,7 @@ html[data-theme="dark"] {
      ======================== */
   .rotor-wrapper {
     margin-bottom: clamp(96px, 13vh, 180px);
+    transform: translateY(-80px);
   }
 
   .info-section {
@@ -336,7 +335,7 @@ html[data-theme="dark"] {
 
 /* Rotor base dimensions (desktop) */
 .rotor {
-  width: 320px;
+  width: 270px;
   height: 220px;
 }
 
@@ -494,7 +493,7 @@ html[data-theme="dark"] {
 .link-hover {
   display: inline-block;
   transition: transform var(--dur-short) var(--easing-fast),
-              opacity var(--dur-short) var(--easing-fast);
+    opacity var(--dur-short) var(--easing-fast);
 }
 
 .link-hover:hover,
@@ -506,7 +505,7 @@ html[data-theme="dark"] {
 /* Subtle letter-spacing shift for headings */
 .heading-hover {
   transition: letter-spacing var(--dur-medium) var(--easing-slow),
-              color var(--transition-fast);
+    color var(--transition-fast);
 }
 
 .heading-hover:hover {
@@ -546,8 +545,8 @@ html[data-theme="dark"] {
   justify-content: center;
   transform: translate(-50%, -50%);
   transition: width var(--dur-short) var(--easing-bounce),
-              height var(--dur-short) var(--easing-bounce),
-              opacity var(--dur-short) var(--easing-fast);
+    height var(--dur-short) var(--easing-bounce),
+    opacity var(--dur-short) var(--easing-fast);
   will-change: transform, width, height;
   mix-blend-mode: difference;
 }

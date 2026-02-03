@@ -5,7 +5,7 @@ export default function WorkPage() {
   return (
     <div className="page-shell min-h-screen px-5 pb-20" style={{ backgroundColor: 'var(--bg-900)' }}>
       <div className="flex justify-between items-end mb-20">
-        <h1 className="text-8xl font-black uppercase tracking-tighter leading-[0.8]" style={{ color: 'var(--text-high)' }}>Selected<br/>Works</h1>
+        <h1 className="text-7xl md:text-8xl font-black uppercase tracking-tighter leading-[0.82]" style={{ color: 'var(--text-high)' }}>Selected<br/>Works</h1>
         <div className="text-right">
           <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: 'var(--muted-500)' }}>2021 — 2026</span>
         </div>
@@ -21,9 +21,9 @@ export default function WorkPage() {
             className="group relative flex justify-between items-center py-12 px-4 transition-colors"
             style={{ backgroundColor: 'var(--surface-700)', color: 'var(--text-high)' }}
           >
-            <div className="flex items-center gap-10">
+            <div className="flex items-center gap-8">
               <span className="text-[10px] font-black uppercase tracking-tighter opacity-40 group-hover:opacity-100" style={{ color: 'var(--text-high)' }}>0{project.id}</span>
-              <h3 className="text-4xl font-black uppercase tracking-tighter" style={{ color: 'var(--text-high)' }}>{project.title}</h3>
+              <h3 className="text-3xl md:text-4xl font-black uppercase tracking-tighter" style={{ color: 'var(--text-high)' }}>{project.title}</h3>
             </div>
             
             <div className="flex items-center gap-20">
