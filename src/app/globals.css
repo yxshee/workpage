@@ -22,7 +22,7 @@
   --easing: cubic-bezier(.2, .8, .2, 1);
   --transition-fast: 160ms var(--easing);
   --vignette-color: rgba(0, 8, 255, 0.03);
-  --cursor-color: #0008ff;
+  --cursor-color: #0000FF;
 
   /* Header Height (synced via JS) */
   --site-header-height: 72px;
@@ -60,7 +60,7 @@ html[data-theme="dark"] {
   --shadow-1: 0 6px 20px rgba(0, 0, 0, 0.8);
   --focus: 2px solid rgba(212, 175, 55, 0.18);
   --vignette-color: rgba(212, 175, 55, 0.02);
-  --cursor-color: #f5d000;
+  --cursor-color: #FFFF00;
 }
 
 @layer base {
@@ -595,17 +595,19 @@ html[data-theme="dark"] {
   left: 0;
   pointer-events: none;
   z-index: 9999;
-  border-radius: 50%;
-  background: var(--cursor-color);
   display: flex;
   align-items: center;
   justify-content: center;
   transform: translate(-50%, -50%);
-  transition: width var(--dur-short) var(--easing-bounce),
-    height var(--dur-short) var(--easing-bounce),
-    opacity var(--dur-short) var(--easing-fast);
-  will-change: transform, width, height;
-  mix-blend-mode: difference;
+  will-change: transform;
+}
+
+.cursor-dot {
+  will-change: width, height, opacity;
+}
+
+.cursor-image-wrapper {
+  will-change: opacity;
 }
 
 /* Parallax item base */
