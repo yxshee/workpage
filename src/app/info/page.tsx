@@ -1,11 +1,12 @@
 import { personalInfo } from "@/lib/data";
 
 export default function InfoPage() {
+  const hasCertifications = personalInfo.certifications?.length > 0;
   return (
-    <div className="page-shell min-h-screen px-5 pb-20 max-w-4xl" style={{ backgroundColor: 'var(--bg-900)' }}>
+    <div className="page-shell h-screen w-full px-5 overflow-hidden" style={{ backgroundColor: 'var(--bg-900)' }}>
       <h1 className="text-6xl md:text-7xl font-black uppercase tracking-tighter mb-12" style={{ color: 'var(--text-high)' }}>Info</h1>
       
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
+      <div className={`grid grid-cols-1 ${hasCertifications ? "lg:grid-cols-2" : ""} gap-20`}>
         <div>
           <p className="text-lg md:text-xl font-medium leading-relaxed mb-10" style={{ color: 'var(--text-medium)' }}>
             {personalInfo.summary}
@@ -43,19 +44,21 @@ export default function InfoPage() {
           </div>
         </div>
 
-        <div>
-          <section>
-            <h3 className="text-xs font-black uppercase tracking-[0.14em] mb-4" style={{ color: 'var(--muted-500)' }}>Certifications</h3>
-            <div className="space-y-2">
-              {personalInfo.certifications.map((cert) => (
-                <div key={cert.id} className="flex justify-between pb-2" style={{ borderBottom: '1px solid var(--border)' }}>
-                  <span className="text-xs font-semibold" style={{ color: 'var(--text-high)' }}>{cert.title}</span>
-                  <span className="text-xs font-semibold" style={{ color: 'var(--muted-500)' }}>{cert.year}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-        </div>
+        {hasCertifications && (
+          <div>
+            <section>
+              <h3 className="text-xs font-black uppercase tracking-[0.14em] mb-4" style={{ color: 'var(--muted-500)' }}>Certifications</h3>
+              <div className="space-y-2">
+                {personalInfo.certifications.map((cert) => (
+                  <div key={cert.id} className="flex justify-between pb-2" style={{ borderBottom: '1px solid var(--border)' }}>
+                    <span className="text-xs font-semibold" style={{ color: 'var(--text-high)' }}>{cert.title}</span>
+                    <span className="text-xs font-semibold" style={{ color: 'var(--muted-500)' }}>{cert.year}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </div>
+        )}
       </div>
     </div>
   );
