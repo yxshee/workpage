@@ -105,11 +105,13 @@ html[data-theme="dark"] {
     transition: background-color var(--transition-fast), color var(--transition-fast);
   }
 
-  /* Hide default cursor site-wide; custom cursor UI is rendered in JS where needed */
-  html,
-  body,
-  body * {
-    cursor: none !important;
+  /* Hide default cursor for mouse devices only; touch/reduced-motion get normal cursor */
+  @media (hover: hover) and (pointer: fine) {
+    html,
+    body,
+    body * {
+      cursor: none !important;
+    }
   }
 
   /* VISUAL UPPERCASE (presentation only) - excludes code, inputs, .no-uppercase */
@@ -285,7 +287,7 @@ html[data-theme="dark"] {
   .project-info-panel {
     background: linear-gradient(90deg, var(--bg-900) 0%, transparent 100%);
     background: linear-gradient(90deg, color-mix(in srgb, var(--bg-900) 95%, transparent) 0%, transparent 100%);
-    border: 1px solid var(--border);
+    border: 5px solid var(--border);
     backdrop-filter: blur(4px);
   }
 }
@@ -334,8 +336,8 @@ html[data-theme="dark"] {
 
 /* Rotor base dimensions (desktop) */
 .rotor {
-  width: 400px;
-  height: 280px;
+  width: 320px;
+  height: 220px;
 }
 
 /* ========================
@@ -372,14 +374,14 @@ html[data-theme="dark"] {
    MOBILE FIXES
    ======================== */
 
-/* Base slider radius (desktop) */
+/* Base slider radius (desktop) - increased for less clutter */
 :root {
-  --slider-radius: 500px;
+  --slider-radius: 690px;
 }
 
 @media screen and (max-width: 767px) {
   :root {
-    --slider-radius: 350px;
+    --slider-radius: 300px;
   }
 
   .page-shell {
@@ -391,8 +393,8 @@ html[data-theme="dark"] {
   }
 
   .rotor {
-    width: 280px !important;
-    height: 196px !important;
+    width: 240px !important;
+    height: 168px !important;
   }
 
   /* Title sizing fix */
@@ -480,9 +482,74 @@ html[data-theme="dark"] {
   transition: transform var(--dur-medium) var(--easing-slow);
 }
 
-.underline-reveal:hover::after {
+.underline-reveal:hover::after,
+.underline-reveal:focus-visible::after {
   transform: scaleX(1);
   transform-origin: left;
+}
+
+/* ========================
+   LINK MICRO-INTERACTIONS
+   ======================== */
+.link-hover {
+  display: inline-block;
+  transition: transform var(--dur-short) var(--easing-fast),
+              opacity var(--dur-short) var(--easing-fast);
+}
+
+.link-hover:hover,
+.link-hover:focus-visible {
+  transform: translateY(-1px);
+  opacity: 0.85;
+}
+
+/* Subtle letter-spacing shift for headings */
+.heading-hover {
+  transition: letter-spacing var(--dur-medium) var(--easing-slow),
+              color var(--transition-fast);
+}
+
+.heading-hover:hover {
+  letter-spacing: 0.02em;
+}
+
+/* Arrow nudge on hover */
+.arrow-nudge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.arrow-nudge::after {
+  content: '→';
+  display: inline-block;
+  transition: transform var(--dur-short) var(--easing-fast);
+}
+
+.arrow-nudge:hover::after {
+  transform: translateX(4px);
+}
+
+/* ========================
+   CUSTOM CURSOR STYLES
+   ======================== */
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 50%;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+  transition: width var(--dur-short) var(--easing-bounce),
+              height var(--dur-short) var(--easing-bounce),
+              opacity var(--dur-short) var(--easing-fast);
+  will-change: transform, width, height;
+  mix-blend-mode: difference;
 }
 
 /* Parallax item base */

@@ -31,13 +31,13 @@ export default function WorkPage() {
               <span className="text-xs font-bold uppercase tracking-tight" style={{ color: 'var(--text-high)' }}>{project.year}</span>
             </div>
 
-            {/* Hover Reveal Image - instant swap, no transition */}
-            <div className="project-image absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-80 opacity-0 group-hover:opacity-100 pointer-events-none shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden z-50">
+            {/* Hover Reveal Image - smaller with subtle shrink on hover */}
+            <div className="project-image absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-64 opacity-0 group-hover:opacity-100 scale-100 group-hover:scale-[0.97] pointer-events-none shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden z-50 transition-all duration-300 ease-out">
               <Image
                 src={project.image}
                 alt={project.title}
                 fill
-                sizes="256px"
+                sizes="192px"
                 className="object-cover"
                 loading="lazy"
                 decoding="async"

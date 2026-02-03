@@ -271,7 +271,7 @@ personalInfo = {
   // Social Media
   socials: {
     instagram: "https://instagram.com/yxshdogra"
-    linkedin: "https://linkedin.com/in/yashdogra"
+    linkedin: "https://www.linkedin.com/in/yxshdogra/"
     github: "https://github.com/yxshee"
   }
   

@@ -8,13 +8,13 @@ export default function Footer() {
       </div>
 
       <div className="flex gap-4 pointer-events-auto">
-        <a href={personalInfo.socials.instagram} target="_blank" rel="noreferrer" className="text-[10px] font-bold uppercase tracking-tighter transition-colors" style={{ color: 'var(--text-high)' }}>Instagram</a>
-        <a href={personalInfo.socials.linkedin} target="_blank" rel="noreferrer" className="text-[10px] font-bold uppercase tracking-tighter transition-colors" style={{ color: 'var(--text-high)' }}>LinkedIn</a>
-        <a href={personalInfo.socials.github} target="_blank" rel="noreferrer" className="text-[10px] font-bold uppercase tracking-tighter transition-colors" style={{ color: 'var(--text-high)' }}>GitHub</a>
+        <a href={personalInfo.socials.instagram} target="_blank" rel="noreferrer" className="text-[10px] font-bold uppercase tracking-tighter link-hover underline-reveal" style={{ color: 'var(--text-high)' }}>Instagram</a>
+        <a href={personalInfo.socials.linkedin} target="_blank" rel="noreferrer" className="text-[10px] font-bold uppercase tracking-tighter link-hover underline-reveal" style={{ color: 'var(--text-high)' }}>LinkedIn</a>
+        <a href={personalInfo.socials.github} target="_blank" rel="noreferrer" className="text-[10px] font-bold uppercase tracking-tighter link-hover underline-reveal" style={{ color: 'var(--text-high)' }}>GitHub</a>
       </div>
 
       <div className="flex flex-col items-end pointer-events-auto">
-        <a href={`mailto:${personalInfo.email}`} className="text-[10px] font-bold uppercase tracking-tighter transition-colors" style={{ color: 'var(--text-high)' }}>{personalInfo.email}</a>
+        <a href={`mailto:${personalInfo.email}`} className="text-[10px] font-bold uppercase tracking-tighter link-hover underline-reveal" style={{ color: 'var(--text-high)' }}>{personalInfo.email}</a>
         <span className="text-[10px] font-bold uppercase tracking-tighter" style={{ color: 'var(--muted-500)' }}>{personalInfo.phone}</span>
       </div>
     </footer>

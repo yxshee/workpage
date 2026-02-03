@@ -27,8 +27,8 @@ This repository is a personal portfolio built on Next.js App Router. Optimize fo
   - Use `.page-shell` for top spacing on non-home pages.
 - Never allow section headings to visually collapse into the fixed header while scrolling.
 - Home carousel title/description panel must stay in a reserved area and not collide with rotating cards.
-- Default system cursor is intentionally hidden site-wide; preserve this unless explicitly asked to revert.
-- Work page project hover image reveal is intentionally **non-animated** (instant swap).
+- Custom cursor is site-wide via `CustomCursor.tsx`; hidden for touch devices and reduced-motion.
+- Work page project hover image has subtle shrink effect (`scale-[0.97]`) with transition.
 
 ## 5) Project Linking Rules
 - Work list links should point to external repo URLs (`project.repoUrl`) when available.

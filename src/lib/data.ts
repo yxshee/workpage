@@ -6,7 +6,7 @@ export const personalInfo = {
   phone: "+91 7876205914",
   socials: {
     instagram: "https://instagram.com/yxshdogra",
-    linkedin: "https://linkedin.com/in/yashdogra",
+    linkedin: "https://www.linkedin.com/in/yxshdogra/",
     github: "https://github.com/yxshee",
   },
   resumeUrl: "/YashDogra_Resume.pdf",

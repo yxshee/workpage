@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import CustomCursor from "@/components/CustomCursor";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://yashdogra.dev"),
@@ -84,6 +85,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <ThemeProvider>
+          <CustomCursor />
           <div className="vignette" />
           <Header />
           <main className="site-content">{children}</main>

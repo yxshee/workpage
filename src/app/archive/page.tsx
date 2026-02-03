@@ -6,11 +6,11 @@ export default function ArchivePage() {
     <div className="page-shell min-h-screen px-5 pb-20" style={{ backgroundColor: 'var(--bg-900)' }}>
       <h1 className="text-7xl font-black uppercase tracking-tighter mb-16" style={{ color: 'var(--text-high)' }}>Archive</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {personalInfo.archive.map((item) => (
           <div 
             key={item.id} 
-            className="group relative aspect-[4/3] overflow-hidden"
+            className="group relative aspect-[3/4] overflow-hidden"
             style={{ backgroundColor: 'var(--surface-600)' }}
           >
             {item.image && (
@@ -18,8 +18,8 @@ export default function ArchivePage() {
                 src={item.image}
                 alt={item.title}
                 fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-cover transition-transform duration-700 ease-[0.23,1,0.32,1] group-hover:scale-110"
+                sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                className="object-cover transition-transform duration-700 ease-[0.23,1,0.32,1] group-hover:scale-105"
                 loading="lazy"
                 decoding="async"
                 quality={85}
