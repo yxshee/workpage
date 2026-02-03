@@ -3,7 +3,14 @@ import { personalInfo } from "@/lib/data";
 export default function InfoPage() {
   const hasCertifications = personalInfo.certifications?.length > 0;
   return (
-    <div className="page-shell h-screen w-full px-5 overflow-hidden" style={{ backgroundColor: 'var(--bg-900)' }}>
+    <div
+      className="w-full px-5 overflow-hidden"
+      style={{
+        backgroundColor: "var(--bg-900)",
+        paddingTop: "calc(var(--site-header-height) + 32px)",
+        minHeight: "calc(100vh - (var(--site-header-height) + 32px))",
+      }}
+    >
       <h1 className="text-6xl md:text-7xl uppercase tracking-tighter mb-12" style={{ color: 'var(--text-high)' }}>Info</h1>
       
       <div className={`grid grid-cols-1 ${hasCertifications ? "lg:grid-cols-2" : ""} gap-20`}>
