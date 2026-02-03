@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { personalInfo } from "@/lib/data";
 
@@ -16,6 +16,7 @@ export default function OrbitCarousel() {
   const rotationRafRef = useRef<number | null>(null);
   const parallaxLoopRafRef = useRef<number | null>(null);
   const [activeProjectIndex, setActiveProjectIndex] = useState(0);
+  const [showDetails, setShowDetails] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => {
     if (typeof window === "undefined") return false;
     return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -188,7 +189,6 @@ export default function OrbitCarousel() {
       className="relative w-full h-full flex items-center justify-center"
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
-      style={{ backgroundColor: 'var(--bg-900)' }}
     >
       {/* 3D Carousel Container with orbit-carousel spacing */}
       <div 
@@ -263,14 +263,26 @@ export default function OrbitCarousel() {
         </div>
       </div>
 
-      {/* Project Info Overlay - reserved corner space so text never overlaps cards */}
-      <div className="absolute bottom-8 md:bottom-28 left-4 md:left-8 z-50 pointer-events-none">
-        <div className="orbit-carousel__info-panel w-[min(92vw,780px)] md:w-[min(62vw,780px)] h-[180px] md:h-[200px] lg:h-[220px] px-3 py-3 md:px-4 md:py-4 overflow-hidden flex flex-col items-center justify-center text-center gap-3">
-          <div className="flex items-center justify-center gap-4">
+      {/* Project Info Overlay - Flex container for Title Box and Detail Box */}
+      <div className="absolute bottom-8 md:bottom-28 left-4 md:left-8 z-50 flex items-end gap-2 pointer-events-none">
+        
+        {/* BIG BOX: Project Title & Progress */}
+        <div 
+          className="orbit-carousel__info-panel w-[min(92vw,500px)] h-[180px] md:h-[200px] lg:h-[220px] px-6 py-6 md:px-8 md:py-8 overflow-hidden flex flex-col justify-between items-start text-left pointer-events-auto transition-all duration-300 border backdrop-blur-md"
+          style={{ 
+            backgroundColor: 'var(--bg-card)', 
+            borderColor: 'var(--border)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
+          }}
+          onMouseEnter={() => setShowDetails(true)}
+          onMouseLeave={() => setShowDetails(false)}
+        >
+          {/* Header: Counter & Progress */}
+          <div className="w-full flex items-center gap-4">
             <span className="text-[10px] font-bold uppercase tracking-tighter" style={{ color: 'var(--muted-500)' }}>
               {activeProjectIndex + 1} / {projectCount}
             </span>
-            <div className="w-16 h-[1px] relative overflow-hidden" style={{ backgroundColor: 'var(--border)' }}>
+            <div className="flex-1 h-[1px] relative overflow-hidden" style={{ backgroundColor: 'var(--border)' }}>
               <motion.div
                 className="absolute inset-0"
                 style={{
@@ -281,28 +293,63 @@ export default function OrbitCarousel() {
             </div>
           </div>
 
+          {/* Title */}
           <motion.h2
             key={activeProjectIndex}
-            initial={{ y: 30, opacity: 0 }}
+            initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -30, opacity: 0 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-[-0.04em] leading-[0.9] w-full text-center"
+            exit={{ y: -20, opacity: 0 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-[-0.04em] leading-[0.9] w-full text-left mt-2"
             style={{ color: 'var(--text-high)' }}
           >
             {projects[activeProjectIndex]?.title}
           </motion.h2>
-          <motion.p
-            key={`desc-${activeProjectIndex}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="text-sm w-full text-center"
-            style={{ color: 'var(--text-medium)' }}
-          >
-            {projects[activeProjectIndex]?.description}
-          </motion.p>
+
+          {/* Prompt to Hover (Optional visual cue handled by cursor, but keeping it clean) */}
+          <div className="w-full"></div> 
         </div>
+
+        {/* DETAIL BOX: Description (Reveals on Hover) */}
+        <AnimatePresence>
+          {showDetails && (
+            <motion.div
+              initial={{ opacity: 0, width: 0, x: -20 }}
+              animate={{ opacity: 1, width: 340, x: 0 }}
+              exit={{ opacity: 0, width: 0, x: -20 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="hidden md:flex h-[180px] md:h-[200px] lg:h-[220px] px-6 py-6 overflow-hidden flex-col justify-center gap-4 text-left pointer-events-auto border backdrop-blur-md origin-left"
+              style={{ 
+                backgroundColor: 'var(--bg-card)', 
+                borderColor: 'var(--border)',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.2)'
+              }}
+            >
+              <motion.div 
+                className="w-[300px]" // Fixed width inner container to prevent text reflow during width animation
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.1 }}
+              >
+                 <span className="block text-[10px] uppercase tracking-widest mb-2" style={{ color: 'var(--accent)' }}>
+                   About Project
+                 </span>
+                 <p className="text-sm leading-relaxed" style={{ color: 'var(--text-medium)' }}>
+                   {projects[activeProjectIndex]?.description}
+                 </p>
+                 
+                 {/* Tech Stack Tags */}
+                 <div className="flex flex-wrap gap-2 mt-4">
+                   {projects[activeProjectIndex]?.technologies?.slice(0, 3).map((tech, i) => (
+                     <span key={i} className="text-[9px] px-2 py-1 uppercase tracking-wide border rounded-full" style={{ borderColor: 'var(--border)', color: 'var(--muted-500)' }}>
+                       {tech}
+                     </span>
+                   ))}
+                 </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Scroll Indicator */}
