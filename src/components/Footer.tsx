@@ -10,7 +10,7 @@ export default function Footer() {
   return (
     <footer className={`footer-bar ${isHomePage ? "footer-bar--home" : ""} fixed bottom-0 left-0 w-full grid grid-cols-3 items-center px-6 py-4 z-[100] pointer-events-none`}>
       <div className="flex flex-col gap-1 pointer-events-auto justify-self-start">
-        <span className="text-sm font-bold uppercase tracking-tighter" style={{ color: 'var(--muted-500)' }}>© 2025 {personalInfo.name}</span>
+        <span className="text-sm font-bold uppercase tracking-tighter" style={{ color: 'var(--muted-500)' }}>© 2026 {personalInfo.name}</span>
       </div>
 
       <div className="flex gap-6 pointer-events-auto justify-self-center">
