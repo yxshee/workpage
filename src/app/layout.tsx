@@ -93,7 +93,6 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
         <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fcfcfc" />
         <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000" />
       </head>

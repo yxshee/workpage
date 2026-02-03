@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState, type MouseEvent as ReactMouseEvent } from "react";
 
 interface Project {
   id: number;
@@ -27,29 +27,65 @@ interface WorkListProps {
  * - Resets cursor to normal mode
  */
 export default function WorkList({ projects, githubUrl }: WorkListProps) {
-  // Preload project images on mount for flicker-free switching
+  const [isFinePointer, setIsFinePointer] = useState(false);
+  const [expandedProjectId, setExpandedProjectId] = useState<number | null>(null);
+
   useEffect(() => {
+    if (typeof window === "undefined") return;
+    const pointerQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const syncPointerMode = () => setIsFinePointer(pointerQuery.matches);
+    syncPointerMode();
+    pointerQuery.addEventListener("change", syncPointerMode);
+    return () => pointerQuery.removeEventListener("change", syncPointerMode);
+  }, []);
+
+  // Preload project images on desktop/fine pointers for flicker-free cursor previews.
+  useEffect(() => {
+    if (!isFinePointer) return;
     projects.forEach((project) => {
       const img = new Image();
       img.src = project.image;
     });
-  }, [projects]);
+  }, [projects, isFinePointer]);
 
   const handleMouseEnter = useCallback((imageSrc: string) => {
+    if (!isFinePointer) return;
     if (typeof window !== "undefined" && window.CursorController) {
       window.CursorController.setMode("image", imageSrc);
     }
-  }, []);
+  }, [isFinePointer]);
 
   const handleMouseLeave = useCallback(() => {
+    if (!isFinePointer) return;
     if (typeof window !== "undefined" && window.CursorController) {
       window.CursorController.reset();
     }
-  }, []);
+  }, [isFinePointer]);
+
+  useEffect(() => {
+    if (isFinePointer) {
+      setExpandedProjectId(null);
+    } else if (typeof window !== "undefined" && window.CursorController) {
+      window.CursorController.reset();
+    }
+  }, [isFinePointer]);
+
+  const handleTouchRowClick = useCallback(
+    (event: ReactMouseEvent<HTMLAnchorElement>, projectId: number) => {
+      if (isFinePointer) return;
+      if (expandedProjectId !== projectId) {
+        event.preventDefault();
+        setExpandedProjectId(projectId);
+        return;
+      }
+      setExpandedProjectId(null);
+    },
+    [expandedProjectId, isFinePointer],
+  );
 
   return (
     <div 
-      className="grid grid-cols-1 gap-px border-t border-b" 
+      className="work-list grid grid-cols-1 gap-px border-t border-b" 
       style={{ backgroundColor: 'var(--border)', borderColor: 'var(--border)' }}
       onMouseLeave={handleMouseLeave}
     >
@@ -59,19 +95,33 @@ export default function WorkList({ projects, githubUrl }: WorkListProps) {
           href={project.repoUrl ?? githubUrl}
           target="_blank"
           rel="noreferrer"
-          className="group relative flex justify-between items-center py-12 px-4 transition-colors"
+          className={`work-list__row group relative transition-colors ${expandedProjectId === project.id ? "is-expanded" : ""}`}
           style={{ backgroundColor: 'var(--surface-700)', color: 'var(--text-high)' }}
           onMouseEnter={() => handleMouseEnter(project.image)}
+          onClick={(event) => handleTouchRowClick(event, project.id)}
         >
-          <div className="flex items-center gap-8">
-            <span className="text-[10px] uppercase tracking-tighter opacity-40 group-hover:opacity-100" style={{ color: 'var(--text-high)' }}>0{project.id}</span>
-            <h3 className="text-3xl md:text-4xl uppercase tracking-tighter" style={{ color: 'var(--text-high)' }}>{project.title}</h3>
+          <div className="work-list__primary">
+            <span className="work-list__index" style={{ color: 'var(--text-high)' }}>0{project.id}</span>
+            <h3 className="work-list__title" style={{ color: 'var(--text-high)' }}>{project.title}</h3>
           </div>
           
-          <div className="flex items-center gap-20">
-            <span className="text-xs uppercase tracking-tight opacity-40 group-hover:opacity-100" style={{ color: 'var(--text-high)' }}>{project.category}</span>
-            <span className="text-xs uppercase tracking-tight" style={{ color: 'var(--text-high)' }}>{project.year}</span>
+          <div className="work-list__meta">
+            <span className="work-list__category" style={{ color: 'var(--text-high)' }}>{project.category}</span>
+            <span className="work-list__year" style={{ color: 'var(--text-high)' }}>{project.year}</span>
           </div>
+
+          {!isFinePointer && (
+            <div className={`work-list__preview ${expandedProjectId === project.id ? "is-visible" : ""}`}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={project.image}
+                alt={`${project.title} preview`}
+                loading="lazy"
+                decoding="async"
+                draggable={false}
+              />
+            </div>
+          )}
         </a>
       ))}
     </div>
