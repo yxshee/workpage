@@ -8,14 +8,14 @@ import { personalInfo } from "@/lib/data";
 // Lerp utility for smooth animations
 const lerp = (start: number, end: number, factor: number): number => start + (end - start) * factor;
 
-export default function Slider3D() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const rotorRef = useRef<HTMLDivElement>(null);
-  const rotationRef = useRef(0);
-  const speedRef = useRef(0);
-  const rafRef = useRef<number | null>(null);
-  const parallaxRafRef = useRef<number | null>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+export default function OrbitCarousel() {
+  const carouselContainerRef = useRef<HTMLDivElement>(null);
+  const carouselTrackRef = useRef<HTMLDivElement>(null);
+  const trackRotationRef = useRef(0);
+  const rotationVelocityRef = useRef(0);
+  const rotationRafRef = useRef<number | null>(null);
+  const parallaxLoopRafRef = useRef<number | null>(null);
+  const [activeProjectIndex, setActiveProjectIndex] = useState(0);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => {
     if (typeof window === "undefined") return false;
     return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -23,13 +23,13 @@ export default function Slider3D() {
   
   // Parallax state with refs for smooth animation
   const mouseTargetRef = useRef({ x: 0, y: 0 });
-  const mousePosRef = useRef({ x: 0, y: 0 });
-  const parallaxItemsRef = useRef<HTMLDivElement[]>([]);
+  const mouseCurrentRef = useRef({ x: 0, y: 0 });
+  const parallaxCardRefs = useRef<HTMLDivElement[]>([]);
   
-  const items = personalInfo.projects;
-  const itemCount = items.length;
-  const angleStep = 360 / itemCount;
-  const maxSpeed = 3.5;
+  const projects = personalInfo.projects;
+  const projectCount = projects.length;
+  const degreesPerProject = 360 / projectCount;
+  const maxRotationVelocity = 3.5;
   
   // Detect reduced motion preference
   useEffect(() => {
@@ -42,100 +42,100 @@ export default function Slider3D() {
   }, []);
 
   useEffect(() => {
-    const animate = () => {
+    const animateRotation = () => {
       // Apply friction
-      speedRef.current *= 0.95;
+      rotationVelocityRef.current *= 0.95;
 
       // Update rotation
-      rotationRef.current = (rotationRef.current + speedRef.current) % 360;
-      if (rotationRef.current < 0) rotationRef.current += 360;
+      trackRotationRef.current = (trackRotationRef.current + rotationVelocityRef.current) % 360;
+      if (trackRotationRef.current < 0) trackRotationRef.current += 360;
 
-      // Apply to rotor element (GPU-accelerated)
-      if (rotorRef.current) {
-        rotorRef.current.style.transform = `translateZ(0) rotateY(${rotationRef.current}deg)`;
+      // Apply to carousel track element (GPU-accelerated)
+      if (carouselTrackRef.current) {
+        carouselTrackRef.current.style.transform = `translateZ(0) rotateY(${trackRotationRef.current}deg)`;
       }
 
       // Calculate active index based on rotation
-      const normalizedRotation = ((rotationRef.current % 360) + 360) % 360;
-      const index = Math.round(normalizedRotation / angleStep) % itemCount;
-      setActiveIndex((itemCount - index) % itemCount);
+      const normalizedRotation = ((trackRotationRef.current % 360) + 360) % 360;
+      const index = Math.round(normalizedRotation / degreesPerProject) % projectCount;
+      setActiveProjectIndex((projectCount - index) % projectCount);
 
-      rafRef.current = requestAnimationFrame(animate);
+      rotationRafRef.current = requestAnimationFrame(animateRotation);
     };
 
     // Start continuous animation
-    rafRef.current = requestAnimationFrame(animate);
+    rotationRafRef.current = requestAnimationFrame(animateRotation);
     
     // Wheel handler - maps vertical scroll to rotation
-    const handleWheel = (e: WheelEvent) => {
+    const onWheel = (event: WheelEvent) => {
       // Only capture on Home page
-      if (!containerRef.current?.closest('.home-root')) return;
+      if (!carouselContainerRef.current?.closest('.orbit-page')) return;
       
-      const delta = e.deltaY || e.deltaX;
-      speedRef.current += (delta > 0 ? 1 : -1) * 0.15;
-      speedRef.current = Math.max(-maxSpeed, Math.min(maxSpeed, speedRef.current));
+      const delta = event.deltaY || event.deltaX;
+      rotationVelocityRef.current += (delta > 0 ? 1 : -1) * 0.15;
+      rotationVelocityRef.current = Math.max(-maxRotationVelocity, Math.min(maxRotationVelocity, rotationVelocityRef.current));
       
       // IMPORTANT: Prevent vertical page scroll on Home
-      e.preventDefault();
+      event.preventDefault();
     };
     
     // Touch handlers for mobile
-    let startY: number | null = null;
+    let touchStartY: number | null = null;
     
-    const handleTouchStart = (e: TouchEvent) => {
-      if (!containerRef.current?.closest('.home-root')) return;
-      startY = e.touches[0].clientY;
+    const onTouchStart = (event: TouchEvent) => {
+      if (!carouselContainerRef.current?.closest('.orbit-page')) return;
+      touchStartY = event.touches[0].clientY;
     };
     
-    const handleTouchMove = (e: TouchEvent) => {
-      if (!containerRef.current?.closest('.home-root') || startY === null) return;
+    const onTouchMove = (event: TouchEvent) => {
+      if (!carouselContainerRef.current?.closest('.orbit-page') || touchStartY === null) return;
       
-      const dy = e.touches[0].clientY - startY;
-      speedRef.current += -dy * 0.012;
-      speedRef.current = Math.max(-maxSpeed, Math.min(maxSpeed, speedRef.current));
-      startY = e.touches[0].clientY;
+      const dy = event.touches[0].clientY - touchStartY;
+      rotationVelocityRef.current += -dy * 0.012;
+      rotationVelocityRef.current = Math.max(-maxRotationVelocity, Math.min(maxRotationVelocity, rotationVelocityRef.current));
+      touchStartY = event.touches[0].clientY;
       
       // Prevent vertical scroll on Home
-      e.preventDefault();
+      event.preventDefault();
     };
     
-    const handleTouchEnd = () => {
-      startY = null;
+    const onTouchEnd = () => {
+      touchStartY = null;
     };
     
     // Add event listeners with passive: false to allow preventDefault
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    window.addEventListener('touchstart', handleTouchStart, { passive: true });
-    window.addEventListener('touchmove', handleTouchMove, { passive: false });
-    window.addEventListener('touchend', handleTouchEnd, { passive: true });
+    window.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: false });
+    window.addEventListener('touchend', onTouchEnd, { passive: true });
     
     // Visibility handling
-    const handleVisibilityChange = () => {
+    const onVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
-        if (rafRef.current) cancelAnimationFrame(rafRef.current);
+        if (rotationRafRef.current) cancelAnimationFrame(rotationRafRef.current);
       } else {
-        rafRef.current = requestAnimationFrame(animate);
+        rotationRafRef.current = requestAnimationFrame(animateRotation);
       }
     };
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener('visibilitychange', onVisibilityChange);
     
     return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      window.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('touchend', handleTouchEnd);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      if (rotationRafRef.current) cancelAnimationFrame(rotationRafRef.current);
+      window.removeEventListener('wheel', onWheel);
+      window.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('touchend', onTouchEnd);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
     };
-  }, [angleStep, itemCount, maxSpeed]);
+  }, [degreesPerProject, projectCount, maxRotationVelocity]);
 
   // Mouse tracking for custom cursor AND parallax
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const onMouseMove = (event: React.MouseEvent) => {
     // Update parallax target position (only if not reduced motion)
-    if (!prefersReducedMotion && containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      const cx = (e.clientX - rect.left) / rect.width;  // 0..1
-      const cy = (e.clientY - rect.top) / rect.height;  // 0..1
+    if (!prefersReducedMotion && carouselContainerRef.current) {
+      const rect = carouselContainerRef.current.getBoundingClientRect();
+      const cx = (event.clientX - rect.left) / rect.width;  // 0..1
+      const cy = (event.clientY - rect.top) / rect.height;  // 0..1
       mouseTargetRef.current.x = (cx - 0.5) * 2;  // -1..1
       mouseTargetRef.current.y = (cy - 0.5) * 2;  // -1..1
     }
@@ -145,73 +145,73 @@ export default function Slider3D() {
   useEffect(() => {
     if (prefersReducedMotion) return;
     
-    const animateParallax = () => {
+    const animateParallaxLoop = () => {
       // Smooth interpolation towards target
-      mousePosRef.current.x = lerp(mousePosRef.current.x, mouseTargetRef.current.x, 0.08);
-      mousePosRef.current.y = lerp(mousePosRef.current.y, mouseTargetRef.current.y, 0.08);
+      mouseCurrentRef.current.x = lerp(mouseCurrentRef.current.x, mouseTargetRef.current.x, 0.08);
+      mouseCurrentRef.current.y = lerp(mouseCurrentRef.current.y, mouseTargetRef.current.y, 0.08);
       
-      // Apply transforms to each parallax item
-      parallaxItemsRef.current.forEach((el, i) => {
-        if (!el) return;
-        const depth = (i + 1) / itemCount;  // 0..1 depth factor
-        const tx = mousePosRef.current.x * 12 * depth;  // X translation in px
-        const ty = mousePosRef.current.y * 8 * depth;   // Y translation in px
-        const rx = mousePosRef.current.y * 4 * depth;   // rotateX
-        const ry = mousePosRef.current.x * -4 * depth;  // rotateY
+      // Apply transforms to each parallax card
+      parallaxCardRefs.current.forEach((parallaxCardElement, cardIndex) => {
+        if (!parallaxCardElement) return;
+        const depth = (cardIndex + 1) / projectCount;  // 0..1 depth factor
+        const tx = mouseCurrentRef.current.x * 12 * depth;  // X translation in px
+        const ty = mouseCurrentRef.current.y * 8 * depth;   // Y translation in px
+        const rx = mouseCurrentRef.current.y * 4 * depth;   // rotateX
+        const ry = mouseCurrentRef.current.x * -4 * depth;  // rotateY
         
         // Apply GPU-accelerated transform
-        el.style.setProperty('--parallax-x', `${tx}px`);
-        el.style.setProperty('--parallax-y', `${ty}px`);
-        el.style.setProperty('--parallax-rx', `${rx}deg`);
-        el.style.setProperty('--parallax-ry', `${ry}deg`);
+        parallaxCardElement.style.setProperty('--parallax-x', `${tx}px`);
+        parallaxCardElement.style.setProperty('--parallax-y', `${ty}px`);
+        parallaxCardElement.style.setProperty('--parallax-rx', `${rx}deg`);
+        parallaxCardElement.style.setProperty('--parallax-ry', `${ry}deg`);
       });
       
-      parallaxRafRef.current = requestAnimationFrame(animateParallax);
+      parallaxLoopRafRef.current = requestAnimationFrame(animateParallaxLoop);
     };
     
-    parallaxRafRef.current = requestAnimationFrame(animateParallax);
+    parallaxLoopRafRef.current = requestAnimationFrame(animateParallaxLoop);
     
     return () => {
-      if (parallaxRafRef.current) cancelAnimationFrame(parallaxRafRef.current);
+      if (parallaxLoopRafRef.current) cancelAnimationFrame(parallaxLoopRafRef.current);
     };
-  }, [prefersReducedMotion, itemCount]);
+  }, [prefersReducedMotion, projectCount]);
   
   // Reset parallax position when mouse leaves
-  const handleMouseLeave = () => {
+  const onMouseLeave = () => {
     // Smoothly return to center
     mouseTargetRef.current = { x: 0, y: 0 };
   };
 
   return (
     <div 
-      ref={containerRef}
+      ref={carouselContainerRef}
       className="relative w-full h-full flex items-center justify-center"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
       style={{ backgroundColor: 'var(--bg-900)' }}
     >
-      {/* 3D Carousel Container with rotor-wrapper for spacing */}
+      {/* 3D Carousel Container with orbit-carousel spacing */}
       <div 
-        className="rotor-wrapper relative w-full h-full flex items-center justify-center"
+        className="orbit-carousel relative w-full h-full flex items-center justify-center"
         style={{ perspective: "1400px" }}
       >
         <div
-          ref={rotorRef}
-          className="rotor relative preserve-3d"
+          ref={carouselTrackRef}
+          className="orbit-carousel__track relative u-preserve-3d"
           style={{ 
             transformStyle: "preserve-3d",
             willChange: "transform",
           }}
         >
-          {items.map((project, index) => {
-            const angle = index * angleStep;
-            const isActive = index === activeIndex;
+          {projects.map((project, projectIndex) => {
+            const angle = projectIndex * degreesPerProject;
+            const isActive = projectIndex === activeProjectIndex;
             
             return (
               <div
                 key={project.id}
-                ref={(el) => { if (el) parallaxItemsRef.current[index] = el; }}
-                className="absolute inset-0 cursor-pointer slider-item parallax-item"
+                ref={(parallaxCardElement) => { if (parallaxCardElement) parallaxCardRefs.current[projectIndex] = parallaxCardElement; }}
+                className="absolute inset-0 cursor-pointer orbit-carousel__card orbit-carousel__card--parallax"
                 style={{
                   transform: `rotateY(${angle}deg) translateZ(var(--slider-radius, 500px)) translate3d(var(--parallax-x, 0), var(--parallax-y, 0), 0) rotateX(var(--parallax-rx, 0)) rotateY(var(--parallax-ry, 0))`,
                   ['--angle' as string]: `${angle}deg`,
@@ -251,7 +251,7 @@ export default function Slider3D() {
                   {/* Card Footer */}
                   <div className="p-3 flex justify-between items-center" style={{ backgroundColor: 'var(--surface-700)', borderTop: '1px solid var(--border)' }}>
                     <div>
-                      <span className="block text-[10px] font-bold tracking-tight" style={{ color: 'var(--text-high)' }}>PROJ—0{index + 1}</span>
+                      <span className="block text-[10px] font-bold tracking-tight" style={{ color: 'var(--text-high)' }}>PROJ—0{projectIndex + 1}</span>
                       <span className="text-[9px] uppercase tracking-tight" style={{ color: 'var(--muted-500)' }}>{project.category}</span>
                     </div>
                     <span className="text-[10px] font-bold" style={{ color: 'var(--text-high)' }}>{project.year}</span>
@@ -265,16 +265,16 @@ export default function Slider3D() {
 
       {/* Project Info Overlay - reserved corner space so text never overlaps cards */}
       <div className="absolute bottom-8 md:bottom-28 left-4 md:left-8 z-50 pointer-events-none">
-        <div className="project-info-panel w-[min(92vw,780px)] md:w-[min(62vw,780px)] h-[180px] md:h-[200px] lg:h-[220px] px-3 py-3 md:px-4 md:py-4 overflow-hidden flex flex-col items-center justify-center text-center gap-3">
+        <div className="orbit-carousel__info-panel w-[min(92vw,780px)] md:w-[min(62vw,780px)] h-[180px] md:h-[200px] lg:h-[220px] px-3 py-3 md:px-4 md:py-4 overflow-hidden flex flex-col items-center justify-center text-center gap-3">
           <div className="flex items-center justify-center gap-4">
             <span className="text-[10px] font-bold uppercase tracking-tighter" style={{ color: 'var(--muted-500)' }}>
-              {activeIndex + 1} / {itemCount}
+              {activeProjectIndex + 1} / {projectCount}
             </span>
             <div className="w-16 h-[1px] relative overflow-hidden" style={{ backgroundColor: 'var(--border)' }}>
               <motion.div
                 className="absolute inset-0"
                 style={{
-                  width: `${((activeIndex + 1) / itemCount) * 100}%`,
+                  width: `${((activeProjectIndex + 1) / projectCount) * 100}%`,
                   backgroundColor: 'var(--accent)'
                 }}
               />
@@ -282,7 +282,7 @@ export default function Slider3D() {
           </div>
 
           <motion.h2
-            key={activeIndex}
+            key={activeProjectIndex}
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -30, opacity: 0 }}
@@ -290,17 +290,17 @@ export default function Slider3D() {
             className="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-[-0.04em] leading-[0.9] w-full text-center"
             style={{ color: 'var(--text-high)' }}
           >
-            {items[activeIndex]?.title}
+            {projects[activeProjectIndex]?.title}
           </motion.h2>
           <motion.p
-            key={`desc-${activeIndex}`}
+            key={`desc-${activeProjectIndex}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
             className="text-sm w-full text-center"
             style={{ color: 'var(--text-medium)' }}
           >
-            {items[activeIndex]?.description}
+            {projects[activeProjectIndex]?.description}
           </motion.p>
         </div>
       </div>

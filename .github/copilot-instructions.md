@@ -7,7 +7,7 @@ This is a **Next.js 16+ App Router** portfolio site built with React 19, TypeScr
 ### Key Architectural Decisions
 - **Single Source of Truth**: All content lives in `src/lib/data.ts` (`personalInfo` object). Never hardcode personal info, projects, certifications, or skills in components.
 - **CSS Variables over Tailwind classes**: Theme colors use CSS custom properties defined in `globals.css` (e.g., `var(--text-high)`, `var(--bg-900)`) for seamless light/dark switching.
-- **Client Components**: Animation-heavy components (`Slider3D`, `ThemeProvider`, `Header`) use `"use client"` directive.
+- **Client Components**: Animation-heavy components (`OrbitCarousel`, `ThemeProvider`, `Header`) use `"use client"` directive.
 
 ## Project Structure
 
@@ -57,8 +57,8 @@ src/
 ```
 
 ### Header + Spacing Rules
-- Fixed header must use `site-header` class (see `src/components/Header.tsx`)
-- Header-height sync targets `.site-header` in `src/app/layout.tsx` and `src/lib/header-sync.ts`
+- Fixed header must use `header-bar` class (see `src/components/Header.tsx`)
+- Header-height sync targets `.header-bar` in `src/app/layout.tsx` and `src/lib/header-sync.ts`
 - Avoid inline page padding top on route pages; use `.page-shell` from `globals.css`
 
 ### Adding New Content
@@ -86,26 +86,25 @@ npm run lint   # ESLint with Next.js rules
 
 ### Framer Motion Usage
 - Wrap animated elements in `motion.div`
-- Use `prefersReducedMotion` check for accessibility (see `Slider3D.tsx`)
+- Use `prefersReducedMotion` check for accessibility (see `OrbitCarousel.tsx`)
 
-### 3D Carousel (Slider3D)
+### 3D Carousel (OrbitCarousel)
 - Controlled by scroll/touch events on home page
 - Uses CSS 3D transforms with `transform-style: preserve-3d`
 - Continuous RAF loop for smooth animation
-- Keep title/description inside the reserved `project-info-panel` area to prevent overlap with rotating cards
+- Keep title/description inside the reserved `orbit-carousel__info-panel` area to prevent overlap with rotating cards
 
 ## UX Invariants
 - Work page hover preview: image appears on hover with subtle shrink effect (`scale-[0.97]`)
 - Custom cursor is site-wide via `CustomCursor.tsx` component in layout; respects touch devices and reduced-motion
 - Default system cursor hidden via `globals.css` only for `(hover: hover) and (pointer: fine)` devices
-- Link micro-interactions use `.underline-reveal` and `.link-hover` classes for consistent hover effects
+- Link micro-interactions use `.link-underline` and `.link-hoverable` classes for consistent hover effects
 - External project links should use `project.repoUrl` with fallback to `personalInfo.socials.github`
 
 ## Micro-interaction Classes
 | Class | Effect |
 |-------|--------|
-| `.underline-reveal` | Animated underline on hover |
-| `.link-hover` | Subtle translateY + opacity shift |
+| `.link-underline` | Animated underline on hover |
+| `.link-hoverable` | Subtle translateY + opacity shift |
 | `.arrow-nudge` | Arrow slides right on hover |
 | `.heading-hover` | Letter-spacing shift on hover |
-

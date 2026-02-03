@@ -23,7 +23,7 @@ export default function InfoPage() {
                   href={personalInfo.resumeUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-block text-sm font-semibold link-hover underline-reveal arrow-nudge"
+                  className="inline-block text-sm font-semibold link-hoverable link-underline arrow-nudge"
                   style={{ color: 'var(--text-high)' }}
                 >
                   Resume
@@ -33,11 +33,11 @@ export default function InfoPage() {
             
             <section>
               <h3 className="text-xs font-black uppercase tracking-[0.14em] mb-4" style={{ color: 'var(--muted-500)' }}>Education</h3>
-              {personalInfo.education.map((edu, i) => (
-                <div key={i} className="mb-4">
-                  <p className="text-sm font-semibold" style={{ color: 'var(--text-high)' }}>{edu.institution}</p>
-                  <p className="text-xs font-semibold" style={{ color: 'var(--muted-500)' }}>{edu.degree}</p>
-                  <p className="text-xs mt-1" style={{ color: 'var(--muted-500)' }}>{edu.period} • {edu.score}</p>
+              {personalInfo.education.map((educationEntry, educationIndex) => (
+                <div key={educationIndex} className="mb-4">
+                  <p className="text-sm font-semibold" style={{ color: 'var(--text-high)' }}>{educationEntry.institution}</p>
+                  <p className="text-xs font-semibold" style={{ color: 'var(--muted-500)' }}>{educationEntry.degree}</p>
+                  <p className="text-xs mt-1" style={{ color: 'var(--muted-500)' }}>{educationEntry.period} • {educationEntry.score}</p>
                 </div>
               ))}
             </section>
@@ -49,10 +49,10 @@ export default function InfoPage() {
             <section>
               <h3 className="text-xs font-black uppercase tracking-[0.14em] mb-4" style={{ color: 'var(--muted-500)' }}>Certifications</h3>
               <div className="space-y-2">
-                {personalInfo.certifications.map((cert) => (
-                  <div key={cert.id} className="flex justify-between pb-2" style={{ borderBottom: '1px solid var(--border)' }}>
-                    <span className="text-xs font-semibold" style={{ color: 'var(--text-high)' }}>{cert.title}</span>
-                    <span className="text-xs font-semibold" style={{ color: 'var(--muted-500)' }}>{cert.year}</span>
+                {personalInfo.certifications.map((certification) => (
+                  <div key={certification.id} className="flex justify-between pb-2" style={{ borderBottom: '1px solid var(--border)' }}>
+                    <span className="text-xs font-semibold" style={{ color: 'var(--text-high)' }}>{certification.title}</span>
+                    <span className="text-xs font-semibold" style={{ color: 'var(--muted-500)' }}>{certification.year}</span>
                   </div>
                 ))}
               </div>
