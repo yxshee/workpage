@@ -598,7 +598,6 @@ html[data-theme="dark"] {
   display: flex;
   align-items: center;
   justify-content: center;
-  transform: translate(-50%, -50%);
   will-change: transform;
 }
 
