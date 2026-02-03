@@ -86,6 +86,7 @@ html[data-theme="dark"] {
 
   html {
     transition: background-color var(--transition-fast), color var(--transition-fast);
+    scroll-padding-top: calc(var(--site-header-height) + 24px);
   }
 
   html[data-theme="dark"] {
@@ -102,6 +103,13 @@ html[data-theme="dark"] {
     line-height: 1.45;
     letter-spacing: 0.01em;
     transition: background-color var(--transition-fast), color var(--transition-fast);
+  }
+
+  /* Hide default cursor site-wide; custom cursor UI is rendered in JS where needed */
+  html,
+  body,
+  body * {
+    cursor: none !important;
   }
 
   /* VISUAL UPPERCASE (presentation only) - excludes code, inputs, .no-uppercase */
@@ -232,6 +240,21 @@ html[data-theme="dark"] {
   }
 
   /* ========================
+     LAYOUT: HEADER + PAGE SHELL
+     ======================== */
+  .site-header {
+    background: var(--bg-900);
+    background: color-mix(in srgb, var(--bg-900) 96%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-shell {
+    min-height: 100vh;
+    padding-top: calc(var(--site-header-height) + 56px);
+  }
+
+  /* ========================
      LAYOUT: FOOTER GAP
      ======================== */
   .site-content {
@@ -248,7 +271,7 @@ html[data-theme="dark"] {
      LAYOUT: ROTOR-INFO GAP
      ======================== */
   .rotor-wrapper {
-    margin-bottom: clamp(48px, 8vh, 120px);
+    margin-bottom: clamp(96px, 13vh, 180px);
   }
 
   .info-section {
@@ -256,7 +279,14 @@ html[data-theme="dark"] {
   }
 
   .home-inner .rotor-wrapper {
-    margin-bottom: clamp(32px, 6vh, 80px);
+    margin-bottom: clamp(72px, 11vh, 150px);
+  }
+
+  .project-info-panel {
+    background: linear-gradient(90deg, var(--bg-900) 0%, transparent 100%);
+    background: linear-gradient(90deg, color-mix(in srgb, var(--bg-900) 95%, transparent) 0%, transparent 100%);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(4px);
   }
 }
 
@@ -350,6 +380,10 @@ html[data-theme="dark"] {
 @media screen and (max-width: 767px) {
   :root {
     --slider-radius: 350px;
+  }
+
+  .page-shell {
+    padding-top: calc(var(--site-header-height) + 28px) !important;
   }
 
   .content-with-header {

@@ -51,7 +51,7 @@ const themeScript = `
   }
   
   function syncHeaderHeight() {
-    const header = document.querySelector('header');
+    const header = document.querySelector('.site-header');
     if (!header) return;
     const h = header.getBoundingClientRect().height;
     document.documentElement.style.setProperty('--site-header-height', Math.ceil(h) + 'px');
@@ -93,4 +93,3 @@ export default function RootLayout({
     </html>
   );
 }
-

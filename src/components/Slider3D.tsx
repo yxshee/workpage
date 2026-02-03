@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { personalInfo } from "@/lib/data";
@@ -18,7 +18,10 @@ export default function Slider3D() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  });
   
   // Parallax state with refs for smooth animation
   const mouseTargetRef = useRef({ x: 0, y: 0 });
@@ -34,38 +37,34 @@ export default function Slider3D() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReducedMotion(mediaQuery.matches);
     
     const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
     mediaQuery.addEventListener('change', handler);
     return () => mediaQuery.removeEventListener('change', handler);
   }, []);
 
-  // Continuous animation loop (never stops)
-  // eslint-disable-next-line react-hooks/immutability -- Recursive RAF pattern: animate is captured by closure at call time, not definition
-  const animate = useCallback(() => {
-    // Apply friction
-    speedRef.current *= 0.95;
-    
-    // Update rotation
-    rotationRef.current = (rotationRef.current + speedRef.current) % 360;
-    if (rotationRef.current < 0) rotationRef.current += 360;
-    
-    // Apply to rotor element (GPU-accelerated)
-    if (rotorRef.current) {
-      rotorRef.current.style.transform = `translateZ(0) rotateY(${rotationRef.current}deg)`;
-    }
-    
-    // Calculate active index based on rotation
-    const normalizedRotation = ((rotationRef.current % 360) + 360) % 360;
-    const index = Math.round(normalizedRotation / angleStep) % itemCount;
-    setActiveIndex((itemCount - index) % itemCount);
-    
-    // Continue animation
-    rafRef.current = requestAnimationFrame(animate);
-  }, [angleStep, itemCount]);
-
   useEffect(() => {
+    const animate = () => {
+      // Apply friction
+      speedRef.current *= 0.95;
+
+      // Update rotation
+      rotationRef.current = (rotationRef.current + speedRef.current) % 360;
+      if (rotationRef.current < 0) rotationRef.current += 360;
+
+      // Apply to rotor element (GPU-accelerated)
+      if (rotorRef.current) {
+        rotorRef.current.style.transform = `translateZ(0) rotateY(${rotationRef.current}deg)`;
+      }
+
+      // Calculate active index based on rotation
+      const normalizedRotation = ((rotationRef.current % 360) + 360) % 360;
+      const index = Math.round(normalizedRotation / angleStep) % itemCount;
+      setActiveIndex((itemCount - index) % itemCount);
+
+      rafRef.current = requestAnimationFrame(animate);
+    };
+
     // Start continuous animation
     rafRef.current = requestAnimationFrame(animate);
     
@@ -130,7 +129,7 @@ export default function Slider3D() {
       window.removeEventListener('touchend', handleTouchEnd);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [animate, maxSpeed]);
+  }, [angleStep, itemCount, maxSpeed]);
 
   // Mouse tracking for custom cursor AND parallax
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -270,43 +269,46 @@ export default function Slider3D() {
         </div>
       </div>
 
-      {/* Project Info Overlay - Bottom Left - with responsive gap from rotor */}
-      <div className="absolute bottom-20 md:bottom-36 left-6 md:left-10 z-40 pointer-events-none">
-        <div className="flex items-center gap-4 mb-3">
-          <span className="text-[10px] font-bold uppercase tracking-tighter" style={{ color: 'var(--muted-500)' }}>
-            {activeIndex + 1} / {itemCount}
-          </span>
-          <div className="w-12 h-[1px] relative overflow-hidden" style={{ backgroundColor: 'var(--border)' }}>
-            <motion.div 
-              className="absolute inset-0"
-              style={{ 
-                width: `${((activeIndex + 1) / itemCount) * 100}%`,
-                backgroundColor: 'var(--accent)'
-              }}
-            />
+      {/* Project Info Overlay - reserved corner space so text never overlaps cards */}
+      <div className="absolute bottom-24 md:bottom-40 left-4 md:left-8 z-50 pointer-events-none">
+        <div className="project-info-panel w-[min(92vw,780px)] md:w-[min(62vw,780px)] px-3 py-3 md:px-4 md:py-4">
+          <div className="flex items-center gap-4 mb-3">
+            <span className="text-[10px] font-bold uppercase tracking-tighter" style={{ color: 'var(--muted-500)' }}>
+              {activeIndex + 1} / {itemCount}
+            </span>
+            <div className="w-16 h-[1px] relative overflow-hidden" style={{ backgroundColor: 'var(--border)' }}>
+              <motion.div
+                className="absolute inset-0"
+                style={{
+                  width: `${((activeIndex + 1) / itemCount) * 100}%`,
+                  backgroundColor: 'var(--accent)'
+                }}
+              />
+            </div>
           </div>
+
+          <motion.h2
+            key={activeIndex}
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -30, opacity: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-[-0.04em] leading-[0.9] max-w-[15ch]"
+            style={{ color: 'var(--text-high)' }}
+          >
+            {items[activeIndex]?.title}
+          </motion.h2>
+          <motion.p
+            key={`desc-${activeIndex}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-sm mt-2 max-w-[48ch]"
+            style={{ color: 'var(--text-medium)' }}
+          >
+            {items[activeIndex]?.description}
+          </motion.p>
         </div>
-        <motion.h2
-          key={activeIndex}
-          initial={{ y: 30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -30, opacity: 0 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="text-4xl md:text-5xl lg:text-7xl font-black uppercase tracking-[-0.04em] leading-[0.9]"
-          style={{ color: 'var(--text-high)' }}
-        >
-          {items[activeIndex]?.title}
-        </motion.h2>
-        <motion.p
-          key={`desc-${activeIndex}`}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="text-sm mt-2 max-w-[300px]"
-          style={{ color: 'var(--text-medium)' }}
-        >
-          {items[activeIndex]?.description}
-        </motion.p>
       </div>
 
       {/* Scroll Indicator */}

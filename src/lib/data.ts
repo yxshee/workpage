@@ -7,8 +7,9 @@ export const personalInfo = {
   socials: {
     instagram: "https://instagram.com/yxshdogra",
     linkedin: "https://linkedin.com/in/yashdogra",
-    github: "https://github.com/yashdogra",
+    github: "https://github.com/yxshee",
   },
+  resumeUrl: "/YashDogra_Resume.pdf",
   summary: "Computer Science undergraduate proficient in Python and C++ with hands-on experience in ML frameworks for NLP and computer vision. Specializing in advanced AI techniques and full-stack web development to solve real-world problems.",
   education: [
     {
@@ -40,7 +41,8 @@ export const personalInfo = {
       year: "2024",
       image: "/images/core/image1.webp",
       description: "Real-time campus navigation and e-rickshaw tracking with landmark-based routing. Achieved 90% ETA prediction accuracy and reduced route computation latency by 40% via BFS optimization and Redis caching.",
-      technologies: ["React", "Node.js", "MongoDB", "Leaflet", "Redis", "OAuth 2.0", "JWT"]
+      technologies: ["React", "Node.js", "MongoDB", "Leaflet", "Redis", "OAuth 2.0", "JWT"],
+      repoUrl: "https://github.com/yxshee/mapmitra"
     },
     {
       id: 2,
@@ -49,7 +51,8 @@ export const personalInfo = {
       year: "2024",
       image: "/images/core/image2.webp",
       description: "Developed a text summarization tool using the T5 Transformer model and XLSum dataset with focus on Punjabi. Achieved ROUGE-1 of 54.38 and ROUGE-L of 53.57 post fine-tuning.",
-      technologies: ["Python", "Transformers", "ROUGE", "HuggingFace"]
+      technologies: ["Python", "Transformers", "ROUGE", "HuggingFace"],
+      repoUrl: "https://github.com/yxshee/summarization-nlp"
     },
     {
       id: 3,
@@ -58,7 +61,8 @@ export const personalInfo = {
       year: "2023",
       image: "/images/core/image3.webp",
       description: "Built a real-world toxicity detection model using Kaggle dataset. Employed TF-IDF and Naive Bayes classifier, achieving 95% test accuracy and 0.95 F1-score with real-time Streamlit interface.",
-      technologies: ["Python", "Streamlit", "TF-IDF", "Naive Bayes"]
+      technologies: ["Python", "Streamlit", "TF-IDF", "Naive Bayes"],
+      repoUrl: "https://github.com/yxshee/toxic-terminator"
     },
     {
       id: 4,
@@ -67,7 +71,88 @@ export const personalInfo = {
       year: "2025",
       image: "/images/core/image4.webp",
       description: "Published paper: 'From Confusion to Clarity: Optimizing Navigation and Transport Systems in Educational Campuses' in Lecture Notes in Networks and Systems, presented at ICICC 2025, Singapore.",
-      technologies: ["Research", "Academic Writing", "Data Analysis"]
+      technologies: ["Research", "Academic Writing", "Data Analysis"],
+      repoUrl: "https://github.com/yxshee"
+    },
+    {
+      id: 5,
+      title: "TravelPage",
+      category: "Next.js • TypeScript • GSAP",
+      year: "2026",
+      image: "/images/core/page2-image1.webp",
+      description: "Immersive travel portfolio built with Next.js, featuring smooth GSAP transitions, custom cursor behavior, and sequential storytelling sections.",
+      technologies: ["Next.js", "TypeScript", "GSAP", "UI Animation"],
+      repoUrl: "https://github.com/yxshee/travelpage"
+    },
+    {
+      id: 6,
+      title: "PromptDJ",
+      category: "TypeScript • Creative AI UI",
+      year: "2026",
+      image: "/images/core/page2-image2.webp",
+      description: "DJ-inspired web app for mixing, managing, and remixing AI prompts with an interactive interface focused on fast prompt experimentation.",
+      technologies: ["TypeScript", "React", "Prompt Engineering", "UI Design"],
+      repoUrl: "https://github.com/yxshee/promptdj"
+    },
+    {
+      id: 7,
+      title: "Realtime Face Attendance",
+      category: "Python • OpenCV • ML",
+      year: "2026",
+      image: "/images/core/page2-image3.webp",
+      description: "Automated attendance platform that enrolls and recognizes faces in real time, then records attendance with streamlined operator workflows.",
+      technologies: ["Python", "OpenCV", "Face Recognition", "Computer Vision"],
+      repoUrl: "https://github.com/yxshee/realtime-face-attendance"
+    },
+    {
+      id: 8,
+      title: "No-BS College Predictor",
+      category: "JavaScript • Decision Tool",
+      year: "2026",
+      image: "/images/core/page2-image4.webp",
+      description: "Fast JEE college prediction utility built for zero-friction results: no signups, minimal inputs, and straightforward recommendation outputs.",
+      technologies: ["JavaScript", "Data Mapping", "Frontend UX"],
+      repoUrl: "https://github.com/yxshee/no-bs-college-predictor"
+    },
+    {
+      id: 9,
+      title: "Chatbot LangChain",
+      category: "RAG • FAISS • Gemini",
+      year: "2026",
+      image: "/images/core/page2-image5.webp",
+      description: "Regulation-focused RAG chatbot that answers RBI NBFC queries using vector retrieval over official guideline chunks and LLM responses.",
+      technologies: ["Python", "LangChain", "FAISS", "RAG", "Gemini API"],
+      repoUrl: "https://github.com/yxshee/chatbot-langchain"
+    },
+    {
+      id: 10,
+      title: "PDFLayoutAI",
+      category: "Python • YOLOv8 • PDF",
+      year: "2025",
+      image: "/images/core/page2-image6.webp",
+      description: "AI-driven PDF layout detector that annotates multipage documents, exports structured JSON, and supports CLI-based batch processing.",
+      technologies: ["Python", "YOLOv8", "PDF Processing", "CLI"],
+      repoUrl: "https://github.com/yxshee/pdflayoutai"
+    },
+    {
+      id: 11,
+      title: "Kaleidoscope",
+      category: "TypeScript • p5.js",
+      year: "2026",
+      image: "/images/core/page2-image7.webp",
+      description: "Interactive generative art experience built with p5.js and TypeScript, designed around responsive symmetry and motion-driven visuals.",
+      technologies: ["TypeScript", "p5.js", "Generative Art"],
+      repoUrl: "https://github.com/yxshee/kaleidoscope"
+    },
+    {
+      id: 12,
+      title: "Listify",
+      category: "Flutter • Dart",
+      year: "2026",
+      image: "/images/core/image5.webp",
+      description: "Cross-platform shopping list app with streamlined list management, quick item workflows, and clean mobile-first information hierarchy.",
+      technologies: ["Flutter", "Dart", "Mobile UI", "State Management"],
+      repoUrl: "https://github.com/yxshee/listify"
     }
   ],
   certifications: [
@@ -95,7 +180,7 @@ export const personalInfo = {
     { id: 101, title: "ICICC 2025 Research Paper Presentation", year: "2025", type: "Publication", image: "/images/core/page3-image1.webp" },
     { id: 102, title: "Gold Medal - Inter-departmental Football", year: "2024", type: "Sports", image: "/images/core/page3-image2.webp" },
     { id: 103, title: "Silver Medal - Inter-departmental Chess", year: "2024", type: "Sports", image: "/images/core/page3-image3.webp" },
-    { id: 104, title: "Head of Logistics - Girl Up Patiala", year: "2023-2024", type: "Leadership", image: "/images/core/page3-image4.webp" }
+    { id: 104, title: "Head of Logistics - Girl Up Patiala", year: "2023", type: "Leadership", image: "/images/core/page3-image4.webp" }
   ],
   heroImage: "/images/core/thegreats.webp"
 };

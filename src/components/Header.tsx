@@ -19,7 +19,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 w-full flex justify-between items-start p-5 z-[100] pointer-events-none bg-transparent">
+    <header className="site-header fixed top-0 left-0 w-full flex justify-between items-start p-5 z-[120] pointer-events-none">
       <div className="pointer-events-auto">
         <Link href="/" className="text-sm font-black tracking-tight uppercase leading-none" style={{ color: 'var(--text-high)' }}>
           {personalInfo.name}

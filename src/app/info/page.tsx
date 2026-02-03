@@ -2,7 +2,7 @@ import { personalInfo } from "@/lib/data";
 
 export default function InfoPage() {
   return (
-    <div className="min-h-screen px-5 pb-20 max-w-4xl" style={{ backgroundColor: 'var(--bg-900)', paddingTop: 'calc(var(--site-header-height) + 48px)' }}>
+    <div className="page-shell min-h-screen px-5 pb-20 max-w-4xl" style={{ backgroundColor: 'var(--bg-900)' }}>
       <h1 className="text-7xl font-black uppercase tracking-tighter mb-12" style={{ color: 'var(--text-high)' }}>Info</h1>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
@@ -18,6 +18,15 @@ export default function InfoPage() {
                 <p className="text-sm font-bold uppercase" style={{ color: 'var(--text-high)' }}>{personalInfo.email}</p>
                 <p className="text-sm font-bold uppercase" style={{ color: 'var(--muted-500)' }}>{personalInfo.phone}</p>
                 <p className="text-sm font-bold uppercase" style={{ color: 'var(--muted-500)' }}>{personalInfo.location}</p>
+                <a
+                  href={personalInfo.resumeUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-block text-sm font-bold uppercase"
+                  style={{ color: 'var(--text-high)' }}
+                >
+                  Resume
+                </a>
               </div>
             </section>
             
