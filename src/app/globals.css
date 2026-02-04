@@ -301,7 +301,7 @@ pre,
 }
 
 .page-title {
-  margin: 0 0 var(--section-gap);
+  margin: 0 7vw 0 0 ;
   font-size: var(--h1-size);
   line-height: var(--line-tight);
   letter-spacing: -0.03em;
