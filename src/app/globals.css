@@ -146,6 +146,25 @@ body {
   transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
+/* Hide scrollbars globally while preserving scroll */
+html,
+body,
+* {
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE/Edge legacy */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari, Opera */
+  width: 0;
+  height: 0;
+}
+
 h1,
 h2,
 h3,
@@ -247,9 +266,14 @@ pre,
 }
 
 .page-shell--info {
-  height: 100vh;
+  height: calc(100dvh - var(--site-header-height));
   min-height: auto;
+  margin-top: var(--site-header-height);
+  padding-top: 0;
+  padding-bottom: var(--space-4);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .page-heading {
@@ -441,10 +465,9 @@ pre,
 
 .recursive-sketch-bg canvas,
 .recursive-sketch-fallback {
-  width: 100% !important;
-  height: 100% !important;
   display: block;
   pointer-events: none;
+  /* Do not use width/height 100% - causes blur from CSS scaling */
 }
 
 .orbit-carousel__viewport {
@@ -499,9 +522,17 @@ pre,
   transform: scale(1);
 }
 
+.orbit-carousel__card-shell.is-active .orbit-carousel__image {
+  filter: blur(0);
+}
+
 .orbit-carousel__card-shell:not(.is-active) {
-  opacity: 0.751;
+  /* opacity: 0.75; */
   transform: scale(0.7);
+}
+
+.orbit-carousel__card-shell:not(.is-active) .orbit-carousel__image {
+  filter: blur(8px);
 }
 
 .orbit-carousel__image-wrap {
@@ -512,7 +543,7 @@ pre,
 }
 
 .orbit-carousel__image {
-  transition: transform var(--dur-long) var(--easing-slow);
+  transition: transform var(--dur-long) var(--easing-slow), filter var(--dur-medium) var(--easing-medium);
 }
 
 .orbit-carousel__image-overlay {
@@ -570,7 +601,7 @@ pre,
 }
 
 .orbit-carousel--compact .orbit-carousel__card.is-active .orbit-carousel__card-shell {
-  opacity: 1;
+  opacity: 1.01;
   transform: scale(1);
 }
 
@@ -630,7 +661,7 @@ pre,
 .orbit-carousel__title {
   margin: 0;
   width: 100%;
-  font-size: var(--orbit-title-size);
+  font-size: calc(var(--orbit-title-size) * var(--orbit-title-scale, 1));
   line-height: var(--line-tight);
   letter-spacing: -0.04em;
   min-height: calc(var(--line-tight) * 2em);
