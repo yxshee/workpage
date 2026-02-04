@@ -66,13 +66,13 @@ export const personalInfo = {
     },
     {
       id: 4,
-      title: "Campus Navigation Research",
-      category: "Research • Publication",
-      year: "2025",
+      title: "Speech Command Recognition",
+      category: "CNN • TensorFlow • Audio",
+      year: "2024",
       image: "/images/core/image4.webp",
-      description: "Published paper: 'From Confusion to Clarity: Optimizing Navigation and Transport Systems in Educational Campuses' in Lecture Notes in Networks and Systems, presented at ICICC 2025, Singapore.",
-      technologies: ["Research", "Academic Writing", "Data Analysis"],
-      repoUrl: "https://github.com/yxshee"
+      description: "Speech command recognition using CNNs with preprocessing, model training, and performance evaluation on the TensorFlow dataset. Features audio processing and deep learning classification.",
+      technologies: ["Python", "TensorFlow", "CNN", "Librosa", "Deep Learning"],
+      repoUrl: "https://github.com/yxshee/speech-command-recognition"
     },
     {
       id: 5,
@@ -153,8 +153,39 @@ export const personalInfo = {
       description: "Cross platform shopping list app with streamlined list management, quick item workflows, and clean mobile first information hierarchy.",
       technologies: ["Flutter", "Dart", "Mobile UI", "State Management"],
       repoUrl: "https://github.com/yxshee/listify"
+    },
+    {
+      id: 13,
+      title: "MetaScrub",
+      category: "JavaScript • Privacy Tool",
+      year: "2025",
+      image: "/images/core/image6.webp",
+      description: "Remove all metadata from images in your browser, ensuring privacy and safe sharing. Client side processing with no server uploads.",
+      technologies: ["JavaScript", "Canvas API", "EXIF", "Privacy"],
+      repoUrl: "https://github.com/yxshee/metascrub"
+    },
+    {
+      id: 14,
+      title: "Handwritten Text Recognition",
+      category: "Deep Learning • OCR",
+      year: "2025",
+      image: "/images/core/image7.webp",
+      description: "Deep learning based approach to recognizing handwritten text from images using neural networks and image preprocessing techniques.",
+      technologies: ["Python", "TensorFlow", "CNN", "OCR", "Image Processing"],
+      repoUrl: "https://github.com/yxshee/handwritten-text-recognition"
+    },
+    {
+      id: 15,
+      title: "Fake Currency Detector",
+      category: "Python • OpenCV • SSIM",
+      year: "2024",
+      image: "/images/core/page3-image1.webp",
+      description: "Python based system to detect counterfeit INR 500 and 2000 notes using image processing techniques like ORB feature matching and SSIM similarity.",
+      technologies: ["Python", "OpenCV", "ORB", "SSIM", "Image Processing"],
+      repoUrl: "https://github.com/yxshee/fake-currency-detector"
     }
   ],
+
   certifications: [
     { id: 1, title: "NVIDIA Fundamentals of Accelerated Computing with CUDA Python", year: "2025", issuer: "NVIDIA", image: "/images/core/page3-image1.webp" },
     { id: 2, title: "NVIDIA Generative AI with Diffusion Models", year: "2025", issuer: "NVIDIA", image: "/images/core/page3-image2.webp" },
