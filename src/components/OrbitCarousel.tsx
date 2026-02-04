@@ -321,11 +321,6 @@ export default function OrbitCarousel() {
       <div className="orbit-carousel__overlay">
         <div
           className="orbit-carousel__info-panel"
-          style={{
-            backgroundColor: "var(--surface-700)",
-            borderColor: "var(--border)",
-            boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
-          }}
           onMouseEnter={() => {
             if (!isCompactLayout && hasFinePointer) setShowDetails(true);
           }}

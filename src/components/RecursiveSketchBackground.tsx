@@ -42,7 +42,7 @@ type P5Instance = InstanceType<P5Module["default"]>;
 const QUALITY_PRESETS: Record<SketchQuality, QualityPreset> = {
   low: { dprCap: 1.5, maxRecursionDepth: 8, sphereDetail: 8 },
   medium: { dprCap: 2, maxRecursionDepth: 12, sphereDetail: 12 },
-  high: { dprCap: 2.5, maxRecursionDepth: 16, sphereDetail: 16 },
+  high: { dprCap: 3, maxRecursionDepth: 16, sphereDetail: 20 },
 };
 
 const DEFAULT_CONFIG: RecursiveSketchConfig = {
@@ -138,6 +138,7 @@ function drawFallbackSketch(
     const config = getConfig();
     const width = Math.max(1, hostElement.clientWidth);
     const height = Math.max(1, hostElement.clientHeight);
+    const responsiveRadius = Math.max(width, height) * 0.55;
 
     fallbackCanvas.width = width;
     fallbackCanvas.height = height;
@@ -156,7 +157,7 @@ function drawFallbackSketch(
       context.strokeStyle = `rgba(0,0,0,${config.strokeAlpha / 255})`;
     }
 
-    let radius = config.initialRadius;
+    let radius = clamp(Math.max(config.initialRadius, responsiveRadius), 40, 4000);
     let depth = 0;
     const maxDepth = Math.min(QUALITY_PRESETS[config.quality].maxRecursionDepth, 16);
     const centerX = width / 2;
@@ -262,12 +263,18 @@ export default function RecursiveSketchBackground() {
       height: Math.max(1, hostElement.clientHeight),
     });
 
+    const getInitialRadius = (): number => {
+      const { width, height } = getCanvasSize();
+      const responsiveRadius = Math.max(width, height) * 0.55;
+      return clamp(Math.max(currentConfig.initialRadius, responsiveRadius), 40, 4000);
+    };
+
     const getMaxRecursionDepth = (): number => {
       const depthCap = QUALITY_PRESETS[currentConfig.quality].maxRecursionDepth;
       if (currentConfig.shrinkFactor <= 0 || currentConfig.shrinkFactor >= 1) {
         return Math.min(1, depthCap);
       }
-      const estimatedDepth = Math.ceil(Math.log(currentConfig.recursionCutoff / currentConfig.initialRadius) / Math.log(currentConfig.shrinkFactor));
+      const estimatedDepth = Math.ceil(Math.log(currentConfig.recursionCutoff / getInitialRadius()) / Math.log(currentConfig.shrinkFactor));
       return clamp(Number.isFinite(estimatedDepth) ? estimatedDepth : depthCap, 1, depthCap);
     };
 
@@ -391,7 +398,7 @@ export default function RecursiveSketchBackground() {
             }
 
             const phase = shouldAnimate() ? p.frameCount * currentConfig.speed : 0;
-            drawRecursive(currentConfig.initialRadius, 0, phase, getMaxRecursionDepth());
+            drawRecursive(getInitialRadius(), 0, phase, getMaxRecursionDepth());
           };
 
           p.windowResized = () => {

@@ -167,6 +167,7 @@ export const personalInfo = {
     {
       id: 14,
       title: "Handwritten Text Recognition",
+      
       category: "Deep Learning • OCR",
       year: "2025",
       image: "/images/core/image7.webp",
