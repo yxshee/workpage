@@ -23,6 +23,8 @@
   --glass: rgba(0, 0, 0, 0.02);
   --border: rgba(0, 0, 0, 0.08);
   --shadow-1: 0 6px 20px rgba(0, 0, 0, 0.08);
+  --shadow-2: 0 12px 32px rgba(0, 0, 0, 0.12);
+  --shadow-3: 0 20px 48px rgba(0, 0, 0, 0.18);
   --vignette-color: rgba(0, 8, 255, 0.03);
   --cursor-color: #0000ff;
 
@@ -35,19 +37,19 @@
   --dur-long: 500ms;
   --transition-fast: 160ms var(--easing-medium);
 
-  /* Layout + spacing tokens */
+  /* Layout + spacing tokens (8px base) */
   --container-max: 1720px;
   --container-pad: clamp(0.75rem, 4vw, 1rem);
   --section-gap: clamp(2rem, 6vw, 3rem);
   --content-gap: clamp(1rem, 3vw, 1.5rem);
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-5: 1.5rem;
-  --space-6: 2rem;
-  --space-7: 2.5rem;
-  --space-8: 3rem;
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.5rem;   /* 24px */
+  --space-6: 2rem;     /* 32px */
+  --space-8: 3rem;     /* 48px */
+  --space-10: 4rem;    /* 64px */
 
   /* Typography tokens */
   --text-xs: clamp(0.56rem, 1.7vw, 0.66rem);
@@ -59,10 +61,13 @@
   --line-tight: 0.9;
   --line-copy: 1.45;
 
-  /* Radius + accessibility */
-  --radius-sm: 0.2rem;
-  --radius-md: 0.4rem;
-  --radius-lg: 0.75rem;
+  /* Radius scale (4px aligned) */
+  --radius-sm: 0.25rem;   /* 4px */
+  --radius-md: 0.5rem;    /* 8px */
+  --radius-lg: 0.75rem;   /* 12px */
+  --radius-full: 9999px;
+
+  /* Accessibility */
   --tap-target: 44px;
   --focus: 2px solid rgba(0, 8, 255, 0.2);
 
@@ -101,17 +106,15 @@ html[data-theme="dark"] {
   --glass: rgba(255, 255, 255, 0.03);
   --border: rgba(255, 255, 255, 0.06);
   --shadow-1: 0 6px 20px rgba(0, 0, 0, 0.8);
+  --shadow-2: 0 12px 32px rgba(0, 0, 0, 0.9);
+  --shadow-3: 0 20px 48px rgba(0, 0, 0, 0.95);
   --vignette-color: rgba(212, 175, 55, 0.02);
   --cursor-color: #ffff00;
   --focus: 2px solid rgba(212, 175, 55, 0.24);
 }
 
-:root {
-  --color-primary-blue: var(--accent);
-  --color-bg-white: var(--bg-900);
-  --color-text-secondary: var(--muted-500);
-  --color-border-subtle: var(--border);
-}
+/* Legacy aliases removed — use canonical tokens:
+   --accent, --bg-900, --muted-500, --border */
 
 * {
   box-sizing: border-box;
@@ -151,39 +154,28 @@ body {
   min-height: 100vh;
 }
 
-/* Hide scrollbars globally while preserving scroll */
+/* Hide scrollbars on root elements while preserving scroll */
 html,
-body,
-* {
-  scrollbar-width: none;
-  /* Firefox */
-  -ms-overflow-style: none;
-  /* IE/Edge legacy */
+body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
 }
 
 html::-webkit-scrollbar,
-body::-webkit-scrollbar,
-*::-webkit-scrollbar {
+body::-webkit-scrollbar {
   display: none;
-  /* Chrome, Safari, Opera */
   width: 0;
   height: 0;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-strong,
-b,
-.font-black,
-.font-extrabold,
-.font-bold,
-.font-semibold,
-.font-medium {
-  font-weight: 300 !important;
+/* Typography: preserve uppercase aesthetic but allow weight variation */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 300;
+  margin: 0;
+}
+
+strong, b {
+  font-weight: 500;
 }
 
 img,
@@ -231,6 +223,39 @@ pre,
   display: none !important;
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   TEXT COLOR UTILITIES
+   Semantic color classes to replace inline styles
+   ═══════════════════════════════════════════════════════════════ */
+
+.text-high {
+  color: var(--text-high);
+}
+
+.text-medium {
+  color: var(--text-medium);
+}
+
+.text-muted {
+  color: var(--muted-500);
+}
+
+.text-accent {
+  color: var(--accent);
+}
+
+.bg-primary {
+  background-color: var(--bg-900);
+}
+
+.bg-surface {
+  background-color: var(--surface-700);
+}
+
+.border-subtle {
+  border-color: var(--border);
+}
+
 .vignette {
   position: fixed;
   inset: 0;
@@ -247,6 +272,144 @@ pre,
   border: 1px solid var(--border);
   box-shadow: var(--shadow-1);
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   LAYOUT PRIMITIVES
+   Composable utilities for consistent page structure
+   ═══════════════════════════════════════════════════════════════ */
+
+.container {
+  width: min(100%, var(--container-max));
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+}
+
+.section {
+  padding-block: var(--section-gap);
+}
+
+.section--sm {
+  padding-block: var(--content-gap);
+}
+
+.section--lg {
+  padding-block: var(--space-10);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.stack > * + * {
+  margin-top: var(--stack-gap, var(--space-4));
+}
+
+.stack--sm > * + * {
+  margin-top: var(--space-2);
+}
+
+.stack--lg > * + * {
+  margin-top: var(--space-6);
+}
+
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cluster-gap, var(--space-3));
+  align-items: center;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BUTTON SYSTEM
+   Standardized button variants with consistent sizing
+   ═══════════════════════════════════════════════════════════════ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--tap-target);
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: 
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--dur-short) var(--easing-fast);
+}
+
+.btn:focus-visible {
+  outline: var(--focus);
+  outline-offset: 2px;
+}
+
+.btn--primary {
+  background: var(--accent);
+  color: var(--bg-900);
+  border-color: var(--accent);
+}
+
+.btn--primary:hover {
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+}
+
+.btn--secondary {
+  background: transparent;
+  color: var(--text-high);
+  border-color: var(--border);
+}
+
+.btn--secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--text-medium);
+  border-color: transparent;
+}
+
+.btn--ghost:hover {
+  color: var(--accent);
+}
+
+.btn--sm {
+  min-height: 36px;
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--text-xs);
+}
+
+.btn--lg {
+  min-height: 52px;
+  padding: var(--space-3) var(--space-5);
+  font-size: var(--text-base);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PAGE LAYOUT
+   ═══════════════════════════════════════════════════════════════ */
 
 .layout-main {
   flex: 1;
@@ -756,6 +919,8 @@ pre,
 
 .work-list {
   overflow: hidden;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 
 .work-list__row {
@@ -763,6 +928,13 @@ pre,
   grid-template-columns: minmax(0, 1fr);
   gap: var(--space-4);
   padding: clamp(1.1rem, 5.5vw, 1.8rem) var(--space-3);
+  background-color: var(--surface-700);
+  color: var(--text-high);
+  border-bottom: 1px solid var(--border);
+}
+
+.work-list__row:last-child {
+  border-bottom: none;
 }
 
 .work-list__primary {
@@ -776,6 +948,7 @@ pre,
   opacity: 0.45;
   padding-top: 0.2rem;
   letter-spacing: 0.05em;
+  color: var(--text-high);
 }
 
 .work-list__title {
@@ -861,6 +1034,15 @@ pre,
   border-collapse: collapse;
   table-layout: fixed;
   margin-top: var(--section-gap);
+}
+
+.archive-table__header {
+  border-bottom: 1px solid var(--border);
+  color: var(--muted-500);
+}
+
+.archive-table__row {
+  border-bottom: 1px solid var(--border);
 }
 
 .archive-table th,
@@ -961,6 +1143,11 @@ pre,
   align-items: center;
   justify-content: space-between;
   gap: var(--space-2);
+  border-bottom: 1px solid var(--border);
+}
+
+.info-cert-item:last-child {
+  border-bottom: none;
 }
 
 .info-cert-item__title,

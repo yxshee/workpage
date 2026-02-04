@@ -15,8 +15,7 @@ export default function Header() {
         <div className="header-bar__brand">
           <Link
             href="/"
-            className="header-brand link-hoverable"
-            style={{ color: "var(--text-high)" }}
+            className="header-brand link-hoverable text-high"
           >
             {personalInfo.name}
           </Link>
