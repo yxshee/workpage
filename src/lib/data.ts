@@ -293,3 +293,6 @@ export const personalInfo = {
   ],
   heroImage: "/images/core/thegreats.webp"
 };
+
+
+
