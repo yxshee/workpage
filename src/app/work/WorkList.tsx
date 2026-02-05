@@ -8,6 +8,7 @@ interface Project {
   category: string;
   year: string;
   image: string;
+  githubUrl: string;
   repoUrl?: string;
 }
 
@@ -63,9 +64,7 @@ export default function WorkList({ projects, githubUrl }: WorkListProps) {
   }, [isFinePointer]);
 
   useEffect(() => {
-    if (isFinePointer) {
-      setExpandedProjectId(null);
-    } else if (typeof window !== "undefined" && window.CursorController) {
+    if (!isFinePointer && typeof window !== "undefined" && window.CursorController) {
       window.CursorController.reset();
     }
   }, [isFinePointer]);
@@ -91,7 +90,7 @@ export default function WorkList({ projects, githubUrl }: WorkListProps) {
       {projects.map((project) => (
         <a
           key={project.id} 
-          href={project.repoUrl ?? githubUrl}
+          href={project.githubUrl ?? project.repoUrl ?? githubUrl}
           target="_blank"
           rel="noreferrer"
           className={`work-list__row group relative transition-colors ${expandedProjectId === project.id ? "is-expanded" : ""}`}
