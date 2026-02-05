@@ -47,7 +47,7 @@ export default function OrbitCarousel() {
   const mouseTargetRef = useRef({ x: 0, y: 0 });
   const mouseCurrentRef = useRef({ x: 0, y: 0 });
   const parallaxCardRefs = useRef<HTMLDivElement[]>([]);
-  const titleRef = useRef<HTMLHeadingElement | null>(null);
+  const detailTitleRef = useRef<HTMLHeadingElement | null>(null);
 
   const projects: Project[] = personalInfo.projects;
   const projectCount = projects.length;
@@ -390,21 +390,22 @@ export default function OrbitCarousel() {
     };
   }, [prefersReducedMotion, hasFinePointer, projectCount]);
 
+  // Detail panel title fitting effect
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (selectedProjectIndex === null) return;
 
     let rafId: number | null = null;
-    let settleTimeoutId: number | null = null;
 
-    const fitTitleToPanel = () => {
-      const titleElement = titleRef.current;
+    const fitDetailTitleToPanel = () => {
+      const titleElement = detailTitleRef.current;
       if (!titleElement) return;
 
-      const minScale = 0.68;
+      const minScale = 0.72;
       const step = 0.04;
       let scale = 1;
 
-      titleElement.style.setProperty("--orbit-title-scale", scale.toFixed(2));
+      titleElement.style.setProperty("--detail-title-scale", scale.toFixed(2));
 
       while (
         (titleElement.scrollHeight > titleElement.clientHeight + 1 ||
@@ -412,29 +413,27 @@ export default function OrbitCarousel() {
         scale > minScale
       ) {
         scale = Math.max(minScale, scale - step);
-        titleElement.style.setProperty("--orbit-title-scale", scale.toFixed(2));
+        titleElement.style.setProperty("--detail-title-scale", scale.toFixed(2));
       }
     };
 
-    const scheduleTitleFit = () => {
+    const scheduleDetailTitleFit = () => {
       if (rafId !== null) cancelAnimationFrame(rafId);
 
       rafId = requestAnimationFrame(() => {
-        fitTitleToPanel();
-        rafId = requestAnimationFrame(fitTitleToPanel);
+        fitDetailTitleToPanel();
+        rafId = requestAnimationFrame(fitDetailTitleToPanel);
       });
     };
 
-    scheduleTitleFit();
-    window.addEventListener("resize", scheduleTitleFit);
-    settleTimeoutId = window.setTimeout(fitTitleToPanel, 220);
+    scheduleDetailTitleFit();
+    window.addEventListener("resize", scheduleDetailTitleFit);
 
     return () => {
       if (rafId !== null) cancelAnimationFrame(rafId);
-      if (settleTimeoutId !== null) window.clearTimeout(settleTimeoutId);
-      window.removeEventListener("resize", scheduleTitleFit);
+      window.removeEventListener("resize", scheduleDetailTitleFit);
     };
-  }, [activeProjectIndex]);
+  }, [selectedProjectIndex]);
 
   // Sync detail panel with carousel position when user is not actively hovering
   // This ensures carousel, title, and details stay in perfect sync on scroll
@@ -443,9 +442,14 @@ export default function OrbitCarousel() {
     if (selectedProjectIndex === null) return;
     if (isTriggerAreaHoveredRef.current || isPanelHoveredRef.current) return;
     
-    // Update detail panel to show the active project
+    // Update detail panel to show the active project - defer to next tick to avoid cascade
     if (selectedProjectIndex !== activeProjectIndex) {
-      setSelectedProjectIndex(activeProjectIndex);
+      const timerId = setTimeout(() => {
+        if (!isMountedRef.current) return;
+        if (isTriggerAreaHoveredRef.current || isPanelHoveredRef.current) return;
+        setSelectedProjectIndex(activeProjectIndex);
+      }, 0);
+      return () => clearTimeout(timerId);
     }
   }, [activeProjectIndex, selectedProjectIndex]);
 
@@ -553,38 +557,64 @@ export default function OrbitCarousel() {
       </div>
 
       <div className={`orbit-carousel__overlay ${selectedProject ? "has-panel" : ""}`}>
-        <div className="orbit-carousel__info-panel">
-          <div className="orbit-carousel__progress-row">
-            <span className="orbit-carousel__counter" style={{ color: "var(--muted-500)" }}>
-              {activeProjectIndex + 1} / {projectCount}
-            </span>
-            <div className="orbit-carousel__progress-track" style={{ backgroundColor: "var(--border)" }}>
-              <motion.div
-                className="orbit-carousel__progress-value"
-                style={{
-                  width: `${((activeProjectIndex + 1) / projectCount) * 100}%`,
-                  backgroundColor: "var(--accent)",
-                }}
-              />
-            </div>
+        <div className="info-display">
+          {/* Accent line */}
+          <div className="info-display__accent" />
+          
+          {/* Step indicator */}
+          <div className="info-display__step">
+            <span className="info-display__current">{String(activeProjectIndex + 1).padStart(2, "0")}</span>
+            <span className="info-display__divider" />
+            <span className="info-display__total">{String(projectCount).padStart(2, "0")}</span>
           </div>
 
-          <AnimatePresence mode="wait">
-            <motion.h2
-              ref={titleRef}
-              key={activeProjectIndex}
-              initial={{ y: 12, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -12, opacity: 0 }}
-              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-              className="orbit-carousel__title"
-              style={{ color: "var(--text-high)", ["--orbit-title-scale" as string]: "1" }}
-              onMouseEnter={handleTitleMouseEnter}
-              onMouseLeave={handleTitleMouseLeave}
-            >
-              {projects[activeProjectIndex]?.title}
-            </motion.h2>
-          </AnimatePresence>
+          {/* Progress dots */}
+          <div className="info-display__dots">
+            {projects.map((_, i) => (
+              <motion.span
+                key={i}
+                className={`info-display__dot ${i === activeProjectIndex ? "is-active" : ""}`}
+                animate={{
+                  scale: i === activeProjectIndex ? 1 : 0.6,
+                  opacity: i === activeProjectIndex ? 1 : 0.3,
+                }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              />
+            ))}
+          </div>
+
+          {/* Title block */}
+          <div className="info-display__content">
+            <AnimatePresence mode="popLayout">
+              <motion.div
+                key={activeProjectIndex}
+                initial={{ y: 16, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -16, opacity: 0 }}
+                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                className="info-display__text-block"
+              >
+                <span className="info-display__label">Featured Project</span>
+                <h2
+                  className="info-display__title"
+                  onMouseEnter={handleTitleMouseEnter}
+                  onMouseLeave={handleTitleMouseLeave}
+                >
+                  {projects[activeProjectIndex]?.title}
+                </h2>
+                <span className="info-display__meta">
+                  {projects[activeProjectIndex]?.category} — {projects[activeProjectIndex]?.year}
+                </span>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Bottom accent */}
+          <motion.div 
+            className="info-display__progress-line"
+            animate={{ scaleX: (activeProjectIndex + 1) / projectCount }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          />
         </div>
 
         <AnimatePresence>
@@ -607,7 +637,11 @@ export default function OrbitCarousel() {
                 <span className="orbit-carousel__detail-label" style={{ color: "var(--accent)" }}>
                   Project Details
                 </span>
-                <h3 className="orbit-carousel__detail-title" style={{ color: "var(--text-high)" }}>
+                <h3
+                  ref={detailTitleRef}
+                  className="orbit-carousel__detail-title"
+                  style={{ color: "var(--text-high)", ["--detail-title-scale" as string]: "1" }}
+                >
                   {selectedProject.title}
                 </h3>
               </div>
