@@ -21,6 +21,7 @@ export default function OrbitCarousel() {
   const rotationVelocityRef = useRef(0);
   const rotationRafRef = useRef<number | null>(null);
   const parallaxLoopRafRef = useRef<number | null>(null);
+  const prevActiveIndexRef = useRef<number>(-1);
   const [activeProjectIndex, setActiveProjectIndex] = useState(0);
   const [selectedProjectIndex, setSelectedProjectIndex] = useState<number | null>(null);
   const detailPanelRef = useRef<HTMLDivElement>(null);
@@ -246,7 +247,12 @@ export default function OrbitCarousel() {
       // Calculate active index based on rotation
       const normalizedRotation = ((trackRotationRef.current % 360) + 360) % 360;
       const index = Math.round(normalizedRotation / degreesPerProject) % projectCount;
-      setActiveProjectIndex((projectCount - index) % projectCount);
+      const newIndex = (projectCount - index) % projectCount;
+      // Only update state when index actually changes to prevent 60fps re-renders
+      if (newIndex !== prevActiveIndexRef.current) {
+        prevActiveIndexRef.current = newIndex;
+        setActiveProjectIndex(newIndex);
+      }
 
       rotationRafRef.current = requestAnimationFrame(animateRotation);
     };
@@ -544,20 +550,22 @@ export default function OrbitCarousel() {
             </div>
           </div>
 
-          <motion.h2
-            ref={titleRef}
-            key={activeProjectIndex}
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -20, opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="orbit-carousel__title"
-            style={{ color: "var(--text-high)", ["--orbit-title-scale" as string]: "1" }}
-            onMouseEnter={handleTitleMouseEnter}
-            onMouseLeave={handleTitleMouseLeave}
-          >
-            {projects[activeProjectIndex]?.title}
-          </motion.h2>
+          <AnimatePresence mode="wait">
+            <motion.h2
+              ref={titleRef}
+              key={activeProjectIndex}
+              initial={{ y: 12, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -12, opacity: 0 }}
+              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              className="orbit-carousel__title"
+              style={{ color: "var(--text-high)", ["--orbit-title-scale" as string]: "1" }}
+              onMouseEnter={handleTitleMouseEnter}
+              onMouseLeave={handleTitleMouseLeave}
+            >
+              {projects[activeProjectIndex]?.title}
+            </motion.h2>
+          </AnimatePresence>
         </div>
 
         <AnimatePresence>

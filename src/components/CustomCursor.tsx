@@ -131,10 +131,12 @@ export default function CustomCursor() {
         eventTarget.classList.contains('cursor-pointer') ||
         eventTarget.closest('.orbit-carousel__card');
       
-      setCursorState(prev => ({
-        ...prev,
-        mode: isInteractive ? "hover" : "default"
-      }));
+      const newMode = isInteractive ? "hover" : "default";
+      setCursorState(prev => {
+        // Only update if mode actually changed to prevent re-renders on every mouseover
+        if (prev.mode === newMode) return prev;
+        return { ...prev, mode: newMode };
+      });
     };
 
     const onMouseLeaveWindow = () => setIsVisible(false);
