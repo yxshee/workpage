@@ -3,7 +3,7 @@ import WorkList from "@/app/work/WorkList";
 
 export default function WorkPage() {
   return (
-    <div className="page-shell page-shell--work bg-primary">
+    <div className="page-shell page-shell--info bg-primary">
       <div className="page-heading page-heading--split">
         <h1 className="page-title page-title--work text-high">Selected<br/>Projects</h1>
         <div className="page-heading__meta">
