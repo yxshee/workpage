@@ -624,88 +624,69 @@ export default function OrbitCarousel() {
               onFocusCapture={handlePanelMouseEnter}
               onBlurCapture={handlePanelBlur}
             >
-              <div className="orbit-carousel__detail-header">
-                <span className="orbit-carousel__detail-label" style={{ color: "var(--accent)" }}>
-                  Project Details
-                </span>
-                <h3
-                  ref={detailTitleRef}
-                  className="orbit-carousel__detail-title"
-                  style={{ color: "var(--text-high)", ["--detail-title-scale" as string]: "1" }}
-                >
-                  {selectedProject.title}
-                </h3>
-              </div>
-
               <div className="orbit-carousel__detail-body">
-                <p className="orbit-carousel__detail-summary" style={{ color: "var(--muted-500)" }}>
-                  {selectedProject.description}
-                </p>
+                <div className="orbit-carousel__features-grid">
+                  {selectedProject.features && selectedProject.features.length > 0 && (
+                    <div className="orbit-carousel__features">
+                      <span className="orbit-carousel__detail-sublabel" style={{ color: "var(--muted-500)" }}>Key Features</span>
+                      <ul className="orbit-carousel__features-list">
+                        {selectedProject.features.map((feature, i) => (
+                          <li key={i} style={{ color: "var(--text-medium)" }}>{feature}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
 
-                {selectedProject.longDescription && selectedProject.longDescription !== selectedProject.description && (
-                  <p className="orbit-carousel__detail-text" style={{ color: "var(--text-medium)" }}>
-                    {selectedProject.longDescription}
-                  </p>
-                )}
+                  {selectedProject.highlights && selectedProject.highlights.length > 0 && (
+                    <div className="orbit-carousel__features">
+                      <span className="orbit-carousel__detail-sublabel" style={{ color: "var(--muted-500)" }}>Highlights</span>
+                      <ul className="orbit-carousel__features-list">
+                        {selectedProject.highlights.map((highlight, i) => (
+                          <li key={i} style={{ color: "var(--text-medium)" }}>{highlight}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
 
-                {selectedProject.features && selectedProject.features.length > 0 && (
-                  <div className="orbit-carousel__features">
-                    <span className="orbit-carousel__detail-sublabel" style={{ color: "var(--muted-500)" }}>Key Features</span>
-                    <ul className="orbit-carousel__features-list">
-                      {selectedProject.features.map((feature, i) => (
-                        <li key={i} style={{ color: "var(--text-medium)" }}>{feature}</li>
+                <div className="orbit-carousel__tech-and-links">
+                  {selectedProject.tech && selectedProject.tech.length > 0 && (
+                    <div className="orbit-carousel__tags">
+                      {selectedProject.tech.map((tech, i) => (
+                        <span
+                          key={i}
+                          className="orbit-carousel__tag"
+                          style={{ borderColor: "var(--border)", color: "var(--muted-500)" }}
+                        >
+                          {tech}
+                        </span>
                       ))}
-                    </ul>
-                  </div>
-                )}
-
-                {selectedProject.highlights && selectedProject.highlights.length > 0 && (
-                  <div className="orbit-carousel__features">
-                    <span className="orbit-carousel__detail-sublabel" style={{ color: "var(--muted-500)" }}>Highlights</span>
-                    <ul className="orbit-carousel__features-list">
-                      {selectedProject.highlights.map((highlight, i) => (
-                        <li key={i} style={{ color: "var(--text-medium)" }}>{highlight}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {selectedProject.tech && selectedProject.tech.length > 0 && (
-                  <div className="orbit-carousel__tags">
-                    {selectedProject.tech.map((tech, i) => (
-                      <span
-                        key={i}
-                        className="orbit-carousel__tag"
-                        style={{ borderColor: "var(--border)", color: "var(--muted-500)" }}
+                    </div>
+                  )}
+                  
+                  <div className="orbit-carousel__detail-links">
+                    <a
+                      href={selectedProject.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="orbit-carousel__link-btn orbit-carousel__link-btn--github"
+                    >
+                      <Github size={16} />
+                      <span>View on GitHub</span>
+                    </a>
+                    {selectedProject.liveUrl && (
+                      <a
+                        href={selectedProject.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="orbit-carousel__link-btn orbit-carousel__link-btn--live"
                       >
-                        {tech}
-                      </span>
-                    ))}
+                        <ExternalLink size={16} />
+                        <span>Live Demo</span>
+                      </a>
+                    )}
                   </div>
-                )}
-              </div>
-
-              <div className="orbit-carousel__detail-links">
-                <a
-                  href={selectedProject.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="orbit-carousel__link-btn orbit-carousel__link-btn--github"
-                >
-                  <Github size={16} />
-                  <span>View on GitHub</span>
-                </a>
-                {selectedProject.liveUrl && (
-                  <a
-                    href={selectedProject.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="orbit-carousel__link-btn orbit-carousel__link-btn--live"
-                  >
-                    <ExternalLink size={16} />
-                    <span>Live Demo</span>
-                  </a>
-                )}
+                </div>
               </div>
             </motion.div>
           )}

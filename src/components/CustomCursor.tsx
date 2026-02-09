@@ -206,7 +206,6 @@ export default function CustomCursor() {
             width: '160px',
             height: '200px',
             overflow: 'hidden',
-            borderRadius: '4px',
             boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
             opacity: 1,
           }}
