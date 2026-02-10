@@ -5,10 +5,17 @@ import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import CustomCursor from "@/components/CustomCursor";
 
-const siteUrl =
-  (process.env.NEXT_PUBLIC_SITE_URL ||
-    process.env.SITE_URL ||
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://yxsheeworks.vercel.app")).replace(/\/$/, "");
+const canonicalProdUrl = "https://yxsheeworks.vercel.app";
+
+const siteUrl = (
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  process.env.SITE_URL ||
+  (process.env.VERCEL_ENV === "production"
+    ? canonicalProdUrl
+    : process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : canonicalProdUrl)
+).replace(/\/$/, "");
 
 const ogImageUrl = new URL("/images/og/works-card.jpg", `${siteUrl}/`).toString();
 

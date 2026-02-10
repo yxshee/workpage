@@ -379,3 +379,12 @@
    1) Even when metadata is correct, using a dedicated 1200x630 image and absolute URLs reduces scraper edge cases and avoids stale caches tied to previous image URLs.
 5) Next Steps
    1) After deploy, re-scrape the homepage in Twitter Card Validator to force cache refresh.
+
+### Session 2026-02-10-9
+1) Date: 2026-02-10.
+2) Goal: Ensure OG/Twitter canonical URLs match the shared production domain (avoid Vercel deployment-host canonicalization).
+3) Outcome: Updated `src/app/layout.tsx` to use `https://yxsheeworks.vercel.app` as the default canonical base in `VERCEL_ENV=production`; verified build output `og:url` and `og:image` point to the production domain.
+4) Key Learnings
+   1) `process.env.VERCEL_URL` in production points to the immutable deployment hostname, which can leak into `og:url`/image tags unless a canonical base is pinned.
+5) Next Steps
+   1) If you add a custom domain later, set `NEXT_PUBLIC_SITE_URL` to keep metadata canonical without code changes.
