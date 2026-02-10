@@ -370,3 +370,12 @@
    1) Use `git worktree list` to identify stray worktrees and `git worktree remove <path>` + `git worktree prune` to clean them up safely once the worktree is clean.
 5) Next Steps
    1) If you see another detached worktree prompt, check `git worktree list` before doing any merges/commits.
+
+### Session 2026-02-10-8
+1) Date: 2026-02-10.
+2) Goal: Improve Twitter/X preview reliability when cards still fail to show after metadata fixes.
+3) Outcome: Added a dedicated OG image (`public/images/og/works-card.jpg`) sized to 1200x630 and updated `src/app/layout.tsx` to use an absolute OG/Twitter image URL; verified build output includes the new image URL and no `og:image:secure_url`.
+4) Key Learnings
+   1) Even when metadata is correct, using a dedicated 1200x630 image and absolute URLs reduces scraper edge cases and avoids stale caches tied to previous image URLs.
+5) Next Steps
+   1) After deploy, re-scrape the homepage in Twitter Card Validator to force cache refresh.
