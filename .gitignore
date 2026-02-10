@@ -50,5 +50,3 @@ next-env.d.ts
 /node_modules_new/
 /reports/
 /.agent/
-
-agents.md
