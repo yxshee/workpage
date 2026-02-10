@@ -6,27 +6,36 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import CustomCursor from "@/components/CustomCursor";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://yashdogra.dev"),
+  metadataBase: new URL("https://yxsheeworks.vercel.app/"),
   title: "Yash Dogra | Work Portfolio",
-  description: "Creative Developer & ML Engineer specializing in NLP and computer vision.",
+  description: "Portfolio of Yash Dogra — Creative Developer & ML Engineer specializing in NLP and computer vision.",
+  keywords: ["Yash Dogra", "yxshee", "full stack developer", "ML engineer", "portfolio", "web developer", "software engineer", "NLP", "computer vision"],
+  authors: [{ name: "Yash Dogra" }],
   openGraph: {
+    type: "website",
+    url: "https://yxsheeworks.vercel.app",
     title: "Yash Dogra | Work Portfolio",
-    description: "Creative Developer",
+    description: "Portfolio of Yash Dogra — Creative Developer & ML Engineer specializing in NLP and computer vision.",
+    siteName: "Yash Dogra",
+    locale: "en_US",
     images: [
       {
-        url: "/images/og/works.jpeg",
+        url: "/images/core/Works.jpeg",
+        secureUrl: "/images/core/Works.jpeg",
         width: 1200,
         height: 630,
-        alt: "Yash Dogra Portfolio",
+        alt: "Yash Dogra - Creative Developer & ML Engineer",
+        type: "image/jpeg",
       },
     ],
-    type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Yash Dogra | Portfolio",
-    description: "Creative Developer & ML Engineer",
-    images: ["/images/og/works.jpeg"],
+    site: "@yxshee",
+    creator: "@yxshee",
+    title: "Yash Dogra | Work Portfolio",
+    description: "Portfolio of Yash Dogra — Creative Developer & ML Engineer specializing in NLP and computer vision.",
+    images: ["/images/core/Works.jpeg"],
   },
   icons: {
     icon: [
