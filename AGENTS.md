@@ -400,3 +400,52 @@
 5) Next Steps
    1) Monitor preloader performance on lower-end devices; reduce point count from 15000 if frame drops are reported.
    2) Keep preloader z-index (10000) above cursor (9999) and header (120) for any future stacking changes.
+
+### Session 2026-02-11-2
+1) Date: 2026-02-11.
+2) Goal: Make the preloader load all route-used site media on first open while keeping startup responsive and reducing heavy-asset cost.
+3) Outcome: Added centralized preload asset registry (`src/lib/preloadAssets.ts`), rewired `Preloader` to block on concurrent asset decoding with session cache/progress UI, removed duplicate `/work` image preloading, converted GIF-backed entries to animated WebP (`man-anim.webp`, `image4-anim.webp`, `thermo-anim.webp`), and recompressed `thegreats.webp`.
+4) Key Learnings
+   1) A deterministic preload list derived from `src/lib/data.ts` (projects + archive) keeps preload scope aligned with actual rendered route media.
+   2) Blocking on explicit image decode completion is more reliable than `window.load` for guaranteeing “assets are ready” semantics.
+   3) Large GIF-to-animated-WebP conversions materially cut preload payload without changing interaction patterns.
+5) Next Steps
+   1) If first-visit preload still feels heavy on slow networks, lower quality or dimensions for top contributors (`man-anim.webp`, `currency.jpeg`) before changing preload semantics.
+   2) If `/info` starts rendering certification images later, add `personalInfo.certifications[].image` to `getPreloadAssets()`.
+
+### Session 2026-02-11-3
+1) Date: 2026-02-11.
+2) Goal: Integrate newly added video assets by renaming source media, producing efficient animated WebP previews, and wiring portfolio project media safely into existing image-based components.
+3) Outcome: Renamed the new MOV to `public/images/core/personal-portfolio-source.mov`, generated a cropped (7s–22s), downscaled (720px wide), animated WebP preview (`public/images/core/personal-portfolio-anim.webp`), and updated `src/lib/data.ts` so the Personal Portfolio project uses the new animated preview while travel uses `travel-anim.webp`.
+4) Key Learnings
+   1) For this codebase, converting video clips to animated WebP preserves compatibility with current `next/image`-based project rendering without component refactors.
+   2) `webpinfo` duration summing is a quick validation that animated WebP output respects requested trim windows.
+5) Next Steps
+   1) If preview quality still feels heavy, tune by lowering fps first before reducing width to preserve readability in carousel cards.
+
+### Session 2026-02-11-4
+1) Date: 2026-02-11.
+2) Goal: Remove preloader status text and progress bar while keeping media preload behavior unchanged.
+3) Outcome: Removed progress/state UI markup from `src/components/Preloader.tsx` and deleted corresponding `.preloader__status*` / `.preloader__progress*` styles from `src/app/globals.css`.
+4) Key Learnings
+   1) Progress-state bookkeeping can be safely dropped when the preload lifecycle remains promise-driven and only controls overlay visibility.
+5) Next Steps
+   1) If future UX needs loading feedback again, prefer optional/debug-only overlays so the default preloader stays visually clean.
+
+### Session 2026-02-11-5
+1) Date: 2026-02-11.
+2) Goal: Ensure newly added media assets are used correctly at runtime while avoiding unnecessary public payload.
+3) Outcome: Verified all route media references resolve, kept runtime on optimized animated WebP assets, and moved raw video sources out of `public/` to `docs/assets-source/` so they are no longer served as site assets.
+4) Key Learnings
+   1) Keeping source capture files outside `public/` prevents accidental CDN/deploy bloat while preserving editable originals in-repo.
+5) Next Steps
+   1) For future media updates, keep only optimized delivery assets in `public/` and store originals under `docs/assets-source/`.
+
+### Session 2026-02-11-6
+1) Date: 2026-02-11.
+2) Goal: Enforce a longer minimum preloader visibility window for consistent first-load presentation.
+3) Outcome: Updated `src/components/Preloader.tsx` minimum visibility constant from 300ms to 2500ms so the preloader stays visible for at least 2.5 seconds before fade-out.
+4) Key Learnings
+   1) Minimum display timing is controlled by `PRELOADER_MIN_VISIBLE_MS`; increasing this value is the single-point adjustment for preloader duration policy.
+5) Next Steps
+   1) If interaction feels delayed on high-latency networks, revisit this value alongside preload asset scope rather than reducing fade timing.

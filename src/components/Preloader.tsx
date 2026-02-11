@@ -1,6 +1,70 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, useMemo } from "react";
+import { getPreloadAssets, getPreloadSessionKey } from "@/lib/preloadAssets";
+
+const PRELOAD_CONCURRENCY = 6;
+const PRELOADER_FADE_MS = 800;
+const PRELOADER_MIN_VISIBLE_MS = 2500;
+
+const wait = (ms: number) =>
+    new Promise<void>((resolve) => {
+        window.setTimeout(resolve, ms);
+    });
+
+const preloadImageAsset = (src: string): Promise<void> =>
+    new Promise((resolve) => {
+        const image = new window.Image();
+        let settled = false;
+
+        const finish = () => {
+            if (settled) return;
+            settled = true;
+            image.onload = null;
+            image.onerror = null;
+            resolve();
+        };
+
+        image.decoding = "async";
+        image.onload = () => {
+            if (typeof image.decode === "function") {
+                image.decode().catch(() => undefined).finally(finish);
+                return;
+            }
+            finish();
+        };
+        image.onerror = finish;
+        image.src = src;
+
+        if (image.complete) {
+            if (typeof image.decode === "function") {
+                image.decode().catch(() => undefined).finally(finish);
+                return;
+            }
+            finish();
+        }
+    });
+
+async function preloadAssets(
+    assets: string[],
+): Promise<void> {
+    if (assets.length === 0) return;
+
+    let nextIndex = 0;
+
+    const worker = async () => {
+        while (nextIndex < assets.length) {
+            const assetIndex = nextIndex;
+            nextIndex += 1;
+            await preloadImageAsset(assets[assetIndex]);
+        }
+    };
+
+    const workerCount = Math.min(PRELOAD_CONCURRENCY, assets.length);
+    await Promise.all(
+        Array.from({ length: workerCount }, () => worker()),
+    );
+}
 
 export default function Preloader() {
     const [hidden, setHidden] = useState(false);
@@ -8,7 +72,12 @@ export default function Preloader() {
     const containerRef = useRef<HTMLDivElement>(null);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const p5InstanceRef = useRef<any>(null);
-    const startTimeRef = useRef<number>(0);
+    const hasDismissedRef = useRef(false);
+    const preloadAssetsList = useMemo(() => getPreloadAssets(), []);
+    const preloadSessionKey = useMemo(
+        () => getPreloadSessionKey(preloadAssetsList),
+        [preloadAssetsList],
+    );
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const sketch = useCallback((p: any) => {
@@ -84,36 +153,68 @@ export default function Preloader() {
         };
     }, [sketch]);
 
+    const dismissPreloader = useCallback(() => {
+        if (hasDismissedRef.current) return;
+        hasDismissedRef.current = true;
+
+        if (p5InstanceRef.current) {
+            p5InstanceRef.current.remove();
+            p5InstanceRef.current = null;
+        }
+
+        setHidden(true);
+        window.setTimeout(() => {
+            setRemoved(true);
+            document.body.style.overflow = "";
+        }, PRELOADER_FADE_MS);
+    }, []);
+
     useEffect(() => {
-        const duration = 1800;
-        startTimeRef.current = performance.now();
-
-        const hidePreloader = () => {
-            const elapsed = performance.now() - startTimeRef.current;
-            const delay = Math.max(0, duration - elapsed + 500);
-
-            setTimeout(() => {
-                if (p5InstanceRef.current) {
-                    p5InstanceRef.current.remove();
-                    p5InstanceRef.current = null;
-                }
-                setHidden(true);
-                setTimeout(() => {
-                    setRemoved(true);
-                    document.body.style.overflow = "";
-                }, 800);
-            }, delay);
-        };
-
+        let cancelled = false;
         document.body.style.overflow = "hidden";
 
-        if (document.readyState === "complete") {
-            hidePreloader();
-        } else {
-            window.addEventListener("load", hidePreloader);
-            return () => window.removeEventListener("load", hidePreloader);
-        }
-    }, []);
+        const runPreload = async () => {
+            const startedAt = performance.now();
+            let alreadyPreloaded = false;
+            try {
+                alreadyPreloaded = sessionStorage.getItem(preloadSessionKey) === "1";
+            } catch {
+                alreadyPreloaded = false;
+            }
+
+            if (!alreadyPreloaded) {
+                await preloadAssets(preloadAssetsList);
+
+                if (!cancelled) {
+                    try {
+                        sessionStorage.setItem(preloadSessionKey, "1");
+                    } catch {
+                        // Ignore storage write failures; preload still completed.
+                    }
+                }
+            }
+
+            const elapsed = performance.now() - startedAt;
+            if (elapsed < PRELOADER_MIN_VISIBLE_MS) {
+                await wait(PRELOADER_MIN_VISIBLE_MS - elapsed);
+            }
+
+            if (!cancelled) {
+                dismissPreloader();
+            }
+        };
+
+        runPreload().catch(() => {
+            if (!cancelled) {
+                dismissPreloader();
+            }
+        });
+
+        return () => {
+            cancelled = true;
+            document.body.style.overflow = "";
+        };
+    }, [dismissPreloader, preloadAssetsList, preloadSessionKey]);
 
     if (removed) return null;
 

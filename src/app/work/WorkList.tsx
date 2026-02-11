@@ -41,15 +41,6 @@ export default function WorkList({ projects, githubUrl }: WorkListProps) {
     return () => pointerQuery.removeEventListener("change", syncPointerMode);
   }, []);
 
-  // Preload project images on desktop/fine pointers for flicker-free cursor previews.
-  useEffect(() => {
-    if (!isFinePointer) return;
-    projects.forEach((project) => {
-      const img = new Image();
-      img.src = project.image;
-    });
-  }, [projects, isFinePointer]);
-
   const handleMouseEnter = useCallback((imageSrc: string) => {
     if (!isFinePointer) return;
     if (typeof window !== "undefined" && window.CursorController) {
