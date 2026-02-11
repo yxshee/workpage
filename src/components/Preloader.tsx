@@ -1,131 +1,125 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 
 export default function Preloader() {
+    const [hidden, setHidden] = useState(false);
+    const [removed, setRemoved] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const p5Ref = useRef<any>(null);
-    const [removed, setRemoved] = useState(false);
+    const p5InstanceRef = useRef<any>(null);
+    const startTimeRef = useRef<number>(0);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const sketch = useCallback((p: any) => {
+        let t = 0;
+        const a = 9;
+        const b = 28;
+        const c = 2;
+        const w = 400;
+
+        p.setup = () => {
+            const canvas = p.createCanvas(p.windowWidth, p.windowHeight);
+            canvas.style("display", "block");
+        };
+
+        p.windowResized = () => {
+            p.resizeCanvas(p.windowWidth, p.windowHeight);
+        };
+
+        p.draw = () => {
+            t += 2;
+            p.background(9);
+
+            p.push();
+            p.translate(p.width / 2, p.height / 2);
+
+            const scale = (Math.min(p.width, p.height) / w) * 0.8;
+            p.scale(scale);
+            p.translate(0, 125);
+
+            let x = 0.1,
+                y = 0.1,
+                z = 0.1;
+
+            for (let i = 15000; i > 0; i--) {
+                const dx = (y - x) * a;
+                const dy = (b - z) * x - y;
+                const dz = x * y - c * z;
+
+                x += dx * 0.001;
+                y += dy * 0.001;
+                z += dz * 0.001;
+
+                const s = (i + t) % 540 !== 0 ? 1 : 5;
+
+                p.strokeWeight(s / scale);
+                p.stroke(255, s * 96);
+
+                const px =
+                    (x + y) *
+                    (p.sin((t * p.PI) / 90 + z / 49 + (x * x) / w) * 2 + 2);
+                const py = -z * 5;
+
+                p.point(px, py);
+            }
+            p.pop();
+        };
+    }, []);
 
     useEffect(() => {
-        let cancelled = false;
+        if (!containerRef.current || p5InstanceRef.current) return;
 
-        // Lock body scroll while preloader is visible
-        const prevOverflow = document.body.style.overflow;
-        document.body.style.overflow = "hidden";
-
-        let hideTimeout: ReturnType<typeof setTimeout> | undefined;
-        let fadeTimeout: ReturnType<typeof setTimeout> | undefined;
-
-        const cleanup = () => {
-            if (p5Ref.current) {
-                p5Ref.current.remove();
-                p5Ref.current = null;
-            }
-            document.body.style.overflow = prevOverflow;
-        };
-
-        const hide = () => {
-            if (cancelled) return;
-            const el = containerRef.current;
-            if (!el) return;
-            el.classList.add("preloader--hidden");
-            // After CSS fade-out transition, remove from DOM
-            fadeTimeout = setTimeout(() => {
-                cleanup();
-                setRemoved(true);
-            }, 550);
-        };
-
-        // Start p5 sketch
-        import("p5").then((mod) => {
-            if (cancelled || !containerRef.current) return;
-            const p5Constructor = mod.default;
-
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const sketch = (p: any) => {
-                const points: { x: number; y: number; z: number }[] = [];
-                let angle = 0;
-                const dt = 0.01;
-                const a = 10;
-                const b = 28;
-                const c = 8 / 3;
-
-                const stepAttractor = () => {
-                    const last = points[points.length - 1];
-                    const dx = a * (last.y - last.x) * dt;
-                    const dy = (last.x * (b - last.z) - last.y) * dt;
-                    const dz = (last.x * last.y - c * last.z) * dt;
-                    points.push({ x: last.x + dx, y: last.y + dy, z: last.z + dz });
-                };
-
-                p.setup = () => {
-                    const canvas = p.createCanvas(
-                        p.windowWidth,
-                        p.windowHeight,
-                        p.WEBGL
-                    );
-                    canvas.parent(containerRef.current!);
-                    p.pixelDensity(Math.min(2, window.devicePixelRatio));
-                    p.colorMode(p.HSB);
-                    p.noFill();
-
-                    // Pre-seed 2000 points so trail is visible from frame 1
-                    points.push({ x: 0.01, y: 0, z: 0 });
-                    for (let i = 0; i < 2000; i++) {
-                        stepAttractor();
-                    }
-                };
-
-                p.draw = () => {
-                    p.background(0);
-                    p.rotateY(angle);
-                    angle += 0.002;
-
-                    // Add 5 new points per frame for smooth growth
-                    for (let i = 0; i < 5; i++) {
-                        stepAttractor();
-                    }
-
-                    if (points.length > 6000) {
-                        points.splice(0, 5);
-                    }
-
-                    const s = 5;
-                    p.strokeWeight(1);
-                    p.beginShape();
-                    for (let i = 0; i < points.length; i++) {
-                        const pt = points[i];
-                        const hu = p.map(i, 0, points.length, 0, 255);
-                        p.stroke(hu, 255, 255, 180);
-                        p.vertex(pt.x * s, pt.y * s, pt.z * s);
-                    }
-                    p.endShape();
-                };
-
-                p.windowResized = () => {
-                    p.resizeCanvas(p.windowWidth, p.windowHeight);
-                };
-            };
-
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const instance = new (p5Constructor as any)(sketch);
-            p5Ref.current = instance;
-
-            // Always show for 2 seconds, then fade out
-            hideTimeout = setTimeout(hide, 2000);
+        import("p5").then((p5Module) => {
+            const p5 = p5Module.default;
+            if (!containerRef.current) return;
+            p5InstanceRef.current = new p5(sketch, containerRef.current);
         });
 
         return () => {
-            cancelled = true;
-            clearTimeout(hideTimeout);
-            clearTimeout(fadeTimeout);
-            cleanup();
+            if (p5InstanceRef.current) {
+                p5InstanceRef.current.remove();
+                p5InstanceRef.current = null;
+            }
         };
+    }, [sketch]);
+
+    useEffect(() => {
+        const duration = 1800;
+        startTimeRef.current = performance.now();
+
+        const hidePreloader = () => {
+            const elapsed = performance.now() - startTimeRef.current;
+            const delay = Math.max(0, duration - elapsed + 500);
+
+            setTimeout(() => {
+                if (p5InstanceRef.current) {
+                    p5InstanceRef.current.remove();
+                    p5InstanceRef.current = null;
+                }
+                setHidden(true);
+                setTimeout(() => {
+                    setRemoved(true);
+                    document.body.style.overflow = "";
+                }, 800);
+            }, delay);
+        };
+
+        document.body.style.overflow = "hidden";
+
+        if (document.readyState === "complete") {
+            hidePreloader();
+        } else {
+            window.addEventListener("load", hidePreloader);
+            return () => window.removeEventListener("load", hidePreloader);
+        }
     }, []);
 
     if (removed) return null;
 
-    return <div ref={containerRef} className="preloader preloader__canvas" />;
+    return (
+        <div className={`preloader ${hidden ? "preloader--hidden" : ""}`}>
+            <div ref={containerRef} className="preloader__canvas" />
+        </div>
+    );
 }
