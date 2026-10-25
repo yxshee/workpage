@@ -107,6 +107,60 @@ const themeScript = `
 })()
 `;
 
+// Recover from failed Next.js chunk loads (e.g. a tab opened before a redeploy, or a
+// dropped chunk request) by reloading once per chunk; the session guard prevents loops.
+const chunkRecoveryScript = `
+(function(){
+  var RETRIED_KEY = 'workpage:chunk-reload-retried';
+  var CHUNK_PATH_REGEX = /\\/_next\\/static\\/[^\\s?#]+/;
+
+  function readRetried() {
+    try {
+      return JSON.parse(sessionStorage.getItem(RETRIED_KEY) || '[]');
+    } catch (storageError) {
+      return null;
+    }
+  }
+
+  function recover(chunkPath) {
+    var retried = readRetried();
+    if (!retried || retried.indexOf(chunkPath) !== -1) return;
+    retried.push(chunkPath);
+    try {
+      sessionStorage.setItem(RETRIED_KEY, JSON.stringify(retried));
+    } catch (storageError) {
+      return;
+    }
+    window.location.reload();
+  }
+
+  function chunkPathFromError(error) {
+    if (!error) return null;
+    var message = String(error.message || error);
+    if (error.name !== 'ChunkLoadError' && message.indexOf('Failed to load chunk') === -1) return null;
+    var match = message.match(CHUNK_PATH_REGEX);
+    return match ? match[0] : message;
+  }
+
+  // Capture phase also catches <script>/<link> resource errors, which do not bubble.
+  window.addEventListener('error', function(event) {
+    var target = event.target;
+    if (target && (target.tagName === 'SCRIPT' || target.tagName === 'LINK')) {
+      var match = String(target.src || target.href || '').match(CHUNK_PATH_REGEX);
+      if (match) recover(match[0]);
+      return;
+    }
+    var chunkPath = chunkPathFromError(event.error);
+    if (chunkPath) recover(chunkPath);
+  }, true);
+
+  window.addEventListener('unhandledrejection', function(event) {
+    var chunkPath = chunkPathFromError(event.reason);
+    if (chunkPath) recover(chunkPath);
+  });
+})()
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -115,6 +169,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: chunkRecoveryScript }} />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fcfcfc" />
         <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000" />
